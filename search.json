@@ -1,16 +1,16 @@
 [
   {
+    "objectID": "Slides.html#set-up-libs",
+    "href": "Slides.html#set-up-libs",
+    "title": "Slides",
+    "section": "Set-up libs",
+    "text": "Set-up libs\n\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(gt)\nlibrary(rnaturalearth)\nlibrary(srvyr)\nlibrary(leaflet)"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "uRos 2026 - Tidy Survey Analysis in R",
     "section": "",
     "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
   }
 ]
