@@ -1,0 +1,18 @@
+---
+title: "Slides"
+format: revealjs
+---
+
+## Set-up libs
+
+
+```{r}
+#| label: neccessary-packages
+
+library(tidyverse)
+library(sf)
+library(gt)
+library(rnaturalearth)
+library(srvyr)
+library(leaflet)
+```
