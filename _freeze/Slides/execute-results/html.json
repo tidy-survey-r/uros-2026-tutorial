@@ -1,8 +1,8 @@
 {
-  "hash": "d8e8dfe232791497fc3b9ecd20abc4f7",
+  "hash": "fd41b90ea604d7503282d3e069f8ee32",
   "result": {
     "engine": "knitr",
-    "markdown": "---\ntitle: \"Slides\"\nformat: revealjs\n---\n\n## Set-up libs\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(gt)\nlibrary(rnaturalearth)\nlibrary(srvyr)\nlibrary(leaflet)\n```\n:::\n",
+    "markdown": "---\ntitle: \"Slides\"\ntitle-slide-attributes: \n  data-background-image: images/title-fullpic-light.png\n  data-background-size: cover\n  data-background-position: center\n  data-background-repeat: no-repeat\nformat: \n  revealjs: \n    theme: \n      - brand\n      - custom.scss\n    resources:\n      - images/\n---\n\n# Example 1 {.bkg-ship}\n# Example 2 {.bkg-left}\n# Example 3 {.bkg-right}\n# Example 4 {.bkg-serpent}\n# Example 5 {.bkg-trees}\n# Example 6 {.bkg-mountains}\n# Example 7 {.bkg-buildings}\n\n## Load Libraries {.bkg-ship}\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(gt)\nlibrary(rnaturalearth)\nlibrary(srvyr)\nlibrary(leaflet)\n```\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"

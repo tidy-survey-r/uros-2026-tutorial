@@ -1,0 +1,133 @@
+/*-- scss:defaults --*/
+
+
+/*-- scss:rules --*/
+
+@mixin background-full {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.reveal div.sourceCode {
+  border: unset !important;
+}
+
+div.sourceCode {
+  background-color: unset !important;
+}
+
+
+.title-slide-light {
+  &:is(.slide-background) {
+    background-image: url('/images/title-fullpic-light.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  h1, p {
+    text-align: center;
+  }
+}
+
+.title-slide-dark {
+  &:is(.slide-background) {
+    background-image: url('/images/title-fullpic-dark.png');
+    @include background-full;
+  }
+  h1, p {
+    color: $brand-lightteal;
+    text-align: center;
+  }
+}
+
+.bkg-left {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-left.png');
+    @include background-full;
+  }
+  h1, h2, h3, h4, h5, p, pre {
+    margin-left: 25%;
+    width: 85%;
+  }
+}
+
+.bkg-right {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-right.png');
+    @include background-full;
+  }
+
+  h2, h3, h4, h5, p, pre {
+    margin-left: 0px;
+    width: 75%;
+  }
+}
+
+.bkg-ship {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-ship.png');
+    @include background-full;
+  }
+  h2, h3, h4, h5, p, pre {
+    margin-left: 15%;
+    width: 90%;
+  }
+}
+
+.bkg-buildings {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-buildings.png');
+    @include background-full;
+  }
+}
+
+.bkg-trees {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-trees.png');
+    @include background-full;
+  }
+  h2, h3, h4, h5, p, pre {
+    margin-left: 8%;
+    width: 90%;
+  }
+}
+
+.bkg-serpent {
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-serpent-sailboat.png');
+    @include background-full;
+  }
+  h2 {
+    margin-top: 5%;
+  }
+}
+
+
+.bkg-mountains{
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-mountains.png');
+    @include background-full;
+  }
+}
+
+
+.bkg-mountains-timer{
+  &:is(.slide-background) {
+    background-image: url('/images/bkg-mountains.png');
+    @include background-full;
+    background-color: $brand-pink;
+  }
+  h1, h2, h3, p {
+    color: $brand-blue !important;
+  }
+}
+
+
+#ship-gif.running {
+  background-color: $brand-lightteal;
+  background-image: url('/images/ship-gif.gif');
+}
+#ship-gif.running .countdown-digits {
+  color: $brand-purple;
+}

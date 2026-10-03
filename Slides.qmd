@@ -1,9 +1,28 @@
 ---
 title: "Slides"
-format: revealjs
+title-slide-attributes: 
+  data-background-image: images/title-fullpic-light.png
+  data-background-size: cover
+  data-background-position: center
+  data-background-repeat: no-repeat
+format: 
+  revealjs: 
+    theme: 
+      - brand
+      - custom.scss
+    resources:
+      - images/
 ---
 
-## Set-up libs
+# Example 1 {.bkg-ship}
+# Example 2 {.bkg-left}
+# Example 3 {.bkg-right}
+# Example 4 {.bkg-serpent}
+# Example 5 {.bkg-trees}
+# Example 6 {.bkg-mountains}
+# Example 7 {.bkg-buildings}
+
+## Load Libraries {.bkg-ship}
 
 
 ```{r}
