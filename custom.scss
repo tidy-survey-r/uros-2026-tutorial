@@ -69,8 +69,13 @@ div.sourceCode {
     background-image: url('/images/bkg-ship.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, li, pre {
+  h2, h3, h4, h5, p, pre {
     margin-left: 15%;
+    width: 90%;
+  }
+
+  li {
+    margin-left: 25%;
     width: 90%;
   }
 }

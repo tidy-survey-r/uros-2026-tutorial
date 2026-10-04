@@ -99,8 +99,8 @@ library(leaflet)
 
 ::::: {.columns}
 
-:::: {.fragment}
-::: {.column}
+:::: {.column width=49%}
+::: {.fragment}
 - {survey} package first on CRAN in 2003
   - descriptive analysis
   - statistical testing
@@ -110,8 +110,11 @@ library(leaflet)
 :::
 ::::
 
+::: {.column width=2%}
+:::
+
+::: {.column width=49%}
 ::: {.fragment}
-::: {.column}
 - {srvyr} package first on CRAN in 2016
   - “wrapper” for {survey} with {tidyverse}-style syntax
   - only descriptive analysis
@@ -119,6 +122,7 @@ library(leaflet)
 :::
 ::::
 :::::
+
 ## Why use {srvyr} over {survey}?
 
 ::: {.incremental}
@@ -140,10 +144,8 @@ library(leaflet)
 
 ## Using `summarize()` to calculate mean and median
 
-::::: {.columns}
+::: {.panel-tabset}
 
-:::: {.fragment}
-::: {.column}
 ### Tibble:
 
 ```{r}
@@ -154,11 +156,7 @@ towny %>%
     area_mean = mean(land_area_km2, na.rm=TRUE)
   )
 ```
-:::
-::::
 
-:::: {.fragment}
-::: {.column}
 ### Survey object:
 
 ```{r}
@@ -170,14 +168,10 @@ anes_des %>%
   )
 ```
 :::
-::::
-:::::
 
 ## Filtering and Selecting
-::::: {.columns}
+::: {.panel-tabset}
 
-:::: {.fragment}
-::: {.column}
 ### Tibble:
 
 ```{r}
@@ -186,11 +180,7 @@ towny %>%
   filter(csd_type == "township") %>%
   select(csd_type, name)
 ```
-:::
-::::
 
-:::: {.fragment}
-::: {.column}
 ### Survey object:
 
 ```{r}
@@ -202,8 +192,7 @@ anes_des %>%
   select(Sex)
 ```
 :::
-::::
-:::::
+
 
 ## Grouping
 
