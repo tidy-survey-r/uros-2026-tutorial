@@ -1,5 +1,6 @@
 ---
-title: "Slides"
+title: "Working with Weights and Sampling Designs for Official Statistics"
+subtitle: "Tidy Survey Analysis in R <br>uRos 2026 Tutorial - Paris"
 title-slide-attributes: 
   data-background-image: images/title-fullpic-light.png
   data-background-size: cover
@@ -12,26 +13,9 @@ format:
       - custom.scss
     resources:
       - images/
+revealjs-plugins:
+  - tabset
 ---
 
-# Example 1 {.bkg-ship}
-# Example 2 {.bkg-left}
-# Example 3 {.bkg-right}
-# Example 4 {.bkg-serpent}
-# Example 5 {.bkg-trees}
-# Example 6 {.bkg-mountains}
-# Example 7 {.bkg-buildings}
+{{< include 01-intro.qmd >}}
 
-## Load Libraries {.bkg-ship}
-
-
-```{r}
-#| label: neccessary-packages
-
-library(tidyverse)
-library(sf)
-library(gt)
-library(rnaturalearth)
-library(srvyr)
-library(leaflet)
-```

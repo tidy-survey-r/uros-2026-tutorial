@@ -46,7 +46,7 @@ div.sourceCode {
     background-image: url('/images/bkg-left.png');
     @include background-full;
   }
-  h1, h2, h3, h4, h5, p, pre {
+  h1, h2, h3, h4, h5, p, li, pre {
     margin-left: 25%;
     width: 85%;
   }
@@ -58,7 +58,7 @@ div.sourceCode {
     @include background-full;
   }
 
-  h2, h3, h4, h5, p, pre {
+  h2, h3, h4, h5, p, li, pre {
     margin-left: 0px;
     width: 75%;
   }
@@ -69,7 +69,7 @@ div.sourceCode {
     background-image: url('/images/bkg-ship.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, pre {
+  h2, h3, h4, h5, p, li, pre {
     margin-left: 15%;
     width: 90%;
   }
@@ -80,6 +80,10 @@ div.sourceCode {
     background-image: url('/images/bkg-buildings.png');
     @include background-full;
   }
+  h2, h3, h4, h5, p, li, pre {
+    margin-left: 8%;
+    width: 90%;
+  }
 }
 
 .bkg-trees {
@@ -87,7 +91,7 @@ div.sourceCode {
     background-image: url('/images/bkg-trees.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, pre {
+  h2, h3, h4, h5, p, li, pre {
     margin-left: 8%;
     width: 90%;
   }
@@ -118,7 +122,7 @@ div.sourceCode {
     @include background-full;
     background-color: $brand-pink;
   }
-  h1, h2, h3, p {
+  h1, h2, h3, p, li {
     color: $brand-blue !important;
   }
 }

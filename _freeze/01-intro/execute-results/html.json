@@ -1,0 +1,15 @@
+{
+  "hash": "ea0b95db4fa9855289ef6cfe223f37c5",
+  "result": {
+    "engine": "knitr",
+    "markdown": "\n# Introduction {background-color='{{< brand color secondary >}}' .bkg-buildings}\n\n\n## About Us\n\n:::: {.columns}\n\n::: {.column width=33%}\n\n![](images/StephanieZimmer_Headshot.jpeg){fig-align=\"center\" width=200px}\n\n<center>\n**Rebecca Powell**\n\nFors Marsh\n</center>\n\n:::\n\n::: {.column width=33%}\n\n![](images/RebeccaPowell_Headshot.jpeg){fig-align=\"center\" width=200px}\n\n<center>\n**Rebecca Powell**\n\nFors Marsh\n</center>\n\n:::\n\n::: {.column width=33%}\n\n![](images/IsabellaVelasquez_Headshot.jpeg){fig-align=\"center\" width=200px}\n\n<center>\n**Isabella Velásquez**\n\nPosit\n</center>\n\n:::\n\n::::\n\n::: {.notes}\nEach of us give a brief intro on our experience/background\n:::\n\n## Prerequisites\n\n**Tidyverse familiarity**\n\n::: {.incremental}\n- Selecting a set of variables (`select(starts_with(\"TOT\"))`)\n- Creating new variables with `mutate()`\n- Summarizing data with `summarize()`\n- Using `group_by()` with `summarize()` to create group summaries\n:::\n\n## Overview of tutorial\n\n- At the end of this tutorial, you should be able to \n   - Specify a survey design in R to create a survey object\n   - Calculate point estimates and their standard errors with survey data \n   - Create tables and graphs incorporating survey data and standard errors\n\n## Logistics\n\n  - We will be using Posit Cloud for exercises\n  - All materials are found at:\n    - <https://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html> (Site)\n    - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)\n\n\n## Load Libraries {.bkg-ship}\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(sf)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nLinking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(gt)\nlibrary(rnaturalearth)\nlibrary(srvyr)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'srvyr'\n\nThe following object is masked from 'package:stats':\n\n    filter\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(leaflet)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

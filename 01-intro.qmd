@@ -1,0 +1,250 @@
+
+# Introduction {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+
+## About Us {.bkg-serpent}
+
+:::: {.columns}
+
+::: {.column width=33%}
+
+![](images/StephanieZimmer_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Rebecca Powell**
+
+Fors Marsh
+</center>
+
+:::
+
+::: {.column width=33%}
+
+![](images/RebeccaPowell_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Rebecca Powell**
+
+Fors Marsh
+</center>
+
+:::
+
+::: {.column width=33%}
+
+![](images/IsabellaVelasquez_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Isabella Velásquez**
+
+Posit
+</center>
+
+:::
+
+::::
+
+::: {.notes}
+Each of us give a brief intro on our experience/background
+:::
+
+## Prerequisites {.bkg-left}
+
+**Tidyverse familiarity**
+
+::: {.incremental}
+- Selecting a set of variables (`select(starts_with("TOT"))`)
+- Creating new variables with `mutate()`
+- Summarizing data with `summarize()`
+- Using `group_by()` with `summarize()` to create group summaries
+:::
+
+## Overview of tutorial {.bkg-trees}
+
+- At the end of this tutorial, you should be able to
+
+::: {.incremental}
+   - Specify a survey design in R to create a survey object
+   - Calculate point estimates and their standard errors with survey data 
+   - Create tables and graphs incorporating survey data and standard errors
+   
+:::
+
+## Logistics {.bkg-right}
+
+  - We will be using Posit Cloud for exercises
+  - All materials are found at:
+    - <https://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html> (Site)
+    - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
+
+
+## Libraries Needed for Today {.bkg-ship}
+
+_Note: These are already installed in Posit Cloud_
+```{r}
+#| label: neccessary-packages
+
+library(tidyverse)
+
+library(survey)
+library(srvyr)
+library(gt)
+
+library(sf)
+library(rnaturalearth)
+library(leaflet)
+```
+
+## R Packages for Survey Analysis {.bkg-ship}
+
+::::: {.columns}
+
+:::: {.fragment}
+::: {.column}
+- {survey} package first on CRAN in 2003
+  - descriptive analysis
+  - statistical testing
+  - modeling
+  - weighting
+  
+:::
+::::
+
+::: {.fragment}
+::: {.column}
+- {srvyr} package first on CRAN in 2016
+  - “wrapper” for {survey} with {tidyverse}-style syntax
+  - only descriptive analysis
+  
+:::
+::::
+:::::
+## Why use {srvyr} over {survey}?
+
+::: {.incremental}
+
+- Use the pipe function `%>%` or `|>`
+- Ability to use tidy selection
+- Functions follow `snake_case` convention
+
+:::
+
+# Comparison of {dplyr} and {srvyr} Functions {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Apply {dplyr} functions to survey objects
+
+- A few functions in {srvyr} have counterparts in {dplyr}
+  - `dplyr::summarize()` and `srvyr::summarize()`
+  - `dplyr::group_by()` and `srvyr::group_by()`
+- Based on the object class, R will recognize which package to use
+
+## Using `summarize()` to calculate mean and median
+
+::::: {.columns}
+
+:::: {.fragment}
+::: {.column}
+### Tibble:
+
+```{r}
+#| label: summarize-tib-ex
+#| code-line-numbers: "|1|2,4|3|"
+towny %>%
+  summarize(
+    area_mean = mean(land_area_km2, na.rm=TRUE)
+  )
+```
+:::
+::::
+
+:::: {.fragment}
+::: {.column}
+### Survey object:
+
+```{r}
+#| label: summarize-sv-ex
+#| eval: FALSE
+anes_des %>%
+  summarize(
+    age_mean = survey_mean(Age, na.rm=TRUE),
+  )
+```
+:::
+::::
+:::::
+
+## Filtering and Selecting
+::::: {.columns}
+
+:::: {.fragment}
+::: {.column}
+### Tibble:
+
+```{r}
+#| label: filt-tib-ex
+towny %>%
+  filter(csd_type == "township") %>%
+  select(csd_type, name)
+```
+:::
+::::
+
+:::: {.fragment}
+::: {.column}
+### Survey object:
+
+```{r}
+#| label: filt-sv-ex
+#| eval: FALSE
+
+anes_des %>%
+  filter(EducationGroup == "Graduate") %>%
+  select(Sex)
+```
+:::
+::::
+:::::
+
+## Grouping
+
+::: {.panel-tabset}
+
+### Tibble:
+
+```{r}
+#| label: group-tib-ex
+towny %>%
+  group_by(csd_type) %>%
+  summarize(area_mean = mean(land_area_km2))
+```
+
+### Survey object:
+
+```{r}
+#| label: group-sv-ex
+#| eval: FALSE
+
+anes_des %>%
+  group_by(EducationGroup) %>%
+  summarize(age_mean = survey_mean(Age, na.rm=TRUE))
+```
+:::
+
+## Using {srvyr} functions on non-survey objects
+
+```{r}
+#| label: sv-non-svobj
+#| eval: false
+towny %>%
+  summarize(area_mean = survey_mean(land_area_km2))
+```
+
+. . .
+
+```{r}
+#| label: sv-non-svobj
+#| eval: true
+#| error: true
+#| echo: false
+```
+
