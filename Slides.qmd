@@ -1,6 +1,7 @@
 ---
 title: "Slides"
 format: revealjs
+bibliography: references.bib
 ---
 
 ## Set-up libs
@@ -12,7 +13,313 @@ format: revealjs
 library(tidyverse)
 library(sf)
 library(gt)
-library(rnaturalearth)
+library(tmap)
 library(srvyr)
-library(leaflet)
+library(arrow)
 ```
+
+
+
+
+# Introduction to the European Social Survey (ESS)
+
+## Overview 
+
+- Conducted across Europe every 2 years since 2001
+- Cross-sectional sample (new samples each round)
+- Topics include living conditions, social structure, public opinion and attitudes
+- Sampling designs vary by country but have oversight for rigor
+
+## Countries for round 11 (2023-2024)
+
+```{r}
+#| label: load-ess
+#| cache: true
+#| echo: false
+
+url <- glue::glue(
+  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
+)
+ess_in <- read_parquet(url)
+```
+
+```{r}
+#| label: round-11-map
+#| echo: false
+country_coding <-
+  tibble::tribble(
+    ~Code , ~Name                ,
+    'AL'  , 'Albania'            ,
+    'AT'  , 'Austria'            ,
+    'BE'  , 'Belgium'            ,
+    'BG'  , 'Bulgaria'           ,
+    'CH'  , 'Switzerland'        ,
+    'CY'  , 'Cyprus'             ,
+    'CZ'  , 'Czechia'            ,
+    'DE'  , 'Germany'            ,
+    'DK'  , 'Denmark'            ,
+    'EE'  , 'Estonia'            ,
+    'ES'  , 'Spain'              ,
+    'FI'  , 'Finland'            ,
+    'FR'  , 'France'             ,
+    'GB'  , 'United Kingdom'     ,
+    'GE'  , 'Georgia'            ,
+    'GR'  , 'Greece'             ,
+    'HR'  , 'Croatia'            ,
+    'HU'  , 'Hungary'            ,
+    'IE'  , 'Ireland'            ,
+    'IS'  , 'Iceland'            ,
+    'IL'  , 'Israel'             ,
+    'IT'  , 'Italy'              ,
+    'LT'  , 'Lithuania'          ,
+    'LU'  , 'Luxembourg'         ,
+    'LV'  , 'Latvia'             ,
+    'ME'  , 'Montenegro'         ,
+    'MK'  , 'North Macedonia'    ,
+    'NL'  , 'Netherlands'        ,
+    'NO'  , 'Norway'             ,
+    'PL'  , 'Poland'             ,
+    'PT'  , 'Portugal'           ,
+    'RO'  , 'Romania'            ,
+    'RS'  , 'Serbia'             ,
+    'RU'  , 'Russian Federation' ,
+    'SE'  , 'Sweden'             ,
+    'SI'  , 'Slovenia'           ,
+    'SK'  , 'Slovakia'           ,
+    'TR'  , 'Turkey'             ,
+    'UA'  , 'Ukraine'            ,
+    'XK'  , 'Kosovo'
+  )
+
+ess_11_countries <-
+  ess_in |>
+  distinct(cntry) |>
+  mutate(
+    Country = recode_values(
+      cntry,
+      from = country_coding$Code,
+      to = country_coding$Name
+    )
+  )
+
+country_shape_col <-
+  World |>
+  filter(continent %in% c("Europe", "Asia")) |>
+  full_join(ess_11_countries, by = c("name" = "Country")) |>
+  st_crop(st_bbox(c(xmin = -27, ymin = 11, xmax = 60, ymax = 70))) |>
+  mutate(ESS11 = !is.na(cntry))
+
+legend_df <- country_shape_col |>
+  as_tibble() |>
+  filter(ESS11) |>
+  arrange(cntry)
+
+tm_shape(country_shape_col) +
+  tm_polygons(fill = "lightgrey", col = "darkgrey") +
+  tm_shape(country_shape_col |> filter(ESS11)) +
+  tm_polygons(fill = "MAP_COLORS") +
+  tm_text("cntry")
+```
+
+## Accessing ESS data
+
+1. Create an account at the [ESS Data Portal](https://ess.sikt.no/en/register?redirectUrl=/en/) and then get your [user ID](https://ess.sikt.no/en/api)
+
+2. Add your user ID to your R environ file by opening the file and editing as follows:
+
+```r
+usethis::edit_r_environ()
+```
+
+Edit as follows (example):
+
+```r
+ESS_USERID="12345678-1234-1234-1234-12345678900"
+```
+
+3. Restart your R session
+
+
+
+## Load the ESS data into R
+
+```{r}
+#| label: rep-load-ess
+#| ref.label: "load-ess"
+#| echo: true
+#| eval: false
+```
+
+## Why weight? Why use the design?
+
+- Differential selection probabilities and nonresponse are accounted for in analytic weights
+- Weights are post-stratified by gender, age, education, and geographic region
+- Not using weights leads to bias
+- Not using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering
+
+## Estimates comparison: weights and design (table)
+
+```{r}
+#| label: why-weight
+#| echo: false
+ess_net_IT <-
+  ess_in |>
+  filter(cntry == "IT") |>
+  select(
+    psu,
+    cntry,
+    stratum,
+    anweight,
+    pspwght,
+    netusoft
+  ) |>
+  mutate(
+    InternetUse = recode_values(
+      netusoft,
+      1 ~ 'Never',
+      2 ~ 'Only occasionally',
+      3 ~ 'A few times a week',
+      4 ~ 'Most days',
+      5 ~ 'Every day'
+    ) |>
+      fct_reorder(netusoft),
+    wt1 = 1
+  )
+
+ess_des <- ess_net_IT |>
+  as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
+ess_des_1 <- ess_net_IT |>
+  as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
+ess_des_wt <- ess_net_IT |>
+  as_survey_design(weights = anweight)
+ess_des_srs <- ess_net_IT |>
+  as_survey_design(weights = wt1)
+
+calc_ests <- function(des, suff) {
+  des |>
+    filter(!is.na(InternetUse)) |>
+    group_by(InternetUse) |>
+    summarize(
+      p = survey_prop(proportion = TRUE, prop_method = "logit", vartype = "ci")
+    ) |>
+    ungroup() |>
+    rename(p_est = p) |>
+    mutate(p_width = p_upp - p_low) |>
+    rename_with(~ str_c(.x, "_", suff), .cols = starts_with("p"))
+}
+
+allests <-
+  list(a = ess_des, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
+  imap(calc_ests) |>
+  reduce(full_join, by = "InternetUse")
+
+title_it <- "Estimates of proportion of internet usage in Italy, ESS round 11, under different sample design specifications"
+
+allests |>
+  select(-contains("low"), -contains("upp")) |>
+  gt() |>
+  tab_spanner(
+    "Weights, strata, clusters",
+    columns = ends_with("a"),
+    id = "full"
+  ) |>
+  tab_spanner(
+    "Strata and clusters only",
+    columns = ends_with("b"),
+    id = "des_only"
+  ) |>
+  tab_spanner(
+    "Weights only",
+    columns = ends_with("c"),
+    id = "wt_only"
+  ) |>
+  tab_spanner(
+    "No design",
+    columns = ends_with("d"),
+    id = "no_des"
+  ) |>
+  cols_label(
+    starts_with("p_est") ~ "Proportion",
+    starts_with("p_low") ~ "Lower CI",
+    starts_with("p_upp") ~ "Upper CI",
+    starts_with("p_width") ~ "CI Width",
+    InternetUse ~ "netusoft (Internet usage)"
+  ) |>
+  fmt_percent(decimals = 1) |>
+  tab_footnote(
+    "95% confidence interval using a Wald-type interval on the log-odds scale.",
+    locations = cells_column_labels(c(
+      contains("upp"),
+      contains("low"),
+      contains("width")
+    ))
+  ) |>
+  tab_footnote(
+    glue::glue(
+      "Degrees of freedom is the number of clusters minus number of stratum which is {survey::degf(ess_des) |> formatC(big.mark=',')}."
+    ),
+    locations = cells_column_spanners(spanners = c("full", "des_only"))
+  ) |>
+  tab_footnote(
+    glue::glue(
+      "Degrees of freedom is the number of respondents minus 1 which is {survey::degf(ess_des_wt) |> formatC(big.mark=',')}."
+    ),
+    locations = cells_column_spanners(spanners = c("wt_only", "no_des"))
+  ) |>
+  tab_header(
+    title = title_it
+  ) |>
+  tab_source_note(
+    "European Social Survey European Research Infrastructure (ESS ERIC). (2026). ESS11 integrated file, edition 4.2 [Data set]. Sikt - Norwegian Agency for Shared Services in Education and Research. https://doi.org/10.21338/ess11e04_2"
+  )
+```
+
+## Estimates comparison: weights and design (plot)
+
+
+```{r}
+#| label: weight-compare-plot
+#| echo: false
+allests |>
+  pivot_longer(
+    cols = starts_with("p"),
+    names_pattern = "p_(.*)_(.*)",
+    names_to = c("esttype", "method")
+  ) |>
+  pivot_wider(names_from = esttype, values_from = value) |>
+  mutate(
+    Design = recode_values(
+      method,
+      "a" ~ "Weights, strata, clusters",
+      "b" ~ "Strata and clusters only",
+      "c" ~ "Weights only",
+      "d" ~ "No design"
+    ) |> factor(levels=c("Weights, strata, clusters", "Weights only", "Strata and clusters only", "No design"))
+  ) |>
+  ggplot(aes(color = Design)) +
+  geom_point(aes(x = Design, y = est)) +
+  geom_errorbar(aes(x = Design, ymin = low, ymax = upp)) +
+  facet_wrap(~InternetUse, nrow = 1) +
+  theme(
+    legend.position = "bottom",
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  ) +
+    labs(title=title_it, y="Estiamted proportion with 95% CI") +
+    scale_y_continuous(labels = scales::percent)
+```
+
+## ESS Variable Viewer
+
+- Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1)
+
+# Closing
+
+## References
+
+---
+nocite: |
+  @*
+---
+

@@ -7,4 +7,6 @@
 .DS_store
 /_site/
 
+*_cache
+
 *.html
