@@ -8,7 +8,7 @@ bibliography: references.bib
 
 
 ```{r}
-#| label: neccessary-packages
+#| label: necessary-packages
 
 library(tidyverse)
 library(sf)
@@ -104,21 +104,27 @@ ess_11_countries <-
 
 country_shape_col <-
   World |>
-  filter(continent %in% c("Europe", "Asia")) |>
+  # filter(continent %in% c("Europe", "Asia")) |>
   full_join(ess_11_countries, by = c("name" = "Country")) |>
-  st_crop(st_bbox(c(xmin = -27, ymin = 11, xmax = 60, ymax = 70))) |>
+  st_transform(3035) |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  ) |>
   mutate(ESS11 = !is.na(cntry))
 
-legend_df <- country_shape_col |>
-  as_tibble() |>
-  filter(ESS11) |>
-  arrange(cntry)
-
-tm_shape(country_shape_col) +
+country_shape_col |>
+  tm_shape() +
   tm_polygons(fill = "lightgrey", col = "darkgrey") +
   tm_shape(country_shape_col |> filter(ESS11)) +
-  tm_polygons(fill = "MAP_COLORS") +
-  tm_text("cntry")
+  tm_polygons(
+    fill = "MAP_COLORS",
+    fill.scale = tm_scale_categorical(
+      values = c("#0b3954", "#087e8b", "#bfd7ea", "#ff8484", "#8d6b94")
+    )
+  ) +
+  tm_text("cntry") +
+  tm_graticules()
 ```
 
 ## Accessing ESS data
@@ -157,136 +163,76 @@ ESS_USERID="12345678-1234-1234-1234-12345678900"
 - Not using weights leads to bias
 - Not using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering
 
-## Estimates comparison: weights and design (table)
+## Estimates changing with weights
 
 ```{r}
 #| label: why-weight
 #| echo: false
-ess_net_IT <-
+ess_der_wt_examp <-
   ess_in |>
-  filter(cntry == "IT") |>
   select(
     psu,
     cntry,
     stratum,
     anweight,
     pspwght,
-    netusoft
+    pdwrk:dngna,
+    mainact
   ) |>
   mutate(
-    InternetUse = recode_values(
-      netusoft,
-      1 ~ 'Never',
-      2 ~ 'Only occasionally',
-      3 ~ 'A few times a week',
-      4 ~ 'Most days',
-      5 ~ 'Every day'
-    ) |>
-      fct_reorder(netusoft),
+    across(
+      pdwrk:dngoth,
+      ~ if_else(dngdk == 1 | dngref == 1 | dngna == 1, NA, .x),
+      .names = "{.col}_rec"
+    ),
+    Retired = case_when(
+      # main activity
+      mainact < 66 ~ mainact == 6,
+      mainact == 66 ~ rtrd == 1,
+      TRUE ~ NA
+    ),
+    Country = recode_values(
+      cntry,
+      from = country_coding$Code,
+      to = country_coding$Name
+    ),
     wt1 = 1
   )
 
-ess_des <- ess_net_IT |>
+ess_des <- ess_der_wt_examp |>
   as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
-ess_des_1 <- ess_net_IT |>
+ess_des_1 <- ess_der_wt_examp |>
   as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
-ess_des_wt <- ess_net_IT |>
+ess_des_wt <- ess_der_wt_examp |>
   as_survey_design(weights = anweight)
-ess_des_srs <- ess_net_IT |>
+ess_des_srs <- ess_der_wt_examp |>
   as_survey_design(weights = wt1)
 
-calc_ests <- function(des, suff) {
+calc_ests <- function(des) {
   des |>
-    filter(!is.na(InternetUse)) |>
-    group_by(InternetUse) |>
     summarize(
-      p = survey_prop(proportion = TRUE, prop_method = "logit", vartype = "ci")
+      .by = Country,
+      p = survey_mean(
+        Retired,
+        proportion = TRUE,
+        prop_method = "logit",
+        vartype = "ci",
+        na.rm = TRUE
+      )
     ) |>
-    ungroup() |>
-    rename(p_est = p) |>
-    mutate(p_width = p_upp - p_low) |>
-    rename_with(~ str_c(.x, "_", suff), .cols = starts_with("p"))
+    rename(p_est = p)
 }
 
 allests <-
   list(a = ess_des, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
-  imap(calc_ests) |>
-  reduce(full_join, by = "InternetUse")
-
-title_it <- "Estimates of proportion of internet usage in Italy, ESS round 11, under different sample design specifications"
-
-allests |>
-  select(-contains("low"), -contains("upp")) |>
-  gt() |>
-  tab_spanner(
-    "Weights, strata, clusters",
-    columns = ends_with("a"),
-    id = "full"
-  ) |>
-  tab_spanner(
-    "Strata and clusters only",
-    columns = ends_with("b"),
-    id = "des_only"
-  ) |>
-  tab_spanner(
-    "Weights only",
-    columns = ends_with("c"),
-    id = "wt_only"
-  ) |>
-  tab_spanner(
-    "No design",
-    columns = ends_with("d"),
-    id = "no_des"
-  ) |>
-  cols_label(
-    starts_with("p_est") ~ "Proportion",
-    starts_with("p_low") ~ "Lower CI",
-    starts_with("p_upp") ~ "Upper CI",
-    starts_with("p_width") ~ "CI Width",
-    InternetUse ~ "netusoft (Internet usage)"
-  ) |>
-  fmt_percent(decimals = 1) |>
-  tab_footnote(
-    "95% confidence interval using a Wald-type interval on the log-odds scale.",
-    locations = cells_column_labels(c(
-      contains("upp"),
-      contains("low"),
-      contains("width")
-    ))
-  ) |>
-  tab_footnote(
-    glue::glue(
-      "Degrees of freedom is the number of clusters minus number of stratum which is {survey::degf(ess_des) |> formatC(big.mark=',')}."
-    ),
-    locations = cells_column_spanners(spanners = c("full", "des_only"))
-  ) |>
-  tab_footnote(
-    glue::glue(
-      "Degrees of freedom is the number of respondents minus 1 which is {survey::degf(ess_des_wt) |> formatC(big.mark=',')}."
-    ),
-    locations = cells_column_spanners(spanners = c("wt_only", "no_des"))
-  ) |>
-  tab_header(
-    title = title_it
-  ) |>
-  tab_source_note(
-    "European Social Survey European Research Infrastructure (ESS ERIC). (2026). ESS11 integrated file, edition 4.2 [Data set]. Sikt - Norwegian Agency for Shared Services in Education and Research. https://doi.org/10.21338/ess11e04_2"
-  )
+  map(calc_ests) |>
+  bind_rows(.id = "method")
 ```
-
-## Estimates comparison: weights and design (plot)
-
 
 ```{r}
 #| label: weight-compare-plot
 #| echo: false
 allests |>
-  pivot_longer(
-    cols = starts_with("p"),
-    names_pattern = "p_(.*)_(.*)",
-    names_to = c("esttype", "method")
-  ) |>
-  pivot_wider(names_from = esttype, values_from = value) |>
   mutate(
     Design = recode_values(
       method,
@@ -294,20 +240,40 @@ allests |>
       "b" ~ "Strata and clusters only",
       "c" ~ "Weights only",
       "d" ~ "No design"
-    ) |> factor(levels=c("Weights, strata, clusters", "Weights only", "Strata and clusters only", "No design"))
+    ) |>
+      factor(
+        levels = c(
+          "Weights, strata, clusters",
+          "Weights only",
+          "Strata and clusters only",
+          "No design"
+        )
+      )
   ) |>
   ggplot(aes(color = Design)) +
-  geom_point(aes(x = Design, y = est)) +
-  geom_errorbar(aes(x = Design, ymin = low, ymax = upp)) +
-  facet_wrap(~InternetUse, nrow = 1) +
+  geom_point(aes(x = Design, y = p_est)) +
+  geom_errorbar(aes(x = Design, ymin = p_low, ymax = p_upp)) +
+  theme_light() +
   theme(
     legend.position = "bottom",
     axis.title.x = element_blank(),
     axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
+    axis.ticks.x = element_blank(),
+    axis.line.y = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.spacing = unit(0, "in")
   ) +
-    labs(title=title_it, y="Estiamted proportion with 95% CI") +
-    scale_y_continuous(labels = scales::percent)
+  facet_wrap(~Country) +
+  labs(
+    title = "Retirement is main activity in last 7 days, ESS 11",
+    y = "Estimated proportion with 95% CI"
+  ) +
+  scale_y_continuous(
+    labels = scales::percent,
+    limits = c(0, max(allests$p_upp))
+  ) +
+  scale_color_manual(values = c("#0b3954", "#087e8b", "#ff8484", "#8d6b94"))
 ```
 
 ## ESS Variable Viewer
