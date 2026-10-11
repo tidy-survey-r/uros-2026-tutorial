@@ -1,16 +1,21 @@
-```{r}
-#| label: necessary-packages
-#| echo: false
+# Introduction to the European Social Survey (ESS)
 
-library(tidyverse)
-library(sf)
-library(gt)
-library(tmap)
-library(srvyr)
-library(arrow)
+```{r}
+#| label: load-pack-02
+#| echo: false
+#| message: false
+
+source("package-common.R")
 ```
 
-# Introduction to the European Social Survey (ESS)
+```{r}
+#| label: source-02
+#| echo: false
+#| message: false
+#| cache: true
+
+source("source-common.R")
+```
 
 ## Overview 
 
@@ -20,17 +25,6 @@ library(arrow)
 - Sampling designs vary by country but have oversight for rigor
 
 ## Countries for round 11 (2023-2024)
-
-```{r}
-#| label: load-ess
-#| cache: true
-#| echo: false
-
-url <- glue::glue(
-  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
-)
-ess_in <- read_parquet(url)
-```
 
 ```{r}
 #| label: round-11-map
@@ -140,9 +134,13 @@ ESS_USERID="12345678-1234-1234-1234-12345678900"
 
 ```{r}
 #| label: rep-load-ess
-#| ref.label: "load-ess"
 #| echo: true
 #| eval: false
+
+url <- glue::glue(
+  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
+)
+ess_in <- read_parquet(url)
 ```
 
 ## Why weight? Why use the design?
@@ -166,7 +164,9 @@ ess_der_wt_examp <-
     anweight,
     pspwght,
     pdwrk:dngna,
-    mainact
+    mainact,
+    happy,
+    wrhpp
   ) |>
   mutate(
     across(
@@ -180,15 +180,17 @@ ess_der_wt_examp <-
       mainact == 66 ~ rtrd == 1,
       TRUE ~ NA
     ),
+    wt1 = 1,
+    Happy_Freq = if_else(wrhpp %in% 7:9, NA, wrhpp),
+    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),
     Country = recode_values(
       cntry,
       from = country_coding$Code,
       to = country_coding$Name
-    ),
-    wt1 = 1
+    )
   )
 
-ess_des <- ess_der_wt_examp |>
+ess_des_true <- ess_der_wt_examp |>
   as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
 ess_des_1 <- ess_der_wt_examp |>
   as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
@@ -213,7 +215,7 @@ calc_ests <- function(des) {
 }
 
 allests <-
-  list(a = ess_des, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
+  list(a = ess_des_true, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
   map(calc_ests) |>
   bind_rows(.id = "method")
 ```

@@ -4,5 +4,6 @@ format: revealjs
 bibliography: references.bib
 ---
 
-{{< include 02-intro-ess.qmd >}}
-{{< include 07-closing.qmd >}}
+{{< include _02-ess.qmd >}}
+{{< include _05-descriptive.qmd >}}
+{{< include _07-closing.qmd >}}

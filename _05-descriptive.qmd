@@ -1,0 +1,309 @@
+# Descriptive analysis
+
+## Common workflow
+
+::: incremental
+
+1. Create a `tbl_svy` object (a survey object) using: `as_survey_design()` or `as_survey_rep()`
+
+2. Subset data (if needed) using `filter()` (to create subpopulations)
+
+3. Specify domains of analysis using `group_by()`
+
+4. Within `summarize()`, specify variables to calculate, including means, totals, proportions, quantiles, and more
+
+:::
+
+## Descriptive functions {.smaller}
+
+:::: {.columns}
+
+
+::: {.column width="50%"}
+
+Use within `summarize()`
+
+- `survey_mean(x)`
+- `survey_median(x)`
+- `survey_proportion()`
+- `survey_quantile(x)`
+- `survey_ratio(num, den)`
+- `survey_sd(x)`
+- `survey_total(x)`
+- `survey_var(x)`
+
+:::
+
+
+::: {.column width="50%"}
+
+Common arguments
+
+- `na.rm = FALSE`
+- `vartype = c("se", "ci", "var", "cv")`: defaults to just "se"
+- `level = 0.95`: confidence interval level of CIs 
+- `deff = FALSE`: note can specify as logical OR "replace"
+- `df = NULL`: degrees of freedom for CIs (defaults to `degf(design)`)
+
+:::
+
+::::
+
+::: {.notes}
+- survey_median/survey_quantile - no deff
+- survey_sd - no deff, no measures of variation
+- survey_var - no deff, no cv
+:::
+
+## Mean examples
+
+::: {.panel-tabset}
+
+### `na.rm`
+
+```{r}
+#| label: mean-na
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News),
+    H2 = survey_mean(News, na.rm = TRUE)
+  )
+```
+
+### `vartype`
+
+```{r}
+#| label: mean-vartype
+
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News, na.rm = TRUE, vartype = c("se", "ci", "var", "cv")),
+    H2 = survey_mean(News, na.rm = TRUE, vartype = NULL)
+  )
+```
+
+### `level` and `df`
+
+```{r}
+#| label: mean-ci-options
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.95),
+    H2 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.8),
+    H3 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.95, df = 10)
+  )
+```
+
+
+### `deff`
+
+```{r}
+#| label: mean-deff
+
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(H1 = survey_mean(News, na.rm = TRUE, deff = "replace"))
+```
+
+:::
+
+::: {.notes}
+- na.rm removes NA before calculation, similar to many other functions in R
+- vartype can choose no option OR multiple
+- level and df control confidence intervals
+- deff is a design effect, a ratio of the variance under this design compared to a design which is SRS, >1 means less statistically efficient 
+:::
+
+
+## Proportion example - motivation
+
+And still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (`volunfp`)
+
+- 1: yes
+- 2: no
+- 7: Refusal*
+- 8: Don't know*
+- 9: No answer*
+
+## Proportion example - variable coding
+
+Derived variable coding options (unweighted raw data):
+
+```{r}
+#| label: volunfp-code
+
+ess_der |>
+  count(
+    volunfp,
+    Volunteer_12,
+    Volunteer_01,
+    Volunteer_Factor
+  )
+```
+
+## Proportion example - 2 ways
+
+Two methods for proportions
+
+1. For binary outcomes, use `survey_mean(x)`
+    -  `x` is either 1/0 or TRUE/FALSE
+    - can use with `across()` and several outcomes
+
+2. Group the data by the variable (`x`) and then use `survey_prop()`
+    - `x` can have 2 or more levels
+    - only analyze one outcome at a time
+
+::: aside
+See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/tidy-survey-book/c05-descriptive-analysis.html#calculating-estimates-for-many-outcomes) for extending to multiple outcomes
+:::
+
+## Proportion example - 2 ways
+
+::: {.panel-tabset}
+
+### `survey_mean()`
+
+```{r}
+#| label: np-survey-mean
+
+ess_des |>
+  filter(cntry == "SE") |>
+  summarize(
+    across(
+      c(Volunteer_12, Volunteer_01),
+      ~ survey_mean(.x, na.rm = TRUE)
+    )
+  )
+```
+
+### `survey_prop()`
+
+```{r}
+#| label: np-survey-prop
+
+ess_des |>
+  filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
+  group_by(Volunteer_Factor) |>
+  summarize(p = survey_prop())
+```
+
+:::
+
+::: {.notes}
+- survey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once
+- survey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels
+:::
+
+## Proportion example - arguments
+
+`proportion` argument in `survey_mean()`
+
+```{r}
+#| label: np-proportion-arg
+
+ess_des |>
+  filter(cntry == "SE") |>
+  summarize(
+    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = "ci"),
+    p2 = survey_mean(
+      Volunteer_01,
+      na.rm = TRUE,
+      vartype = "ci",
+      proportion = TRUE
+    )
+  )
+```
+
+
+::: {.notes}
+- proportion = TRUE argument only impacts confidence intervals
+:::
+
+## Proportion example - arguments
+
+`prop_method` argument in `survey_mean()/survey_prop()`
+
+
+
+```{r}
+#| label: np-prop-method-arg
+
+ess_des |>
+  filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
+  group_by(Volunteer_Factor) |>
+  summarize(
+    p1 = survey_prop(vartype = "ci", prop_method = "logit"),
+    p2 = survey_prop(vartype = "ci", prop_method = "mean"),
+    p3 = survey_prop(vartype = "ci", prop_method = "xlogit")
+  )
+```
+
+::: aside
+See [`?survey::svyciprop`](https://cran.r-project.org/web/packages/survey/refman/survey.html#svyciprop) for details on implementation
+:::
+
+## Subgroup analysis
+
+- Using `filter()` as above examples subsets data. This is done AFTER creating the design object
+- Use `group_by()` to implement domain analysis
+
+## Subgroup analysis examples - mean and median
+
+- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week
+- `NetUsage` is otherwise the reported time of internet usage on a typical day (minutes)
+
+```{r}
+#| label: net-by-country
+
+ess_des |>
+  group_by(Country) |>
+  summarize(
+    N = survey_total(),
+    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),
+    NetUse_median = survey_median(NetUsage, na.rm = TRUE)
+  ) |>
+  gt() |>
+  fmt_number(decimals = 2)
+```
+
+## Subgroup analysis examples - proportion, marginal
+
+- NetFreq is how often people use the internet (categorical)
+- AgeGroup is a categorical age variable
+
+```{r}
+#| label: net-freq-country
+
+ess_des |>
+  filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
+  group_by(AgeGroup, NetFreq) |>
+  summarize(
+    N = survey_total() * 10000,
+    p = survey_prop() * 100
+  ) |>
+  gt() |>
+  fmt_number(decimal = 1, columns = starts_with("p")) |>
+  fmt_number(decimal = 0, columns = c(N, N_se))
+```
+
+
+## Subgroup analysis examples - proportion, joint
+
+```{r}
+#| label: net-freq-country-2
+
+ess_des |>
+  filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
+  group_by(interact(AgeGroup, NetFreq)) |>
+  summarize(
+    N = survey_total() * 10000,
+    p = survey_prop() * 100
+  ) |>
+  gt() |>
+  fmt_number(decimal = 1, columns = starts_with("p")) |>
+  fmt_number(decimal = 0, columns = c(N, N_se))
+```
+
