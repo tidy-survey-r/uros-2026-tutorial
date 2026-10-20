@@ -5193,39 +5193,6 @@
       "Maintainer": "Greg Freedman Ellis <greg.freedman@gmail.com>",
       "Repository": "CRAN"
     },
-    "srvyrexploR": {
-      "Package": "srvyrexploR",
-      "Version": "1.1.0",
-      "Source": "GitHub",
-      "Title": "Data Supplement for Exploring Complex Survey Data Analysis Using R",
-      "Date": "2025-11-05",
-      "Authors@R": "c( person(\"Stephanie A.\", \"Zimmer\", email=\"stephaniezimmer+srvyrexploR@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Rebecca J.\", \"Powell\", role = \"aut\"), person(\"Isabella C.\", \"Velásquez\", role = \"aut\") )",
-      "Description": "Includes datasets for the Residential Energy Consumption Survey (2015 and 2020), the American National Election Studies (2020 and 2024), and the National Crime Victimization Study (2021) - household, person, and incident files.",
-      "License": "CC BY 4.0 + file LICENSE",
-      "Depends": [
-        "R (>= 3.5)"
-      ],
-      "Suggests": [
-        "srvyr"
-      ],
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "LazyDataCompression": "bzip2",
-      "Roxygen": "list(markdown = TRUE)",
-      "BugReports": "https://github.com/tidy-survey-r/srvyrexploR/issues",
-      "URL": "https://github.com/tidy-survey-r/srvyrexploR, https://github.com/tidy-survey-r/tidy-survey-book, https://tidy-survey-r.github.io/srvyrexploR/",
-      "Config/roxygen2/version": "8.0.0",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "srvyrexploR",
-      "RemoteUsername": "tidy-survey-r",
-      "RemotePkgRef": "tidy-survey-r/srvyrexploR",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "bca23bf702bc35140332658767c9d34d5b11cfe3",
-      "NeedsCompilation": "no",
-      "Author": "Stephanie A. Zimmer [aut, cre], Rebecca J. Powell [aut], Isabella C. Velásquez [aut]",
-      "Maintainer": "Stephanie A. Zimmer <stephaniezimmer+srvyrexploR@gmail.com>"
-    },
     "stars": {
       "Package": "stars",
       "Version": "0.7-3",
