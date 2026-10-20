@@ -1,5 +1,18 @@
 # Descriptive analysis
 
+```{r}
+#| label: 05-make-des
+#| echo: false
+
+ess_des <-
+  ess_der |>
+  srvyr::as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+```
 ## Common workflow
 
 ::: incremental
