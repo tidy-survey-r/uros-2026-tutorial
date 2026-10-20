@@ -22,4 +22,5 @@ bibliography: references.bib
 {{< include _02-ess.qmd >}}
 {{< include _03-design.qmd >}}
 {{< include _05-descriptive.qmd >}}
+{{< include _06-happy-map.qmd >}}
 {{< include _07-closing.qmd >}}
