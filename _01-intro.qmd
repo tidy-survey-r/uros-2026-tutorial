@@ -88,11 +88,10 @@ library(tidyverse)
 
 library(survey)
 library(srvyr)
-library(gt)
 
+library(gt)
 library(sf)
-library(rnaturalearth)
-library(leaflet)
+library(tmap)
 ```
 
 ## R Packages for Survey Analysis {.bkg-ship}

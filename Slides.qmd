@@ -15,7 +15,10 @@ format:
       - images/
 revealjs-plugins:
   - tabset
+bibliography: references.bib
 ---
 
 {{< include _01-intro.qmd >}}
-
+{{< include _02-ess.qmd >}}
+{{< include _05-descriptive.qmd >}}
+{{< include _07-closing.qmd >}}
