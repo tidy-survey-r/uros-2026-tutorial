@@ -62,7 +62,7 @@ Common arguments
 ### `na.rm`
 
 ```{r}
-#| label: mean-na
+#| label: 05-mean-na
 ess_des |>
   filter(cntry == "IS") |>
   summarize(
@@ -74,7 +74,7 @@ ess_des |>
 ### `vartype`
 
 ```{r}
-#| label: mean-vartype
+#| label: 05-mean-vartype
 
 ess_des |>
   filter(cntry == "IS") |>
@@ -87,7 +87,7 @@ ess_des |>
 ### `level` and `df`
 
 ```{r}
-#| label: mean-ci-options
+#| label: 05-mean-ci-options
 ess_des |>
   filter(cntry == "IS") |>
   summarize(
@@ -101,7 +101,7 @@ ess_des |>
 ### `deff`
 
 ```{r}
-#| label: mean-deff
+#| label: 05-mean-deff
 
 ess_des |>
   filter(cntry == "IS") |>
@@ -133,7 +133,7 @@ And still thinking about different ways of trying to improve things in [country]
 Derived variable coding options (unweighted raw data):
 
 ```{r}
-#| label: volunfp-code
+#| label: 05-volunfp-code
 
 ess_der |>
   count(
@@ -167,7 +167,7 @@ See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/ti
 ### `survey_mean()`
 
 ```{r}
-#| label: np-survey-mean
+#| label: 05-np-survey-mean
 
 ess_des |>
   filter(cntry == "SE") |>
@@ -182,7 +182,7 @@ ess_des |>
 ### `survey_prop()`
 
 ```{r}
-#| label: np-survey-prop
+#| label: 05-np-survey-prop
 
 ess_des |>
   filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
@@ -202,7 +202,7 @@ ess_des |>
 `proportion` argument in `survey_mean()`
 
 ```{r}
-#| label: np-proportion-arg
+#| label: 05-np-proportion-arg
 
 ess_des |>
   filter(cntry == "SE") |>
@@ -229,7 +229,7 @@ ess_des |>
 
 
 ```{r}
-#| label: np-prop-method-arg
+#| label: 05-np-prop-method-arg
 
 ess_des |>
   filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
@@ -250,32 +250,35 @@ See [`?survey::svyciprop`](https://cran.r-project.org/web/packages/survey/refman
 - Using `filter()` as above examples subsets data. This is done AFTER creating the design object
 - Use `group_by()` to implement domain analysis
 
-## Subgroup analysis examples - mean and median
+## Subgroup analysis - mean and median
 
-- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week
-- `NetUsage` is otherwise the reported time of internet usage on a typical day (minutes)
+- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported time of internet usage on a typical day (minutes)
 
 ```{r}
-#| label: net-by-country
+#| label: 05-net-by-country
+#| code-fold: show
 
 ess_des |>
   group_by(Country) |>
   summarize(
-    N = survey_total(),
+    Pop = survey_total(vartype = NULL),
     NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),
     NetUse_median = survey_median(NetUsage, na.rm = TRUE)
   ) |>
   gt() |>
-  fmt_number(decimals = 2)
+  fmt_number(columns = starts_with("NetUse"), decimals = 2) |>
+  fmt_number(columns = Pop, decimals = 0) |>
+  opt_interactive(page_size_default = 8)
 ```
 
-## Subgroup analysis examples - proportion, marginal
+## Subgroup analysis - proportion, marginal
 
-- NetFreq is how often people use the internet (categorical)
-- AgeGroup is a categorical age variable
+- `NetFreq` is how often people use the internet (categorical)
+- `AgeGroup` is a categorical age variable
 
 ```{r}
-#| label: net-freq-country
+#| label: 05-net-freq-age-marg
+#| code-fold: show
 
 ess_des |>
   filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
@@ -286,14 +289,16 @@ ess_des |>
   ) |>
   gt() |>
   fmt_number(decimal = 1, columns = starts_with("p")) |>
-  fmt_number(decimal = 0, columns = c(N, N_se))
+  fmt_number(decimal = 0, columns = c(N, N_se)) |>
+  opt_interactive(page_size_default = 8)
 ```
 
 
-## Subgroup analysis examples - proportion, joint
+## Subgroup analysis - proportion, joint
 
 ```{r}
-#| label: net-freq-country-2
+#| label: 05-net-freq-age-joint
+#| code-fold: show
 
 ess_des |>
   filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
@@ -304,6 +309,7 @@ ess_des |>
   ) |>
   gt() |>
   fmt_number(decimal = 1, columns = starts_with("p")) |>
-  fmt_number(decimal = 0, columns = c(N, N_se))
+  fmt_number(decimal = 0, columns = c(N, N_se)) |>
+  opt_interactive(page_size_default = 8)
 ```
 

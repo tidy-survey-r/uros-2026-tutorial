@@ -1,7 +1,7 @@
 # Introduction to the European Social Survey (ESS)
 
 ```{r}
-#| label: load-pack-02
+#| label: 02-load-pack
 #| echo: false
 #| message: false
 
@@ -9,7 +9,7 @@ source("package-common.R")
 ```
 
 ```{r}
-#| label: source-02
+#| label: 02-source
 #| echo: false
 #| message: false
 #| cache: true
@@ -27,7 +27,7 @@ source("source-common.R")
 ## Countries for round 11 (2023-2024)
 
 ```{r}
-#| label: round-11-map
+#| label: 02-round-11-map
 #| echo: false
 country_coding <-
   tibble::tribble(
@@ -133,7 +133,7 @@ ESS_USERID="12345678-1234-1234-1234-12345678900"
 ## Load the ESS data into R
 
 ```{r}
-#| label: rep-load-ess
+#| label: 02-rep-load-ess
 #| echo: true
 #| eval: false
 
@@ -153,7 +153,7 @@ ess_in <- read_parquet(url)
 ## Estimates changing with weights
 
 ```{r}
-#| label: why-weight
+#| label: 02-why-weight
 #| echo: false
 ess_der_wt_examp <-
   ess_in |>
@@ -221,7 +221,7 @@ allests <-
 ```
 
 ```{r}
-#| label: weight-compare-plot
+#| label: 02-weight-compare-plot
 #| echo: false
 allests |>
   mutate(
