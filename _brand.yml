@@ -50,6 +50,7 @@ typography:
     family: Source Code Pro
     background-color: lightblue2
   link:
+    color: purple
     decoration: underline
 
 defaults:

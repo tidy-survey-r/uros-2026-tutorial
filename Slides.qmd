@@ -17,5 +17,5 @@ revealjs-plugins:
   - tabset
 ---
 
-{{< include 01-intro.qmd >}}
+{{< include _01-intro.qmd >}}
 

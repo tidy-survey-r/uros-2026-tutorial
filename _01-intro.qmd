@@ -11,9 +11,9 @@
 ![](images/StephanieZimmer_Headshot.jpeg){fig-align="center" width=200px}
 
 <center>
-**Rebecca Powell**
+**Stephanie<br>Zimmer**
 
-Fors Marsh
+RTI
 </center>
 
 :::
@@ -23,7 +23,7 @@ Fors Marsh
 ![](images/RebeccaPowell_Headshot.jpeg){fig-align="center" width=200px}
 
 <center>
-**Rebecca Powell**
+**Rebecca<br>Powell**
 
 Fors Marsh
 </center>
@@ -35,7 +35,7 @@ Fors Marsh
 ![](images/IsabellaVelasquez_Headshot.jpeg){fig-align="center" width=200px}
 
 <center>
-**Isabella Velásquez**
+**Isabella<br>Velásquez**
 
 Posit
 </center>
@@ -61,7 +61,7 @@ Each of us give a brief intro on our experience/background
 
 ## Overview of tutorial {.bkg-trees}
 
-- At the end of this tutorial, you should be able to
+At the end of this tutorial, you should be able to:
 
 ::: {.incremental}
    - Specify a survey design in R to create a survey object
@@ -74,8 +74,8 @@ Each of us give a brief intro on our experience/background
 
   - We will be using Posit Cloud for exercises
   - All materials are found at:
-    - <https://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html> (Site)
-    - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
+      - <https://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html> (Site)
+      - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
 
 
 ## Libraries Needed for Today {.bkg-ship}

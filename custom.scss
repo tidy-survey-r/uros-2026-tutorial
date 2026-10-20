@@ -58,9 +58,14 @@ div.sourceCode {
     @include background-full;
   }
 
-  h2, h3, h4, h5, p, li, pre {
-    margin-left: 0px;
-    width: 75%;
+  h2 {
+    margin-left: -60px;
+    width: 90%;
+  }
+
+  h1, h3, h4, h5, p, li, ul, pre {
+    margin-left: -15px;
+    width: 90%;
   }
 }
 
