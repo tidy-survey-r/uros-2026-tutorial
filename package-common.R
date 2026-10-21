@@ -1,5 +1,0 @@
-library(tidyverse)
-library(sf)
-library(gt)
-library(srvyr)
-library(tmap)

@@ -85,10 +85,8 @@ _Note: These are already installed in Posit Cloud_
 #| label: neccessary-packages
 
 library(tidyverse)
-
 library(survey)
 library(srvyr)
-
 library(gt)
 library(sf)
 library(tmap)

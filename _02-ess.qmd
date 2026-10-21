@@ -1,22 +1,5 @@
 # Introduction to the European Social Survey (ESS)
 
-```{r}
-#| label: 02-load-pack
-#| echo: false
-#| message: false
-
-source("package-common.R")
-```
-
-```{r}
-#| label: 02-source
-#| echo: false
-#| message: false
-#| cache: true
-
-source("source-common.R")
-```
-
 ## Overview 
 
 - Conducted across Europe every 2 years since 2001
@@ -29,65 +12,15 @@ source("source-common.R")
 ```{r}
 #| label: 02-round-11-map
 #| echo: false
-country_coding <-
-  tibble::tribble(
-    ~Code , ~Name                ,
-    'AL'  , 'Albania'            ,
-    'AT'  , 'Austria'            ,
-    'BE'  , 'Belgium'            ,
-    'BG'  , 'Bulgaria'           ,
-    'CH'  , 'Switzerland'        ,
-    'CY'  , 'Cyprus'             ,
-    'CZ'  , 'Czechia'            ,
-    'DE'  , 'Germany'            ,
-    'DK'  , 'Denmark'            ,
-    'EE'  , 'Estonia'            ,
-    'ES'  , 'Spain'              ,
-    'FI'  , 'Finland'            ,
-    'FR'  , 'France'             ,
-    'GB'  , 'United Kingdom'     ,
-    'GE'  , 'Georgia'            ,
-    'GR'  , 'Greece'             ,
-    'HR'  , 'Croatia'            ,
-    'HU'  , 'Hungary'            ,
-    'IE'  , 'Ireland'            ,
-    'IS'  , 'Iceland'            ,
-    'IL'  , 'Israel'             ,
-    'IT'  , 'Italy'              ,
-    'LT'  , 'Lithuania'          ,
-    'LU'  , 'Luxembourg'         ,
-    'LV'  , 'Latvia'             ,
-    'ME'  , 'Montenegro'         ,
-    'MK'  , 'North Macedonia'    ,
-    'NL'  , 'Netherlands'        ,
-    'NO'  , 'Norway'             ,
-    'PL'  , 'Poland'             ,
-    'PT'  , 'Portugal'           ,
-    'RO'  , 'Romania'            ,
-    'RS'  , 'Serbia'             ,
-    'RU'  , 'Russian Federation' ,
-    'SE'  , 'Sweden'             ,
-    'SI'  , 'Slovenia'           ,
-    'SK'  , 'Slovakia'           ,
-    'TR'  , 'Turkey'             ,
-    'UA'  , 'Ukraine'            ,
-    'XK'  , 'Kosovo'
-  )
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
 
 ess_11_countries <-
-  ess_in |>
-  distinct(cntry) |>
-  mutate(
-    Country = recode_values(
-      cntry,
-      from = country_coding$Code,
-      to = country_coding$Name
-    )
-  )
+  ess_der |>
+  distinct(Country, cntry)
 
 country_shape_col <-
   World |>
-  # filter(continent %in% c("Europe", "Asia")) |>
   full_join(ess_11_countries, by = c("name" = "Country")) |>
   st_transform(3035) |>
   st_crop(
@@ -128,19 +61,25 @@ ESS_USERID="12345678-1234-1234-1234-12345678900"
 
 3. Restart your R session
 
+4. Load the ESS data into R
 
-
-## Load the ESS data into R
-
-```{r}
-#| label: 02-rep-load-ess
-#| echo: true
-#| eval: false
-
+```r
 url <- glue::glue(
   "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
 )
 ess_in <- read_parquet(url)
+```
+
+## Read data subset for this course
+
+- This data is a subset of columns of full data
+- Includes derived variables we created for this course
+- See [data cleaning code](DataCleaning.qmd)
+
+```{r}
+#| label: 02-course-dat
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
 ```
 
 ## Why weight? Why use the design?
@@ -155,48 +94,14 @@ ess_in <- read_parquet(url)
 ```{r}
 #| label: 02-why-weight
 #| echo: false
-ess_der_wt_examp <-
-  ess_in |>
-  select(
-    psu,
-    cntry,
-    stratum,
-    anweight,
-    pspwght,
-    pdwrk:dngna,
-    mainact,
-    happy,
-    wrhpp
-  ) |>
-  mutate(
-    across(
-      pdwrk:dngoth,
-      ~ if_else(dngdk == 1 | dngref == 1 | dngna == 1, NA, .x),
-      .names = "{.col}_rec"
-    ),
-    Retired = case_when(
-      # main activity
-      mainact < 66 ~ mainact == 6,
-      mainact == 66 ~ rtrd == 1,
-      TRUE ~ NA
-    ),
-    wt1 = 1,
-    Happy_Freq = if_else(wrhpp %in% 7:9, NA, wrhpp),
-    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),
-    Country = recode_values(
-      cntry,
-      from = country_coding$Code,
-      to = country_coding$Name
-    )
-  )
 
-ess_des_true <- ess_der_wt_examp |>
+ess_des_true <- ess_der |>
   as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
-ess_des_1 <- ess_der_wt_examp |>
+ess_des_1 <- ess_der |>
   as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
-ess_des_wt <- ess_der_wt_examp |>
+ess_des_wt <- ess_der |>
   as_survey_design(weights = anweight)
-ess_des_srs <- ess_der_wt_examp |>
+ess_des_srs <- ess_der |>
   as_survey_design(weights = wt1)
 
 calc_ests <- function(des) {

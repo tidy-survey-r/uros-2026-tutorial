@@ -4,15 +4,6 @@ format: revealjs
 
 # Setting up the design object
 
-```{r}
-#| label: load-packages-data
-#| echo: false
-options(width = 77)
-library(srvyr)
-library(dplyr)
-library(survey)
-```
-
 # Sampling designs 
 
 ## Sampling methods
@@ -348,18 +339,6 @@ design <- svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,
 data = data1)
 ```
 
-## Reading in the ESS data
-
-```{r}
-#| message: false
-library(arrow)
-url <- glue::glue(
-  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
-)
-
-ess_in <- read_parquet(url)
-```
-
 ## First attempt
 
 Using exactly the syntax from the weighting guide, we get an error:
@@ -370,7 +349,7 @@ svydesign(
   ids = ~ psu,
   strata = ~ stratum,
   weights = ~ anweight,
-  data = ess_in
+  data = ess_der
 )
 ```
 
@@ -379,7 +358,7 @@ svydesign(
 A handful of `psu` codes repeat across different `stratum` values in the raw file:
 
 ```{r}
-ess_in |>
+ess_der |>
   distinct(cntry, psu, stratum) |>
   add_count(psu) |>
   filter(n > 1)
@@ -396,7 +375,7 @@ ess_des_true <- svydesign(
   ids = ~ psu,
   strata = ~ stratum,
   weights = ~ anweight,
-  data = ess_in,
+  data = ess_der,
   nest = TRUE
 )
 
@@ -410,8 +389,7 @@ The same design, specified with tidy syntax:
 ```{r}
 #| label: ess-design-demo
 #| output-location: slide
-ess_des <- ess_in |>
-  select(cntry, psu, stratum, anweight) |>
+ess_des <- ess_der |>
   as_survey_design(
     ids = psu,
     strata = stratum,

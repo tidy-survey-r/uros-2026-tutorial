@@ -8,13 +8,13 @@
 
 ## Step 1: estimate weighted mean happiness by country
 
-`Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy), with refusal/don't know/no answer codes already recoded to `NA`. We reuse `ess_des_true`, the design object built from `ess_der_wt_examp` in the ESS intro.
+`Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy), with refusal/don't know/no answer codes already recoded to `NA`. We reuse `ess_des`, the design object built from `ess_der` in the ESS intro.
 
 ```{r}
 #| label: happy-by-country
 #| output-location: slide
 happy_by_country <-
-  ess_des_true |>
+  ess_des |>
   filter(!is.na(Happy)) |>
   group_by(Country) |>
   summarize(Happy_mean = survey_mean(Happy, na.rm = TRUE))
@@ -60,7 +60,7 @@ happy_shape |>
 - `tm_scale_continuous()` is used here (vs. `tm_scale_categorical()` in the earlier ESS-11 map) because `Happy_mean` is a continuous estimate, not a category
 - Countries without an ESS estimate stay `lightgrey` because of the `full_join` + `filter(!is.na(Happy_mean))` pattern
 - Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
-- `ess_des_true` (built from `ess_der_wt_examp` in the ESS intro) is reused here instead of the full-column `ess_des`, since it already carries `Happy` and `Country` and the same design spec
+- `ess_des` (built from `ess_der` in the ESS intro) is reused here
 :::
 
 ## Likert chart: weighted response distribution by country
@@ -73,7 +73,7 @@ A map only shows the mean. A Likert-style stacked bar shows the full weighted di
 #| label: happy-dist-country
 #| output-location: slide
 happy_dist_country <-
-  ess_des_true |>
+  ess_des |>
   filter(!is.na(Happy)) |>
   mutate(
     Happy_factor = factor(
