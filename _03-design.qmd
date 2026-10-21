@@ -1,0 +1,411 @@
+---
+format: revealjs
+---
+
+# Setting up the design object
+
+# Sampling designs 
+
+## Sampling methods
+
+Units can be selected in various ways such as:
+
+::: {.columns}
+
+::: {.column width="33%"}
+**Simple random sampling**
+
+(with or without replacement)
+
+Every unit has the same chance of being selected
+:::
+
+::: {.column width="33%"}
+**Systematic sampling**
+
+Sample from an ordered list, selecting individuals at an interval with a random starting point
+:::
+
+::: {.column width="33%"}
+**Probability proportional to size**
+
+Probability of selection is proportional to "size"
+:::
+
+:::
+
+## Complex designs
+
+Designs can also incorporate stratification and/or clustering:
+
+::: {.columns}
+
+::: {.column width="50%"}
+**Stratified sampling**
+
+Divide population into mutually exclusive subgroups (strata). Randomly sample within each stratum
+:::
+
+::: {.column width="50%"}
+**Clustered sampling**
+
+Divide population into mutually exclusive subgroups (clusters). Randomly sample clusters, then individuals within clusters
+:::
+
+:::
+
+## Why does design matter? {.incremental}
+
+- The design type impacts the variability of the estimates
+
+- Weights impact the point estimate and the variability estimates
+
+- Specifying the components of the design (strata and/or clusters) and weights in R is necessary to get correct estimates
+
+## Determining the design {.smaller}
+
+::: {.incremental}
+
+- Check the documentation such as methodology, design, analysis guide, or technical documentation
+
+- Documentation will indicate the variables needed to specify the design. Look for:
+   - **Weight** (almost always)
+   - **Strata and/or clusters/PSUs** (sometimes labeled pseudo-strata/pseudo-clusters) — *or*, instead, **replicate weights**
+   - **Finite population correction** or population sizes (uncommon)
+
+- Documentation may include SAS, SUDAAN, Stata and/or R syntax
+
+:::
+
+## Design-based vs. replicate weights
+
+Two ways to tell R about a sampling design, depending on what the documentation provides:
+
+::: {.columns}
+
+::: {.column width="50%"}
+**Strata / clusters / weights are available**
+
+Use `as_survey_design()`
+:::
+
+::: {.column width="50%"}
+**Only replicate weights are available**
+
+Use `as_survey_rep()`
+:::
+
+:::
+
+- Some surveys provide both; others release only replicate weights to protect respondent confidentiality
+- Either path produces a `tbl_svy` object that works the same way downstream
+
+# Specifying sampling designs in {srvyr} **without** replicate weights 
+
+## `as_survey_design()`: Syntax
+
+- Specifying the sampling design when you don't have replicate weights
+
+- `as_survey_design()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
+
+```{r}
+#| eval: false
+as_survey_design(
+  .data,
+  ids = NULL, # cluster IDs/PSUs
+  strata = NULL, # strata variables
+  variables = NULL, # defaults to all in .data
+  fpc = NULL, # variables defining the fpc
+  nest = FALSE, # TRUE/FALSE - relabel clusters to nest within strata
+  check_strata = !nest, # check that clusters are nested in strata
+  weights = NULL # weight variable,
+)
+```
+
+
+## Syntax for common designs: no stratification/clustering {.smaller}
+
+Load in the example data from {survey} package:
+
+```r
+data(api, package="survey")
+```
+
+. . .
+
+Simple Random Sample (SRS)
+
+```r
+apisrs %>% as_survey_design(fpc = fpc)
+```
+
+. . .
+
+One-stage cluster sample with a FPC variable
+
+```r
+apiclus1 %>% as_survey_design(ids = dnum, weights = pw, fpc = fpc)
+```
+
+. . .
+
+Two-stage cluster sample, weights computed from population size
+
+```r
+apiclus2 %>% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))
+```
+
+::: aside
+Examples from `srvyr` help documentation
+:::
+
+## Syntax for common designs: with stratification {.smaller}
+
+Stratified SRS
+
+```r
+apistrat %>% as_survey_design(strata = stype, weights = pw)
+```
+
+. . .
+
+Stratified, cluster design
+
+```r
+apistrat %>% as_survey_design(ids = dnum, strata = stype, weights = pw, nest = TRUE)
+```
+
+::: aside
+Examples from `srvyr` help documentation
+:::
+
+## What does the design object look like? {.smaller}
+
+```{r}
+#| label: apistrat-design-demo
+data(api, package = "survey")
+
+apistrat_des <- apistrat |>
+  select(cds, stype, api00, pw, fpc) |>
+  as_survey_design(strata = stype, weights = pw)
+
+apistrat_des
+```
+
+::: aside
+Data: `apistrat` from the `{survey}` package
+:::
+
+# Replicate weight methods
+
+## Replicate weights overview {.smaller}
+
+Replicate weights are another method to estimate variability. In general, they are constructed by:
+
+1. Divide the sample into subsample replicates that mirror the design of the sample
+2. Calculate weights for each replicate using the same procedures for the full-sample weight (i.e., nonresponse and post-stratification)
+3. Calculate estimates for each replicate using the same method as the full-sample estimate
+4. Calculate the estimated variance, which is proportional to the variance of the replicate estimates
+
+## Common replicate weight methods
+
+- Balanced repeated replication (BRR)
+- Fay's BRR
+- Jackknife
+- Bootstrap
+
+# Specifying sampling designs in {srvyr} **with** replicate weights 
+
+## `as_survey_rep()`: Syntax {.smaller}
+
+- `as_survey_rep()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
+
+```{r}
+#| eval: false
+as_survey_rep(
+  .data,
+  variables = NULL, # defaults to all in .data
+  repweights = NULL, # Variables specifying the replication weights
+  weights = NULL, # Variable specifying the analytic/main weight
+  type = c(
+    "BRR", "Fay", "JK1", "JKn", "bootstrap",
+    "successive-difference", "ACS", "other"
+  ), # Type of replication weight
+  combined_weights = TRUE, # TRUE if repweights already include sampling weights, usually TRUE
+  rho = NULL, # Shrinkage factor for Fay's method
+  bootstrap_average = NULL, # For type="bootstrap", if the bootstrap weights have been averaged, gives the number of iterations averaged over
+  scale = NULL, # Scaling constant for variance
+  rscales = NULL, # Scaling constants for variance
+  mse = getOption("survey.replicates.mse"), # If TRUE, compute variance based around point estimates rather than mean of replicates
+  degf = NULL, # Design degrees of freedom, otherwise calculated based on number of replicate weights
+)
+```
+
+## Worked example: BRR with real data {.smaller}
+
+```{r}
+#| label: scd-design-demo
+data(scd, package = "survey")
+
+scd <- scd |>
+  mutate(
+    rep1 = 2 * c(1, 0, 1, 0, 1, 0),
+    rep2 = 2 * c(1, 0, 0, 1, 0, 1),
+    rep3 = 2 * c(0, 1, 1, 0, 0, 1),
+    rep4 = 2 * c(0, 1, 0, 1, 1, 0)
+  )
+
+scd_rep <- scd |>
+  as_survey_rep(
+    type = "BRR",
+    repweights = starts_with("rep"),
+    combined_weights = FALSE
+  )
+
+scd_rep
+```
+
+::: aside
+Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
+:::
+
+## Recap
+
+- Design type (SRS, stratified, clustered) shapes the variability of estimates
+- Weights shape both point estimates and variance
+- Two paths to a `tbl_svy` object:
+  - `as_survey_design()`: strata, clusters/PSUs, weights
+  - `as_survey_rep()`: replicate weights (BRR, Fay's, jackknife, bootstrap)
+- Once built, the design object is ready for weighted summaries in later sections
+
+# ESS sampling and weighting
+
+## Methodology
+
+Recall, we said: "Check the documentation such as methodology, design, analysis guide, or technical documentation"
+
+Head to the ESS website and click "Methodology": <https://www.europeansocialsurvey.org/methodology/sampling>
+
+## Sampling {.smaller}
+
+Key sampling principles, from the ESS Sampling Guidelines:
+
+::: {.incremental}
+
+- Samples represent all persons aged 15+ living in private households in each country
+- Individuals are selected by **strict random probability methods** at every stage — no quota sampling, no substitution of non-responders
+- Each country targets a minimum "effective achieved sample size" (1,500, or 800 in countries with populations under 2 million)
+- Exact designs (single-stage, stratified, multi-stage/clustered) **vary by country**, but every country's data include `psu` (primary sampling unit) and `stratum` variables
+
+:::
+
+::: aside
+<https://www.europeansocialsurvey.org/methodology/sampling>
+:::
+
+## Weighting {.smaller}
+
+> Four weighting variables are available: Analysis weight (anweight - combination of pspwght and pweight), Post-stratification weight (pspwght), Design weight (dweight), and Population weight (pweight).
+
+::: {.columns}
+
+::: {.column width="50%"}
+**dweight** — corrects for unequal selection probabilities *within* a country
+
+**pspwght** — further adjusts `dweight` for nonresponse/noncoverage using age, gender, education, region
+:::
+
+::: {.column width="50%"}
+**pweight** — rescales each country to its population size, for combining countries in one analysis
+
+**anweight** — `dweight` + `pspwght` + `pweight` combined; **recommended for all analyses**
+:::
+
+:::
+
+::: aside
+<https://www.europeansocialsurvey.org/methodology/weighting>
+:::
+
+## Weighting: the provided code {.smaller}
+
+Clicking into the "weighting guide," we find example R code using `anweight`, the recommended weight:
+
+```r
+library(survey) # estimation
+
+# Define sample design
+design <- svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,
+data = data1)
+```
+
+## First attempt
+
+Using exactly the syntax from the weighting guide, we get an error:
+
+```{r}
+#| error: true
+svydesign(
+  ids = ~ psu,
+  strata = ~ stratum,
+  weights = ~ anweight,
+  data = ess_der
+)
+```
+
+## Why the error? {.smaller}
+
+A handful of `psu` codes repeat across different `stratum` values in the raw file:
+
+```{r}
+ess_der |>
+  distinct(cntry, psu, stratum) |>
+  add_count(psu) |>
+  filter(n > 1)
+```
+
+By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead — the same `nest` argument from the `as_survey_design()` syntax earlier
+
+## Applying weights, fixed
+
+Including `nest = TRUE`, we get the design object:
+
+```{r}
+ess_des_true <- svydesign(
+  ids = ~ psu,
+  strata = ~ stratum,
+  weights = ~ anweight,
+  data = ess_der,
+  nest = TRUE
+)
+
+ess_des_true
+```
+
+## From `{survey}` to `{srvyr}`
+
+The same design, specified with tidy syntax:
+
+```{r}
+#| label: ess-design-demo
+#| output-location: slide
+ess_des <- ess_der |>
+  as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+
+ess_des
+```
+
+Same result: a `tbl_svy` object ready for weighted summaries.
+
+## Back to design-based vs. replicate weights
+
+ESS falls on the **strata/clusters** side of that earlier choice:
+
+- The data provide `psu` and `stratum` variables (and a single analysis weight, `anweight`) — no replicate weights
+- That's why we used `as_survey_design()`/`svydesign()`, not `as_survey_rep()`
+- A survey that instead shipped jackknife or BRR replicate weights would call for `as_survey_rep()` the same way

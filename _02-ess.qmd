@@ -1,0 +1,178 @@
+# Introduction to the European Social Survey (ESS)
+
+## Overview 
+
+- Conducted across Europe every 2 years since 2001
+- Cross-sectional sample (new samples each round)
+- Topics include living conditions, social structure, public opinion and attitudes
+- Sampling designs vary by country but have oversight for rigor
+
+## Countries for round 11 (2023-2024)
+
+```{r}
+#| label: 02-round-11-map
+#| echo: false
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+
+ess_11_countries <-
+  ess_der |>
+  distinct(Country, cntry)
+
+country_shape_col <-
+  World |>
+  full_join(ess_11_countries, by = c("name" = "Country")) |>
+  st_transform(3035) |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  ) |>
+  mutate(ESS11 = !is.na(cntry))
+
+country_shape_col |>
+  tm_shape() +
+  tm_polygons(fill = "lightgrey", col = "darkgrey") +
+  tm_shape(country_shape_col |> filter(ESS11)) +
+  tm_polygons(
+    fill = "MAP_COLORS",
+    fill.scale = tm_scale_categorical(
+      values = c("#0b3954", "#087e8b", "#bfd7ea", "#ff8484", "#8d6b94")
+    )
+  ) +
+  tm_text("cntry") +
+  tm_graticules()
+```
+
+## Accessing ESS data
+
+1. Create an account at the [ESS Data Portal](https://ess.sikt.no/en/register?redirectUrl=/en/) and then get your [user ID](https://ess.sikt.no/en/api)
+
+2. Add your user ID to your R environ file by opening the file and editing as follows:
+
+```r
+usethis::edit_r_environ()
+```
+
+Edit as follows (example):
+
+```r
+ESS_USERID="12345678-1234-1234-1234-12345678900"
+```
+
+3. Restart your R session
+
+4. Load the ESS data into R
+
+```r
+url <- glue::glue(
+  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
+)
+ess_in <- read_parquet(url)
+```
+
+## Read data subset for this course
+
+- This data is a subset of columns of full data
+- Includes derived variables we created for this course
+- See [data cleaning code](DataCleaning.qmd)
+
+```{r}
+#| label: 02-course-dat
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+```
+
+## Why weight? Why use the design?
+
+- Differential selection probabilities and nonresponse are accounted for in analytic weights
+- Weights are post-stratified by gender, age, education, and geographic region
+- Not using weights leads to bias
+- Not using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering
+
+## Estimates changing with weights
+
+```{r}
+#| label: 02-why-weight
+#| echo: false
+
+ess_des_true <- ess_der |>
+  as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
+ess_des_1 <- ess_der |>
+  as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
+ess_des_wt <- ess_der |>
+  as_survey_design(weights = anweight)
+ess_des_srs <- ess_der |>
+  as_survey_design(weights = wt1)
+
+calc_ests <- function(des) {
+  des |>
+    summarize(
+      .by = Country,
+      p = survey_mean(
+        Retired,
+        proportion = TRUE,
+        prop_method = "logit",
+        vartype = "ci",
+        na.rm = TRUE
+      )
+    ) |>
+    rename(p_est = p)
+}
+
+allests <-
+  list(a = ess_des_true, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
+  map(calc_ests) |>
+  bind_rows(.id = "method")
+```
+
+```{r}
+#| label: 02-weight-compare-plot
+#| echo: false
+allests |>
+  mutate(
+    Design = recode_values(
+      method,
+      "a" ~ "Weights, strata, clusters",
+      "b" ~ "Strata and clusters only",
+      "c" ~ "Weights only",
+      "d" ~ "No design"
+    ) |>
+      factor(
+        levels = c(
+          "Weights, strata, clusters",
+          "Weights only",
+          "Strata and clusters only",
+          "No design"
+        )
+      )
+  ) |>
+  ggplot(aes(color = Design)) +
+  geom_point(aes(x = Design, y = p_est)) +
+  geom_errorbar(aes(x = Design, ymin = p_low, ymax = p_upp)) +
+  theme_light() +
+  theme(
+    legend.position = "bottom",
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.line.y = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.spacing = unit(0, "in")
+  ) +
+  facet_wrap(~Country) +
+  labs(
+    title = "Retirement is main activity in last 7 days, ESS 11",
+    y = "Estimated proportion with 95% CI"
+  ) +
+  scale_y_continuous(
+    labels = scales::percent,
+    limits = c(0, max(allests$p_upp))
+  ) +
+  scale_color_manual(values = c("#0b3954", "#087e8b", "#ff8484", "#8d6b94"))
+```
+
+## ESS Variable Viewer
+
+- Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1)
+

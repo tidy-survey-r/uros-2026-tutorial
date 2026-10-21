@@ -1,5 +1,8 @@
 project:
   type: website
+  render: 
+  - "DataCleaning.qmd"
+  - "*.qmd"
 
 website:
   title: "uRos 2026 - Tidy Survey Analysis in R"
@@ -8,6 +11,7 @@ website:
       - href: index.qmd
         text: Home
       - Slides.qmd
+      - DataCleaning.qmd
 
 format:
   html:

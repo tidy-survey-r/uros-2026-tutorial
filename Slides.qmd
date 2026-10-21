@@ -1,18 +1,26 @@
 ---
-title: "Slides"
-format: revealjs
+title: "Working with Weights and Sampling Designs for Official Statistics"
+subtitle: "Tidy Survey Analysis in R <br>uRos 2026 Tutorial - Paris"
+title-slide-attributes: 
+  data-background-image: images/title-fullpic-light.png
+  data-background-size: cover
+  data-background-position: center
+  data-background-repeat: no-repeat
+format: 
+  revealjs: 
+    theme: 
+      - brand
+      - custom.scss
+    resources:
+      - images/
+revealjs-plugins:
+  - tabset
+bibliography: references.bib
 ---
 
-## Set-up libs
-
-
-```{r}
-#| label: neccessary-packages
-
-library(tidyverse)
-library(sf)
-library(gt)
-library(rnaturalearth)
-library(srvyr)
-library(leaflet)
-```
+{{< include _01-intro.qmd >}}
+{{< include _02-ess.qmd >}}
+{{< include _03-design.qmd >}}
+{{< include _05-descriptive.qmd >}}
+{{< include _06-happy-map.qmd >}}
+{{< include _07-closing.qmd >}}

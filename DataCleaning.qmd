@@ -1,0 +1,214 @@
+---
+title: "Data Cleaning"
+format: html
+---
+
+# Read in the ESS data
+
+
+```{r}
+#| label: dc-read-in
+url <- glue::glue(
+  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
+)
+
+ess_in <- arrow::read_parquet(url)
+```
+
+# Create derived variables
+
+```{r}
+#| label: create-vars
+
+library(dplyr)
+library(forcats)
+country_coding <-
+  tibble::tribble(
+    ~Code , ~Name                ,
+    'AL'  , 'Albania'            ,
+    'AT'  , 'Austria'            ,
+    'BE'  , 'Belgium'            ,
+    'BG'  , 'Bulgaria'           ,
+    'CH'  , 'Switzerland'        ,
+    'CY'  , 'Cyprus'             ,
+    'CZ'  , 'Czechia'            ,
+    'DE'  , 'Germany'            ,
+    'DK'  , 'Denmark'            ,
+    'EE'  , 'Estonia'            ,
+    'ES'  , 'Spain'              ,
+    'FI'  , 'Finland'            ,
+    'FR'  , 'France'             ,
+    'GB'  , 'United Kingdom'     ,
+    'GE'  , 'Georgia'            ,
+    'GR'  , 'Greece'             ,
+    'HR'  , 'Croatia'            ,
+    'HU'  , 'Hungary'            ,
+    'IE'  , 'Ireland'            ,
+    'IS'  , 'Iceland'            ,
+    'IL'  , 'Israel'             ,
+    'IT'  , 'Italy'              ,
+    'LT'  , 'Lithuania'          ,
+    'LU'  , 'Luxembourg'         ,
+    'LV'  , 'Latvia'             ,
+    'ME'  , 'Montenegro'         ,
+    'MK'  , 'North Macedonia'    ,
+    'NL'  , 'Netherlands'        ,
+    'NO'  , 'Norway'             ,
+    'PL'  , 'Poland'             ,
+    'PT'  , 'Portugal'           ,
+    'RO'  , 'Romania'            ,
+    'RS'  , 'Serbia'             ,
+    'RU'  , 'Russian Federation' ,
+    'SE'  , 'Sweden'             ,
+    'SI'  , 'Slovenia'           ,
+    'SK'  , 'Slovakia'           ,
+    'TR'  , 'Turkey'             ,
+    'UA'  , 'Ukraine'            ,
+    'XK'  , 'Kosovo'
+  )
+
+ess_der_all <-
+  ess_in |>
+  select(
+    psu,
+    cntry,
+    stratum,
+    anweight,
+    happy,
+    wrhpp,
+    nwspol,
+    volunfp,
+    netusoft,
+    netustm,
+    agegroup,
+    pdwrk:dngna
+  ) |>
+  mutate(
+    # across(c(stratum, psu), ~as.character(.x) |> as.factor()),
+    across(
+      pdwrk:dngoth,
+      ~ if_else(dngdk == 1 | dngref == 1 | dngna == 1, NA, .x),
+      .names = "{.col}_rec"
+    ),
+    Retired = rtrd_rec == 1,
+    wt1 = 1,
+    Happy_Freq = if_else(wrhpp %in% 7:9, NA, wrhpp),
+    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),
+    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),
+    Country = recode_values(
+      cntry,
+      from = country_coding$Code,
+      to = country_coding$Name
+    ),
+    Volunteer_12 = if_else(volunfp %in% 7:9, NA, volunfp),
+    Volunteer_01 = case_when(
+      volunfp == 1 ~ 1,
+      volunfp == 2 ~ 0,
+      TRUE ~ NA
+    ),
+    Volunteer_Factor = case_when(
+      volunfp == 1 ~ "Yes",
+      volunfp == 2 ~ "No",
+      TRUE ~ NA
+    ) |>
+      factor(levels = c("Yes", "No")),
+    NetUsage = case_when(
+      netusoft %in% 1:3 ~ 0,
+      netustm %in% c(6666, 7777, 8888, 9999) ~ NA,
+      TRUE ~ netustm
+    ),
+    NetFreq = recode_values(
+      netusoft,
+      1 ~ "Never",
+      2 ~ "Only occasionally",
+      3 ~ "A few times a week",
+      4 ~ "Most days",
+      5 ~ "Every day"
+    ) |>
+      fct_reorder(netusoft),
+    AgeGroup = recode_values(
+      agegroup,
+      1 ~ '15-24',
+      2 ~ '25-34',
+      3 ~ '35-44',
+      4 ~ '45-54',
+      5 ~ '55-64',
+      6 ~ '65-74',
+      7 ~ '75+'
+    ) |>
+      fct_reorder(agegroup)
+  )
+```
+
+# Check derived variables
+
+
+```{r}
+#| label: check-der-vars
+
+ess_der_all |>
+  count(Retired, rtrd_rec, rtrd, dngdk, dngref, dngna)
+
+ess_der_all |>
+  count(Happy_Freq, wrhpp)
+
+ess_der_all |>
+  count(Happy, happy)
+
+ess_der_all |>
+  filter(is.na(News)) |>
+  count(nwspol)
+
+ess_der_all |>
+  filter(!is.na(News)) |>
+  select(nwspol) |>
+  summary()
+
+ess_der_all |>
+  count(Country, cntry) |>
+  print(n = Inf)
+
+ess_der_all |>
+  count(pick(starts_with("vol")))
+
+# NetUsage = case_when(
+#   netusoft %in% 1:3 ~ 0,
+#   netustm %in% c(6666, 7777, 8888, 9999) ~ NA,
+#   TRUE ~ netustm
+# ),
+
+ess_der_all |>
+  filter(NetUsage == 0 | is.na(NetUsage)) |>
+  count(NetUsage, netusoft, netustm)
+
+ess_der_all |>
+  filter(NetUsage != 0) |>
+  select(NetUsage, netustm, netusoft) |>
+  summary()
+
+ess_der_all |>
+  count(NetFreq, netusoft)
+
+ess_der_all |>
+  count(AgeGroup, agegroup)
+```
+
+# Save data
+
+
+```{r}
+#| label: save-dat
+
+ess_der <- ess_der_all |>
+  select(any_of(names(ess_in)), everything())
+
+summary(ess_der)
+
+glimpse(ess_der)
+
+readr::write_rds(
+  ess_der,
+  here::here("DerivedData", "ess11_der.rds"),
+  compress = "gz"
+)
+```
