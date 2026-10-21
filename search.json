@@ -1,16 +1,499 @@
 [
   {
-    "objectID": "Slides.html#set-up-libs",
-    "href": "Slides.html#set-up-libs",
-    "title": "Slides",
-    "section": "Set-up libs",
-    "text": "Set-up libs\n\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(gt)\nlibrary(rnaturalearth)\nlibrary(srvyr)\nlibrary(leaflet)"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "uRos 2026 - Tidy Survey Analysis in R",
     "section": "",
     "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "DataCleaning.html",
+    "href": "DataCleaning.html",
+    "title": "Data Cleaning",
+    "section": "",
+    "text": "Read in the ESS data\n\nurl &lt;- glue::glue(\n  \"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\"\n)\n\ness_in &lt;- arrow::read_parquet(url)\n\n\n\nCreate derived variables\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(forcats)\ncountry_coding &lt;-\n  tibble::tribble(\n    ~Code , ~Name                ,\n    'AL'  , 'Albania'            ,\n    'AT'  , 'Austria'            ,\n    'BE'  , 'Belgium'            ,\n    'BG'  , 'Bulgaria'           ,\n    'CH'  , 'Switzerland'        ,\n    'CY'  , 'Cyprus'             ,\n    'CZ'  , 'Czechia'            ,\n    'DE'  , 'Germany'            ,\n    'DK'  , 'Denmark'            ,\n    'EE'  , 'Estonia'            ,\n    'ES'  , 'Spain'              ,\n    'FI'  , 'Finland'            ,\n    'FR'  , 'France'             ,\n    'GB'  , 'United Kingdom'     ,\n    'GE'  , 'Georgia'            ,\n    'GR'  , 'Greece'             ,\n    'HR'  , 'Croatia'            ,\n    'HU'  , 'Hungary'            ,\n    'IE'  , 'Ireland'            ,\n    'IS'  , 'Iceland'            ,\n    'IL'  , 'Israel'             ,\n    'IT'  , 'Italy'              ,\n    'LT'  , 'Lithuania'          ,\n    'LU'  , 'Luxembourg'         ,\n    'LV'  , 'Latvia'             ,\n    'ME'  , 'Montenegro'         ,\n    'MK'  , 'North Macedonia'    ,\n    'NL'  , 'Netherlands'        ,\n    'NO'  , 'Norway'             ,\n    'PL'  , 'Poland'             ,\n    'PT'  , 'Portugal'           ,\n    'RO'  , 'Romania'            ,\n    'RS'  , 'Serbia'             ,\n    'RU'  , 'Russian Federation' ,\n    'SE'  , 'Sweden'             ,\n    'SI'  , 'Slovenia'           ,\n    'SK'  , 'Slovakia'           ,\n    'TR'  , 'Turkey'             ,\n    'UA'  , 'Ukraine'            ,\n    'XK'  , 'Kosovo'\n  )\n\ness_der_all &lt;-\n  ess_in |&gt;\n  select(\n    psu,\n    cntry,\n    stratum,\n    anweight,\n    happy,\n    wrhpp,\n    nwspol,\n    volunfp,\n    netusoft,\n    netustm,\n    agegroup,\n    pdwrk:dngna\n  ) |&gt;\n  mutate(\n    # across(c(stratum, psu), ~as.character(.x) |&gt; as.factor()),\n    across(\n      pdwrk:dngoth,\n      ~ if_else(dngdk == 1 | dngref == 1 | dngna == 1, NA, .x),\n      .names = \"{.col}_rec\"\n    ),\n    Retired = rtrd_rec == 1,\n    wt1 = 1,\n    Happy_Freq = if_else(wrhpp %in% 7:9, NA, wrhpp),\n    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),\n    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),\n    Country = recode_values(\n      cntry,\n      from = country_coding$Code,\n      to = country_coding$Name\n    ),\n    Volunteer_12 = if_else(volunfp %in% 7:9, NA, volunfp),\n    Volunteer_01 = case_when(\n      volunfp == 1 ~ 1,\n      volunfp == 2 ~ 0,\n      TRUE ~ NA\n    ),\n    Volunteer_Factor = case_when(\n      volunfp == 1 ~ \"Yes\",\n      volunfp == 2 ~ \"No\",\n      TRUE ~ NA\n    ) |&gt;\n      factor(levels = c(\"Yes\", \"No\")),\n    NetUsage = case_when(\n      netusoft %in% 1:3 ~ 0,\n      netustm %in% c(6666, 7777, 8888, 9999) ~ NA,\n      TRUE ~ netustm\n    ),\n    NetFreq = recode_values(\n      netusoft,\n      1 ~ \"Never\",\n      2 ~ \"Only occasionally\",\n      3 ~ \"A few times a week\",\n      4 ~ \"Most days\",\n      5 ~ \"Every day\"\n    ) |&gt;\n      fct_reorder(netusoft),\n    AgeGroup = recode_values(\n      agegroup,\n      1 ~ '15-24',\n      2 ~ '25-34',\n      3 ~ '35-44',\n      4 ~ '45-54',\n      5 ~ '55-64',\n      6 ~ '65-74',\n      7 ~ '75+'\n    ) |&gt;\n      fct_reorder(agegroup)\n  )\n\n\n\nCheck derived variables\n\ness_der_all |&gt;\n  count(Retired, rtrd_rec, rtrd, dngdk, dngref, dngna)\n\n# A tibble: 5 × 7\n  Retired rtrd_rec  rtrd dngdk dngref dngna     n\n  &lt;lgl&gt;      &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1 FALSE          0     0     0      0     0 35533\n2 TRUE           1     1     0      0     0 14346\n3 NA            NA     0     0      0     1    80\n4 NA            NA     0     0      1     0   127\n5 NA            NA     0     1      0     0    30\n\ness_der_all |&gt;\n  count(Happy_Freq, wrhpp)\n\n# A tibble: 7 × 3\n  Happy_Freq wrhpp     n\n       &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1          1     1  2482\n2          2     2 12503\n3          3     3 23496\n4          4     4 11198\n5         NA     7   147\n6         NA     8   285\n7         NA     9     5\n\ness_der_all |&gt;\n  count(Happy, happy)\n\n# A tibble: 14 × 3\n   Happy happy     n\n   &lt;int&gt; &lt;int&gt; &lt;int&gt;\n 1     0     0   313\n 2     1     1   221\n 3     2     2   570\n 4     3     3  1139\n 5     4     4  1534\n 6     5     5  4920\n 7     6     6  4631\n 8     7     7  9459\n 9     8     8 13870\n10     9     9  7899\n11    10    10  5341\n12    NA    77    80\n13    NA    88   127\n14    NA    99    12\n\ness_der_all |&gt;\n  filter(is.na(News)) |&gt;\n  count(nwspol)\n\n# A tibble: 3 × 2\n  nwspol     n\n   &lt;int&gt; &lt;int&gt;\n1   7777    69\n2   8888   470\n3   9999   193\n\ness_der_all |&gt;\n  filter(!is.na(News)) |&gt;\n  select(nwspol) |&gt;\n  summary()\n\n     nwspol      \n Min.   :   0.0  \n 1st Qu.:  30.0  \n Median :  60.0  \n Mean   :  97.9  \n 3rd Qu.: 120.0  \n Max.   :1440.0  \n\ness_der_all |&gt;\n  count(Country, cntry) |&gt;\n  print(n = Inf)\n\n# A tibble: 30 × 3\n   Country        cntry     n\n   &lt;chr&gt;          &lt;chr&gt; &lt;int&gt;\n 1 Austria        AT     2354\n 2 Belgium        BE     1594\n 3 Bulgaria       BG     2239\n 4 Croatia        HR     1563\n 5 Cyprus         CY      685\n 6 Estonia        EE     1293\n 7 Finland        FI     1563\n 8 France         FR     1771\n 9 Germany        DE     2420\n10 Greece         GR     2757\n11 Hungary        HU     2118\n12 Iceland        IS      842\n13 Ireland        IE     2017\n14 Israel         IL      906\n15 Italy          IT     2865\n16 Latvia         LV     1252\n17 Lithuania      LT     1365\n18 Montenegro     ME     1609\n19 Netherlands    NL     1695\n20 Norway         NO     1337\n21 Poland         PL     1442\n22 Portugal       PT     1373\n23 Serbia         RS     1563\n24 Slovakia       SK     1442\n25 Slovenia       SI     1248\n26 Spain          ES     1844\n27 Sweden         SE     1230\n28 Switzerland    CH     1384\n29 Ukraine        UA     2661\n30 United Kingdom GB     1684\n\ness_der_all |&gt;\n  count(pick(starts_with(\"vol\")))\n\n# A tibble: 5 × 5\n  volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n\n    &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt; &lt;fct&gt;            &lt;int&gt;\n1       1            1            1 Yes               9305\n2       2            2            0 No               40643\n3       7           NA           NA &lt;NA&gt;                92\n4       8           NA           NA &lt;NA&gt;                65\n5       9           NA           NA &lt;NA&gt;                11\n\n# NetUsage = case_when(\n#   netusoft %in% 1:3 ~ 0,\n#   netustm %in% c(6666, 7777, 8888, 9999) ~ NA,\n#   TRUE ~ netustm\n# ),\n\ness_der_all |&gt;\n  filter(NetUsage == 0 | is.na(NetUsage)) |&gt;\n  count(NetUsage, netusoft, netustm)\n\n# A tibble: 14 × 4\n   NetUsage netusoft netustm     n\n      &lt;dbl&gt;    &lt;int&gt;   &lt;int&gt; &lt;int&gt;\n 1        0        1    6666  6226\n 2        0        2    6666  2322\n 3        0        3    6666  2143\n 4        0        4       0     8\n 5        0        5       0    34\n 6       NA        4    7777     5\n 7       NA        4    8888    92\n 8       NA        4    9999     6\n 9       NA        5    7777    38\n10       NA        5    8888   351\n11       NA        5    9999    32\n12       NA        7    6666    20\n13       NA        8    6666    19\n14       NA        9    9999    11\n\ness_der_all |&gt;\n  filter(NetUsage != 0) |&gt;\n  select(NetUsage, netustm, netusoft) |&gt;\n  summary()\n\n    NetUsage         netustm          netusoft  \n Min.   :   1.0   Min.   :   1.0   Min.   :4.0  \n 1st Qu.: 120.0   1st Qu.: 120.0   1st Qu.:5.0  \n Median : 180.0   Median : 180.0   Median :5.0  \n Mean   : 237.7   Mean   : 237.7   Mean   :4.9  \n 3rd Qu.: 300.0   3rd Qu.: 300.0   3rd Qu.:5.0  \n Max.   :1440.0   Max.   :1440.0   Max.   :5.0  \n\ness_der_all |&gt;\n  count(NetFreq, netusoft)\n\n# A tibble: 8 × 3\n  NetFreq            netusoft     n\n  &lt;fct&gt;                 &lt;int&gt; &lt;int&gt;\n1 Never                     1  6226\n2 Only occasionally         2  2322\n3 A few times a week        3  2143\n4 Most days                 4  3982\n5 Every day                 5 35393\n6 &lt;NA&gt;                      7    20\n7 &lt;NA&gt;                      8    19\n8 &lt;NA&gt;                      9    11\n\ness_der_all |&gt;\n  count(AgeGroup, agegroup)\n\n# A tibble: 8 × 3\n  AgeGroup agegroup     n\n  &lt;fct&gt;       &lt;int&gt; &lt;int&gt;\n1 15-24           1  4747\n2 25-34           2  6000\n3 35-44           3  7664\n4 45-54           4  8324\n5 55-64           5  8754\n6 65-74           6  8254\n7 75+             7  5980\n8 &lt;NA&gt;           99   393\n\n\n\n\nSave data\n\ness_der &lt;- ess_der_all |&gt;\n  select(any_of(names(ess_in)), everything())\n\nsummary(ess_der)\n\n       cntry          anweight             nwspol        netusoft    \n Length   :50116   Min.   : 0.002015   Min.   :   0   Min.   :1.000  \n N.unique :   30   1st Qu.: 0.175897   1st Qu.:  30   1st Qu.:4.000  \n N.blank  :    0   Median : 0.433793   Median :  60   Median :5.000  \n Min.nchar:    2   Mean   : 0.932035   Mean   : 229   Mean   :4.202  \n Max.nchar:    2   3rd Qu.: 1.216379   3rd Qu.: 120   3rd Qu.:5.000  \n                   Max.   :12.997417   Max.   :9999   Max.   :9.000  \n                                                                     \n    netustm        volunfp          happy            wrhpp      \n Min.   :   0   Min.   :1.000   Min.   : 0.000   Min.   :1.000  \n 1st Qu.: 120   1st Qu.:2.000   1st Qu.: 6.000   1st Qu.:2.000  \n Median : 240   Median :2.000   Median : 8.000   Median :3.000  \n Mean   :1706   Mean   :1.833   Mean   : 7.652   Mean   :2.916  \n 3rd Qu.: 660   3rd Qu.:2.000   3rd Qu.: 9.000   3rd Qu.:3.000  \n Max.   :9999   Max.   :9.000   Max.   :99.000   Max.   :9.000  \n                                                                \n    agegroup         pdwrk            edctn             uempla       \n Min.   : 1.00   Min.   :0.0000   Min.   :0.00000   Min.   :0.00000  \n 1st Qu.: 3.00   1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.00000  \n Median : 4.00   Median :1.0000   Median :0.00000   Median :0.00000  \n Mean   : 4.93   Mean   :0.5332   Mean   :0.07682   Mean   :0.03145  \n 3rd Qu.: 6.00   3rd Qu.:1.0000   3rd Qu.:0.00000   3rd Qu.:0.00000  \n Max.   :99.00   Max.   :1.0000   Max.   :1.00000   Max.   :1.00000  \n                                                                     \n     uempli            dsbld              rtrd            cmsrv         \n Min.   :0.00000   Min.   :0.00000   Min.   :0.0000   Min.   :0.000000  \n 1st Qu.:0.00000   1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.000000  \n Median :0.00000   Median :0.00000   Median :0.0000   Median :0.000000  \n Mean   :0.02133   Mean   :0.02664   Mean   :0.2863   Mean   :0.001536  \n 3rd Qu.:0.00000   3rd Qu.:0.00000   3rd Qu.:1.0000   3rd Qu.:0.000000  \n Max.   :1.00000   Max.   :1.00000   Max.   :1.0000   Max.   :1.000000  \n                                                                        \n     hswrk            dngoth            dngref             dngdk          \n Min.   :0.0000   Min.   :0.00000   Min.   :0.000000   Min.   :0.0000000  \n 1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.000000   1st Qu.:0.0000000  \n Median :0.0000   Median :0.00000   Median :0.000000   Median :0.0000000  \n Mean   :0.1106   Mean   :0.01423   Mean   :0.002534   Mean   :0.0005986  \n 3rd Qu.:0.0000   3rd Qu.:0.00000   3rd Qu.:0.000000   3rd Qu.:0.0000000  \n Max.   :1.0000   Max.   :1.00000   Max.   :1.000000   Max.   :1.0000000  \n                                                                          \n     dngna             stratum          psu          pdwrk_rec     \n Min.   :0.000000   Min.   :   1   Min.   :    1   Min.   :0.0000  \n 1st Qu.:0.000000   1st Qu.: 325   1st Qu.: 7369   1st Qu.:0.0000  \n Median :0.000000   Median : 870   Median :13556   Median :1.0000  \n Mean   :0.001596   Mean   : 795   Mean   :13289   Mean   :0.5348  \n 3rd Qu.:0.000000   3rd Qu.:1081   3rd Qu.:19288   3rd Qu.:1.0000  \n Max.   :1.000000   Max.   :1529   Max.   :25385   Max.   :1.0000  \n                                                   NAs    :237     \n   edctn_rec         uempla_rec       uempli_rec        dsbld_rec      \n Min.   :0.00000   Min.   :0.0000   Min.   :0.00000   Min.   :0.00000  \n 1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.00000   1st Qu.:0.00000  \n Median :0.00000   Median :0.0000   Median :0.00000   Median :0.00000  \n Mean   :0.07719   Mean   :0.0316   Mean   :0.02143   Mean   :0.02676  \n 3rd Qu.:0.00000   3rd Qu.:0.0000   3rd Qu.:0.00000   3rd Qu.:0.00000  \n Max.   :1.00000   Max.   :1.0000   Max.   :1.00000   Max.   :1.00000  \n NAs    :237       NAs    :237      NAs    :237       NAs    :237      \n    rtrd_rec        cmsrv_rec          hswrk_rec        dngoth_rec     \n Min.   :0.0000   Min.   :0.000000   Min.   :0.0000   Min.   :0.00000  \n 1st Qu.:0.0000   1st Qu.:0.000000   1st Qu.:0.0000   1st Qu.:0.00000  \n Median :0.0000   Median :0.000000   Median :0.0000   Median :0.00000  \n Mean   :0.2876   Mean   :0.001544   Mean   :0.1111   Mean   :0.01429  \n 3rd Qu.:1.0000   3rd Qu.:0.000000   3rd Qu.:0.0000   3rd Qu.:0.00000  \n Max.   :1.0000   Max.   :1.000000   Max.   :1.0000   Max.   :1.00000  \n NAs    :237      NAs    :237        NAs    :237      NAs    :237      \n  Retired             wt1      Happy_Freq        Happy             News       \n Mode :logical   Min.   :1   Min.   :1.000   Min.   : 0.000   Min.   :   0.0  \n FALSE:35533     1st Qu.:1   1st Qu.:2.000   1st Qu.: 6.000   1st Qu.:  30.0  \n TRUE :14346     Median :1   Median :3.000   Median : 8.000   Median :  60.0  \n NAs  :237       Mean   :1   Mean   :2.874   Mean   : 7.315   Mean   :  97.9  \n                 3rd Qu.:1   3rd Qu.:3.000   3rd Qu.: 9.000   3rd Qu.: 120.0  \n                 Max.   :1   Max.   :4.000   Max.   :10.000   Max.   :1440.0  \n                             NAs    :437     NAs    :219      NAs    :732     \n      Country       Volunteer_12    Volunteer_01    Volunteer_Factor\n Length   :50116   Min.   :1.000   Min.   :0.0000   Yes: 9305       \n N.unique :   30   1st Qu.:2.000   1st Qu.:0.0000   No :40643       \n N.blank  :    0   Median :2.000   Median :0.0000   NAs:  168       \n Min.nchar:    5   Mean   :1.814   Mean   :0.1863                   \n Max.nchar:   14   3rd Qu.:2.000   3rd Qu.:0.0000                   \n                   Max.   :2.000   Max.   :1.0000                   \n                   NAs    :168     NAs    :168                      \n    NetUsage                    NetFreq         AgeGroup    \n Min.   :   0.0   Never             : 6226   55-64  : 8754  \n 1st Qu.:  30.0   Only occasionally : 2322   45-54  : 8324  \n Median : 120.0   A few times a week: 2143   65-74  : 8254  \n Mean   : 186.2   Most days         : 3982   35-44  : 7664  \n 3rd Qu.: 270.0   Every day         :35393   25-34  : 6000  \n Max.   :1440.0   NAs               :   50   (Other):10727  \n NAs    :574                                 NAs    :  393  \n\nglimpse(ess_der)\n\nRows: 50,116\nColumns: 44\n$ cntry            &lt;chr&gt; \"AT\", \"AT\", \"AT\", \"AT\", \"AT\", \"AT\", \"AT\", \"AT\", \"AT\",…\n$ anweight         &lt;dbl&gt; 0.13001322, 0.10759796, 1.32366584, 0.05831629, 0.351…\n$ nwspol           &lt;int&gt; 90, 90, 30, 15, 60, 120, 45, 120, 20, 120, 60, 5, 60,…\n$ netusoft         &lt;int&gt; 5, 5, 5, 1, 5, 5, 1, 5, 5, 1, 5, 5, 5, 1, 2, 5, 5, 3,…\n$ netustm          &lt;int&gt; 180, 570, 30, 6666, 120, 120, 6666, 240, 180, 6666, 1…\n$ volunfp          &lt;int&gt; 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…\n$ happy            &lt;int&gt; 8, 9, 9, 7, 9, 8, 7, 8, 8, 7, 8, 5, 7, 8, 5, 9, 10, 8…\n$ wrhpp            &lt;int&gt; 3, 3, 3, 2, 3, 4, 3, 3, 2, 3, 3, 1, 3, 2, 3, 4, 4, 2,…\n$ agegroup         &lt;int&gt; 6, 1, 4, 7, 5, 5, 7, 6, 4, 7, 3, 4, 5, 7, 2, 6, 3, 7,…\n$ pdwrk            &lt;int&gt; 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,…\n$ edctn            &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ uempla           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…\n$ uempli           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ dsbld            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ rtrd             &lt;int&gt; 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0,…\n$ cmsrv            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ hswrk            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,…\n$ dngoth           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ dngref           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ dngdk            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ dngna            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ stratum          &lt;int&gt; 107, 69, 18, 101, 115, 7, 58, 38, 62, 105, 26, 94, 10…\n$ psu              &lt;int&gt; 317, 128, 418, 295, 344, 373, 86, 3, 108, 314, 622, 2…\n$ pdwrk_rec        &lt;int&gt; 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,…\n$ edctn_rec        &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ uempla_rec       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…\n$ uempli_rec       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ dsbld_rec        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ rtrd_rec         &lt;int&gt; 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0,…\n$ cmsrv_rec        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ hswrk_rec        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,…\n$ dngoth_rec       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ Retired          &lt;lgl&gt; TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FA…\n$ wt1              &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ Happy_Freq       &lt;int&gt; 3, 3, 3, 2, 3, 4, 3, 3, 2, 3, 3, 1, 3, 2, 3, 4, 4, 2,…\n$ Happy            &lt;int&gt; 8, 9, 9, 7, 9, 8, 7, 8, 8, 7, 8, 5, 7, 8, 5, 9, 10, 8…\n$ News             &lt;int&gt; 90, 90, 30, 15, 60, 120, 45, 120, 20, 120, 60, 5, 60,…\n$ Country          &lt;chr&gt; \"Austria\", \"Austria\", \"Austria\", \"Austria\", \"Austria\"…\n$ Volunteer_12     &lt;int&gt; 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…\n$ Volunteer_01     &lt;dbl&gt; 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ Volunteer_Factor &lt;fct&gt; No, Yes, Yes, No, No, No, No, Yes, No, No, No, No, No…\n$ NetUsage         &lt;dbl&gt; 180, 570, 30, 0, 120, 120, 0, 240, 180, 0, 120, 60, 1…\n$ NetFreq          &lt;fct&gt; Every day, Every day, Every day, Never, Every day, Ev…\n$ AgeGroup         &lt;fct&gt; 65-74, 15-24, 45-54, 75+, 55-64, 55-64, 75+, 65-74, 4…\n\nreadr::write_rds(\n  ess_der,\n  here::here(\"DerivedData\", \"ess11_der.rds\"),\n  compress = \"gz\"\n)"
+  },
+  {
+    "objectID": "Slides.html#about-us",
+    "href": "Slides.html#about-us",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "About Us",
+    "text": "About Us\n\n\n\n\n\n\n\n\nStephanieZimmer\nRTI\n\n\n\n\n\n\n\n\nRebeccaPowell\nFors Marsh\n\n\n\n\n\n\n\n\nIsabellaVelásquez\nPosit\n\n\n\nEach of us give a brief intro on our experience/background"
+  },
+  {
+    "objectID": "Slides.html#prerequisites",
+    "href": "Slides.html#prerequisites",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Prerequisites",
+    "text": "Prerequisites\nTidyverse familiarity\n\nSelecting a set of variables (select(starts_with(\"TOT\")))\nCreating new variables with mutate()\nSummarizing data with summarize()\nUsing group_by() with summarize() to create group summaries"
+  },
+  {
+    "objectID": "Slides.html#overview-of-tutorial",
+    "href": "Slides.html#overview-of-tutorial",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Overview of tutorial",
+    "text": "Overview of tutorial\nAt the end of this tutorial, you should be able to:\n\nSpecify a survey design in R to create a survey object\nCalculate point estimates and their standard errors with survey data\nCreate tables and graphs incorporating survey data and standard errors"
+  },
+  {
+    "objectID": "Slides.html#logistics",
+    "href": "Slides.html#logistics",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Logistics",
+    "text": "Logistics\n\nWe will be using Posit Cloud for exercises\nAll materials are found at:\n\nhttps://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html (Site)\nhttps://github.com/tidy-survey-r/uros-2026-tutorial (Source)"
+  },
+  {
+    "objectID": "Slides.html#libraries-needed-for-today",
+    "href": "Slides.html#libraries-needed-for-today",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Libraries Needed for Today",
+    "text": "Libraries Needed for Today\nNote: These are already installed in Posit Cloud\n\nlibrary(tidyverse)\nlibrary(survey)\nlibrary(srvyr)\nlibrary(gt)\nlibrary(sf)\nlibrary(tmap)"
+  },
+  {
+    "objectID": "Slides.html#r-packages-for-survey-analysis",
+    "href": "Slides.html#r-packages-for-survey-analysis",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "R Packages for Survey Analysis",
+    "text": "R Packages for Survey Analysis\n\n\n\n\n{survey} package first on CRAN in 2003\n\ndescriptive analysis\nstatistical testing\nmodeling\nweighting\n\n\n\n\n\n\n\n\n{srvyr} package first on CRAN in 2016\n\n“wrapper” for {survey} with {tidyverse}-style syntax\nonly descriptive analysis"
+  },
+  {
+    "objectID": "Slides.html#why-use-srvyr-over-survey",
+    "href": "Slides.html#why-use-srvyr-over-survey",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Why use {srvyr} over {survey}?",
+    "text": "Why use {srvyr} over {survey}?\n\nUse the pipe function %&gt;% or |&gt;\nAbility to use tidy selection\nFunctions follow snake_case convention"
+  },
+  {
+    "objectID": "Slides.html#apply-dplyr-functions-to-survey-objects",
+    "href": "Slides.html#apply-dplyr-functions-to-survey-objects",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Apply {dplyr} functions to survey objects",
+    "text": "Apply {dplyr} functions to survey objects\n\nA few functions in {srvyr} have counterparts in {dplyr}\n\ndplyr::summarize() and srvyr::summarize()\ndplyr::group_by() and srvyr::group_by()\n\nBased on the object class, R will recognize which package to use"
+  },
+  {
+    "objectID": "Slides.html#using-summarize-to-calculate-mean-and-median",
+    "href": "Slides.html#using-summarize-to-calculate-mean-and-median",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Using summarize() to calculate mean and median",
+    "text": "Using summarize() to calculate mean and median\n\nTibble:Survey object:\n\n\n\ntowny %&gt;%\n  summarize(\n    area_mean = mean(land_area_km2, na.rm=TRUE)\n  )\n\n# A tibble: 1 × 1\n  area_mean\n      &lt;dbl&gt;\n1      373.\n\n\n\n\n\nanes_des %&gt;%\n  summarize(\n    age_mean = survey_mean(Age, na.rm=TRUE),\n  )"
+  },
+  {
+    "objectID": "Slides.html#filtering-and-selecting",
+    "href": "Slides.html#filtering-and-selecting",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Filtering and Selecting",
+    "text": "Filtering and Selecting\n\nTibble:Survey object:\n\n\n\ntowny %&gt;%\n  filter(csd_type == \"township\") %&gt;%\n  select(csd_type, name)\n\n# A tibble: 195 × 2\n   csd_type name                  \n   &lt;chr&gt;    &lt;chr&gt;                 \n 1 township Addington Highlands   \n 2 township Adelaide Metcalfe     \n 3 township Adjala-Tosorontio     \n 4 township Admaston/Bromley      \n 5 township Alberton              \n 6 township Alfred and Plantagenet\n 7 township Algonquin Highlands   \n 8 township Alnwick/Haldimand     \n 9 township Amaranth              \n10 township The Archipelago       \n# ℹ 185 more rows\n\n\n\n\n\nanes_des %&gt;%\n  filter(EducationGroup == \"Graduate\") %&gt;%\n  select(Sex)"
+  },
+  {
+    "objectID": "Slides.html#grouping",
+    "href": "Slides.html#grouping",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Grouping",
+    "text": "Grouping\n\nTibble:Survey object:\n\n\n\ntowny %&gt;%\n  group_by(csd_type) %&gt;%\n  summarize(area_mean = mean(land_area_km2))\n\n# A tibble: 5 × 2\n  csd_type     area_mean\n  &lt;chr&gt;            &lt;dbl&gt;\n1 city             498. \n2 municipality     607. \n3 town             183. \n4 township         363. \n5 village           23.0\n\n\n\n\n\nanes_des %&gt;%\n  group_by(EducationGroup) %&gt;%\n  summarize(age_mean = survey_mean(Age, na.rm=TRUE))"
+  },
+  {
+    "objectID": "Slides.html#using-srvyr-functions-on-non-survey-objects",
+    "href": "Slides.html#using-srvyr-functions-on-non-survey-objects",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Using {srvyr} functions on non-survey objects",
+    "text": "Using {srvyr} functions on non-survey objects\n\ntowny %&gt;%\n  summarize(area_mean = survey_mean(land_area_km2))\n\n\n\n\nError in `summarize()`:\nℹ In argument: `area_mean = survey_mean(land_area_km2)`.\nCaused by error in `cur_svy()`:\n! Survey context not set"
+  },
+  {
+    "objectID": "Slides.html#overview",
+    "href": "Slides.html#overview",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Overview",
+    "text": "Overview\n\nConducted across Europe every 2 years since 2001\nCross-sectional sample (new samples each round)\nTopics include living conditions, social structure, public opinion and attitudes\nSampling designs vary by country but have oversight for rigor"
+  },
+  {
+    "objectID": "Slides.html#countries-for-round-11-2023-2024",
+    "href": "Slides.html#countries-for-round-11-2023-2024",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Countries for round 11 (2023-2024)",
+    "text": "Countries for round 11 (2023-2024)"
+  },
+  {
+    "objectID": "Slides.html#accessing-ess-data",
+    "href": "Slides.html#accessing-ess-data",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Accessing ESS data",
+    "text": "Accessing ESS data\n\nCreate an account at the ESS Data Portal and then get your user ID\nAdd your user ID to your R environ file by opening the file and editing as follows:\n\nusethis::edit_r_environ()\nEdit as follows (example):\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\n  \"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\"\n)\ness_in &lt;- read_parquet(url)"
+  },
+  {
+    "objectID": "Slides.html#read-data-subset-for-this-course",
+    "href": "Slides.html#read-data-subset-for-this-course",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Read data subset for this course",
+    "text": "Read data subset for this course\n\nThis data is a subset of columns of full data\nIncludes derived variables we created for this course\nSee data cleaning code\n\n\ness_der &lt;- read_rds(here::here(\"DerivedData\", \"ess11_der.rds\"))"
+  },
+  {
+    "objectID": "Slides.html#why-weight-why-use-the-design",
+    "href": "Slides.html#why-weight-why-use-the-design",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Why weight? Why use the design?",
+    "text": "Why weight? Why use the design?\n\nDifferential selection probabilities and nonresponse are accounted for in analytic weights\nWeights are post-stratified by gender, age, education, and geographic region\nNot using weights leads to bias\nNot using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering"
+  },
+  {
+    "objectID": "Slides.html#estimates-changing-with-weights",
+    "href": "Slides.html#estimates-changing-with-weights",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Estimates changing with weights",
+    "text": "Estimates changing with weights"
+  },
+  {
+    "objectID": "Slides.html#ess-variable-viewer",
+    "href": "Slides.html#ess-variable-viewer",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "ESS Variable Viewer",
+    "text": "ESS Variable Viewer\n\nExplore ESS variables at the Variable Viewer"
+  },
+  {
+    "objectID": "Slides.html#sampling-methods",
+    "href": "Slides.html#sampling-methods",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Sampling methods",
+    "text": "Sampling methods\nUnits can be selected in various ways such as:\n\n\nSimple random sampling\n(with or without replacement)\nEvery unit has the same chance of being selected\n\nSystematic sampling\nSample from an ordered list, selecting individuals at an interval with a random starting point\n\nProbability proportional to size\nProbability of selection is proportional to “size”"
+  },
+  {
+    "objectID": "Slides.html#complex-designs",
+    "href": "Slides.html#complex-designs",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Complex designs",
+    "text": "Complex designs\nDesigns can also incorporate stratification and/or clustering:\n\n\nStratified sampling\nDivide population into mutually exclusive subgroups (strata). Randomly sample within each stratum\n\nClustered sampling\nDivide population into mutually exclusive subgroups (clusters). Randomly sample clusters, then individuals within clusters"
+  },
+  {
+    "objectID": "Slides.html#why-does-design-matter",
+    "href": "Slides.html#why-does-design-matter",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Why does design matter?",
+    "text": "Why does design matter?\n\nThe design type impacts the variability of the estimates\nWeights impact the point estimate and the variability estimates\nSpecifying the components of the design (strata and/or clusters) and weights in R is necessary to get correct estimates"
+  },
+  {
+    "objectID": "Slides.html#determining-the-design",
+    "href": "Slides.html#determining-the-design",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Determining the design",
+    "text": "Determining the design\n\nCheck the documentation such as methodology, design, analysis guide, or technical documentation\nDocumentation will indicate the variables needed to specify the design. Look for:\n\nWeight (almost always)\nStrata and/or clusters/PSUs (sometimes labeled pseudo-strata/pseudo-clusters) — or, instead, replicate weights\nFinite population correction or population sizes (uncommon)\n\nDocumentation may include SAS, SUDAAN, Stata and/or R syntax"
+  },
+  {
+    "objectID": "Slides.html#design-based-vs.-replicate-weights",
+    "href": "Slides.html#design-based-vs.-replicate-weights",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Design-based vs. replicate weights",
+    "text": "Design-based vs. replicate weights\nTwo ways to tell R about a sampling design, depending on what the documentation provides:\n\n\nStrata / clusters / weights are available\nUse as_survey_design()\n\nOnly replicate weights are available\nUse as_survey_rep()\n\n\nSome surveys provide both; others release only replicate weights to protect respondent confidentiality\nEither path produces a tbl_svy object that works the same way downstream"
+  },
+  {
+    "objectID": "Slides.html#as_survey_design-syntax",
+    "href": "Slides.html#as_survey_design-syntax",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "as_survey_design(): Syntax",
+    "text": "as_survey_design(): Syntax\n\nSpecifying the sampling design when you don’t have replicate weights\nas_survey_design() creates a tbl_svy object that then correctly calculates weighted estimates and SEs\n\n\nas_survey_design(\n  .data,\n  ids = NULL, # cluster IDs/PSUs\n  strata = NULL, # strata variables\n  variables = NULL, # defaults to all in .data\n  fpc = NULL, # variables defining the fpc\n  nest = FALSE, # TRUE/FALSE - relabel clusters to nest within strata\n  check_strata = !nest, # check that clusters are nested in strata\n  weights = NULL # weight variable,\n)"
+  },
+  {
+    "objectID": "Slides.html#syntax-for-common-designs-no-stratificationclustering",
+    "href": "Slides.html#syntax-for-common-designs-no-stratificationclustering",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Syntax for common designs: no stratification/clustering",
+    "text": "Syntax for common designs: no stratification/clustering\nLoad in the example data from {survey} package:\ndata(api, package=\"survey\")\n\nSimple Random Sample (SRS)\napisrs %&gt;% as_survey_design(fpc = fpc)\n\n\nOne-stage cluster sample with a FPC variable\napiclus1 %&gt;% as_survey_design(ids = dnum, weights = pw, fpc = fpc)\n\n\nTwo-stage cluster sample, weights computed from population size\napiclus2 %&gt;% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))\n\n\n\nExamples from srvyr help documentation"
+  },
+  {
+    "objectID": "Slides.html#syntax-for-common-designs-with-stratification",
+    "href": "Slides.html#syntax-for-common-designs-with-stratification",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Syntax for common designs: with stratification",
+    "text": "Syntax for common designs: with stratification\nStratified SRS\napistrat %&gt;% as_survey_design(strata = stype, weights = pw)\n\nStratified, cluster design\napistrat %&gt;% as_survey_design(ids = dnum, strata = stype, weights = pw, nest = TRUE)\n\n\n\nExamples from srvyr help documentation"
+  },
+  {
+    "objectID": "Slides.html#what-does-the-design-object-look-like",
+    "href": "Slides.html#what-does-the-design-object-look-like",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "What does the design object look like?",
+    "text": "What does the design object look like?\n\ndata(api, package = \"survey\")\n\napistrat_des &lt;- apistrat |&gt;\n  select(cds, stype, api00, pw, fpc) |&gt;\n  as_survey_design(strata = stype, weights = pw)\n\napistrat_des\n\nStratified Independent Sampling design (with replacement)\nCalled via srvyr\nSampling variables:\n  - ids: `1` \n  - strata: stype \n  - weights: pw \nData variables: \n  - cds (chr), stype (fct), api00 (int), pw (dbl), fpc (dbl)\n\n\n\n\nData: apistrat from the {survey} package"
+  },
+  {
+    "objectID": "Slides.html#replicate-weights-overview",
+    "href": "Slides.html#replicate-weights-overview",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Replicate weights overview",
+    "text": "Replicate weights overview\nReplicate weights are another method to estimate variability. In general, they are constructed by:\n\nDivide the sample into subsample replicates that mirror the design of the sample\nCalculate weights for each replicate using the same procedures for the full-sample weight (i.e., nonresponse and post-stratification)\nCalculate estimates for each replicate using the same method as the full-sample estimate\nCalculate the estimated variance, which is proportional to the variance of the replicate estimates"
+  },
+  {
+    "objectID": "Slides.html#common-replicate-weight-methods",
+    "href": "Slides.html#common-replicate-weight-methods",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Common replicate weight methods",
+    "text": "Common replicate weight methods\n\nBalanced repeated replication (BRR)\nFay’s BRR\nJackknife\nBootstrap"
+  },
+  {
+    "objectID": "Slides.html#as_survey_rep-syntax",
+    "href": "Slides.html#as_survey_rep-syntax",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "as_survey_rep(): Syntax",
+    "text": "as_survey_rep(): Syntax\n\nas_survey_rep() creates a tbl_svy object that then correctly calculates weighted estimates and SEs\n\n\nas_survey_rep(\n  .data,\n  variables = NULL, # defaults to all in .data\n  repweights = NULL, # Variables specifying the replication weights\n  weights = NULL, # Variable specifying the analytic/main weight\n  type = c(\n    \"BRR\", \"Fay\", \"JK1\", \"JKn\", \"bootstrap\",\n    \"successive-difference\", \"ACS\", \"other\"\n  ), # Type of replication weight\n  combined_weights = TRUE, # TRUE if repweights already include sampling weights, usually TRUE\n  rho = NULL, # Shrinkage factor for Fay's method\n  bootstrap_average = NULL, # For type=\"bootstrap\", if the bootstrap weights have been averaged, gives the number of iterations averaged over\n  scale = NULL, # Scaling constant for variance\n  rscales = NULL, # Scaling constants for variance\n  mse = getOption(\"survey.replicates.mse\"), # If TRUE, compute variance based around point estimates rather than mean of replicates\n  degf = NULL, # Design degrees of freedom, otherwise calculated based on number of replicate weights\n)"
+  },
+  {
+    "objectID": "Slides.html#worked-example-brr-with-real-data",
+    "href": "Slides.html#worked-example-brr-with-real-data",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Worked example: BRR with real data",
+    "text": "Worked example: BRR with real data\n\ndata(scd, package = \"survey\")\n\nscd &lt;- scd |&gt;\n  mutate(\n    rep1 = 2 * c(1, 0, 1, 0, 1, 0),\n    rep2 = 2 * c(1, 0, 0, 1, 0, 1),\n    rep3 = 2 * c(0, 1, 1, 0, 0, 1),\n    rep4 = 2 * c(0, 1, 0, 1, 1, 0)\n  )\n\nscd_rep &lt;- scd |&gt;\n  as_survey_rep(\n    type = \"BRR\",\n    repweights = starts_with(\"rep\"),\n    combined_weights = FALSE\n  )\n\nscd_rep\n\nCall: Called via srvyr\nBalanced Repeated Replicates with 4 replicates.\nSampling variables:\n  - repweights: `rep1 + rep2 + rep3 + rep4` \nData variables: \n  - ESA (int), ambulance (int), arrests (dbl), alive (dbl), rep1 (dbl), rep2\n    (dbl), rep3 (dbl), rep4 (dbl)\n\n\n\n\nData: scd from the {survey} package (Levy and Lemeshow BRR example)"
+  },
+  {
+    "objectID": "Slides.html#recap",
+    "href": "Slides.html#recap",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Recap",
+    "text": "Recap\n\nDesign type (SRS, stratified, clustered) shapes the variability of estimates\nWeights shape both point estimates and variance\nTwo paths to a tbl_svy object:\n\nas_survey_design(): strata, clusters/PSUs, weights\nas_survey_rep(): replicate weights (BRR, Fay’s, jackknife, bootstrap)\n\nOnce built, the design object is ready for weighted summaries in later sections"
+  },
+  {
+    "objectID": "Slides.html#methodology",
+    "href": "Slides.html#methodology",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Methodology",
+    "text": "Methodology\nRecall, we said: “Check the documentation such as methodology, design, analysis guide, or technical documentation”\nHead to the ESS website and click “Methodology”: https://www.europeansocialsurvey.org/methodology/sampling"
+  },
+  {
+    "objectID": "Slides.html#sampling",
+    "href": "Slides.html#sampling",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Sampling",
+    "text": "Sampling\nKey sampling principles, from the ESS Sampling Guidelines:\n\nSamples represent all persons aged 15+ living in private households in each country\nIndividuals are selected by strict random probability methods at every stage — no quota sampling, no substitution of non-responders\nEach country targets a minimum “effective achieved sample size” (1,500, or 800 in countries with populations under 2 million)\nExact designs (single-stage, stratified, multi-stage/clustered) vary by country, but every country’s data include psu (primary sampling unit) and stratum variables\n\n\n\nhttps://www.europeansocialsurvey.org/methodology/sampling"
+  },
+  {
+    "objectID": "Slides.html#weighting",
+    "href": "Slides.html#weighting",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Weighting",
+    "text": "Weighting\n\nFour weighting variables are available: Analysis weight (anweight - combination of pspwght and pweight), Post-stratification weight (pspwght), Design weight (dweight), and Population weight (pweight).\n\n\n\ndweight — corrects for unequal selection probabilities within a country\npspwght — further adjusts dweight for nonresponse/noncoverage using age, gender, education, region\n\npweight — rescales each country to its population size, for combining countries in one analysis\nanweight — dweight + pspwght + pweight combined; recommended for all analyses\n\n\n\nhttps://www.europeansocialsurvey.org/methodology/weighting"
+  },
+  {
+    "objectID": "Slides.html#weighting-the-provided-code",
+    "href": "Slides.html#weighting-the-provided-code",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Weighting: the provided code",
+    "text": "Weighting: the provided code\nClicking into the “weighting guide,” we find example R code using anweight, the recommended weight:\nlibrary(survey) # estimation\n\n# Define sample design\ndesign &lt;- svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,\ndata = data1)"
+  },
+  {
+    "objectID": "Slides.html#first-attempt",
+    "href": "Slides.html#first-attempt",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "First attempt",
+    "text": "First attempt\nUsing exactly the syntax from the weighting guide, we get an error:\n\nsvydesign(\n  ids = ~ psu,\n  strata = ~ stratum,\n  weights = ~ anweight,\n  data = ess_der\n)\n\nError in `svydesign.default()`:\n! Clusters not nested in strata at top level; you may want nest=TRUE."
+  },
+  {
+    "objectID": "Slides.html#why-the-error",
+    "href": "Slides.html#why-the-error",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Why the error?",
+    "text": "Why the error?\nA handful of psu codes repeat across different stratum values in the raw file:\n\ness_der |&gt;\n  distinct(cntry, psu, stratum) |&gt;\n  add_count(psu) |&gt;\n  filter(n &gt; 1)\n\n# A tibble: 6 × 4\n  cntry   psu stratum     n\n  &lt;chr&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt;\n1 HU    12809     855     2\n2 HU    13338     815     2\n3 HU    13247     855     2\n4 HU    13247     779     2\n5 HU    12809     851     2\n6 HU    13338     884     2\n\n\nBy default, svydesign() assumes cluster (psu) IDs are unique across the whole data set. nest = TRUE tells it to relabel clusters so they’re uniquely identified within each stratum instead — the same nest argument from the as_survey_design() syntax earlier"
+  },
+  {
+    "objectID": "Slides.html#applying-weights-fixed",
+    "href": "Slides.html#applying-weights-fixed",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Applying weights, fixed",
+    "text": "Applying weights, fixed\nIncluding nest = TRUE, we get the design object:\n\ness_des_true &lt;- svydesign(\n  ids = ~ psu,\n  strata = ~ stratum,\n  weights = ~ anweight,\n  data = ess_der,\n  nest = TRUE\n)\n\ness_des_true\n\nStratified 1 - level Cluster Sampling design (with replacement)\nWith (24791) clusters.\nsvydesign(ids = ~psu, strata = ~stratum, weights = ~anweight, \n    data = ess_der, nest = TRUE)"
+  },
+  {
+    "objectID": "Slides.html#from-survey-to-srvyr",
+    "href": "Slides.html#from-survey-to-srvyr",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "From {survey} to {srvyr}",
+    "text": "From {survey} to {srvyr}\nThe same design, specified with tidy syntax:\n\ness_des &lt;- ess_der |&gt;\n  as_survey_design(\n    ids = psu,\n    strata = stratum,\n    weights = anweight,\n    nest = TRUE\n  )\n\ness_des\n\n\nSame result: a tbl_svy object ready for weighted summaries."
+  },
+  {
+    "objectID": "Slides.html#from-survey-to-srvyr-output",
+    "href": "Slides.html#from-survey-to-srvyr-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "From {survey} to {srvyr}",
+    "text": "From {survey} to {srvyr}\n\nStratified 1 - level Cluster Sampling design (with replacement)\nWith (24791) clusters.\nCalled via srvyr\nSampling variables:\n  - ids: psu \n  - strata: stratum \n  - weights: anweight \nData variables: \n  - cntry (chr), anweight (dbl), nwspol (int), netusoft (int), netustm (int),\n    volunfp (int), happy (int), wrhpp (int), agegroup (int), pdwrk (int), edctn\n    (int), uempla (int), uempli (int), dsbld (int), rtrd (int), cmsrv (int),\n    hswrk (int), dngoth (int), dngref (int), dngdk (int), dngna (int), stratum\n    (int), psu (int), pdwrk_rec (int), edctn_rec (int), uempla_rec (int),\n    uempli_rec (int), dsbld_rec (int), rtrd_rec (int), cmsrv_rec (int),\n    hswrk_rec (int), dngoth_rec (int), Retired (lgl), wt1 (dbl), Happy_Freq\n    (int), Happy (int), News (int), Country (chr), Volunteer_12 (int),\n    Volunteer_01 (dbl), Volunteer_Factor (fct), NetUsage (dbl), NetFreq (fct),\n    AgeGroup (fct)"
+  },
+  {
+    "objectID": "Slides.html#back-to-design-based-vs.-replicate-weights",
+    "href": "Slides.html#back-to-design-based-vs.-replicate-weights",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Back to design-based vs. replicate weights",
+    "text": "Back to design-based vs. replicate weights\nESS falls on the strata/clusters side of that earlier choice:\n\nThe data provide psu and stratum variables (and a single analysis weight, anweight) — no replicate weights\nThat’s why we used as_survey_design()/svydesign(), not as_survey_rep()\nA survey that instead shipped jackknife or BRR replicate weights would call for as_survey_rep() the same way"
+  },
+  {
+    "objectID": "Slides.html#common-workflow",
+    "href": "Slides.html#common-workflow",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Common workflow",
+    "text": "Common workflow\n\nCreate a tbl_svy object (a survey object) using: as_survey_design() or as_survey_rep()\nSubset data (if needed) using filter() (to create subpopulations)\nSpecify domains of analysis using group_by()\nWithin summarize(), specify variables to calculate, including means, totals, proportions, quantiles, and more"
+  },
+  {
+    "objectID": "Slides.html#descriptive-functions",
+    "href": "Slides.html#descriptive-functions",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Descriptive functions",
+    "text": "Descriptive functions\n\n\nUse within summarize()\n\nsurvey_mean(x)\nsurvey_median(x)\nsurvey_proportion()\nsurvey_quantile(x)\nsurvey_ratio(num, den)\nsurvey_sd(x)\nsurvey_total(x)\nsurvey_var(x)\n\n\nCommon arguments\n\nna.rm = FALSE\nvartype = c(\"se\", \"ci\", \"var\", \"cv\"): defaults to just “se”\nlevel = 0.95: confidence interval level of CIs\ndeff = FALSE: note can specify as logical OR “replace”\ndf = NULL: degrees of freedom for CIs (defaults to degf(design))\n\n\n\n\nsurvey_median/survey_quantile - no deff\nsurvey_sd - no deff, no measures of variation\nsurvey_var - no deff, no cv"
+  },
+  {
+    "objectID": "Slides.html#mean-examples",
+    "href": "Slides.html#mean-examples",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Mean examples",
+    "text": "Mean examples\n\nna.rmvartypelevel and dfdeff\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News),\n    H2 = survey_mean(News, na.rm = TRUE)\n  )\n\n# A tibble: 1 × 4\n     H1 H1_se    H2 H2_se\n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    NA   NaN  56.9  3.27\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = c(\"se\", \"ci\", \"var\", \"cv\")),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = NULL)\n  )\n\n# A tibble: 1 × 7\n     H1 H1_se H1_low H1_upp H1_var  H1_cv    H2\n  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1  56.9  3.27   50.4   63.3   10.7 0.0575  56.9\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.8),\n    H3 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95, df = 10)\n  )\n\n# A tibble: 1 × 9\n     H1 H1_low H1_upp    H2 H2_low H2_upp    H3 H3_low H3_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1  56.9   50.4   63.3  56.9   52.7   61.1  56.9   49.6   64.1\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(H1 = survey_mean(News, na.rm = TRUE, deff = \"replace\"))\n\n# A tibble: 1 × 3\n     H1 H1_se H1_deff\n  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1  56.9  3.27    1.39\n\n\n\n\n\n\n\nna.rm removes NA before calculation, similar to many other functions in R\nvartype can choose no option OR multiple\nlevel and df control confidence intervals\ndeff is a design effect, a ratio of the variance under this design compared to a design which is SRS, &gt;1 means less statistically efficient"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---motivation",
+    "href": "Slides.html#proportion-example---motivation",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - motivation",
+    "text": "Proportion example - motivation\nAnd still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (volunfp)\n\n1: yes\n2: no\n7: Refusal*\n8: Don’t know*\n9: No answer*"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---variable-coding",
+    "href": "Slides.html#proportion-example---variable-coding",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - variable coding",
+    "text": "Proportion example - variable coding\nDerived variable coding options (unweighted raw data):\n\ness_der |&gt;\n  count(\n    volunfp,\n    Volunteer_12,\n    Volunteer_01,\n    Volunteer_Factor\n  )\n\n# A tibble: 5 × 5\n  volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n\n    &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt; &lt;fct&gt;            &lt;int&gt;\n1       1            1            1 Yes               9305\n2       2            2            0 No               40643\n3       7           NA           NA &lt;NA&gt;                92\n4       8           NA           NA &lt;NA&gt;                65\n5       9           NA           NA &lt;NA&gt;                11"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---2-ways",
+    "href": "Slides.html#proportion-example---2-ways",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - 2 ways",
+    "text": "Proportion example - 2 ways\nTwo methods for proportions\n\nFor binary outcomes, use survey_mean(x)\n\nx is either 1/0 or TRUE/FALSE\ncan use with across() and several outcomes\n\nGroup the data by the variable (x) and then use survey_prop()\n\nx can have 2 or more levels\nonly analyze one outcome at a time\n\n\n\n\nSee Calculating estimates for many outcomes for extending to multiple outcomes"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---2-ways-1",
+    "href": "Slides.html#proportion-example---2-ways-1",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - 2 ways",
+    "text": "Proportion example - 2 ways\n\nsurvey_mean()survey_prop()\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    across(\n      c(Volunteer_12, Volunteer_01),\n      ~ survey_mean(.x, na.rm = TRUE)\n    )\n  )\n\n# A tibble: 1 × 4\n  Volunteer_12 Volunteer_12_se Volunteer_01 Volunteer_01_se\n         &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;           &lt;dbl&gt;\n1         1.74          0.0139        0.260          0.0139\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(p = survey_prop())\n\n# A tibble: 2 × 3\n  Volunteer_Factor     p   p_se\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260 0.0139\n2 No               0.740 0.0139\n\n\n\n\n\n\n\nsurvey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once\nsurvey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---arguments",
+    "href": "Slides.html#proportion-example---arguments",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - arguments",
+    "text": "Proportion example - arguments\nproportion argument in survey_mean()\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = \"ci\"),\n    p2 = survey_mean(\n      Volunteer_01,\n      na.rm = TRUE,\n      vartype = \"ci\",\n      proportion = TRUE\n    )\n  )\n\n# A tibble: 1 × 6\n     p1 p1_low p1_upp    p2 p2_low p2_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 0.260  0.232  0.287 0.260  0.233  0.288\n\n\n\n\nproportion = TRUE argument only impacts confidence intervals"
+  },
+  {
+    "objectID": "Slides.html#proportion-example---arguments-1",
+    "href": "Slides.html#proportion-example---arguments-1",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example - arguments",
+    "text": "Proportion example - arguments\nprop_method argument in survey_mean()/survey_prop()\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(\n    p1 = survey_prop(vartype = \"ci\", prop_method = \"logit\"),\n    p2 = survey_prop(vartype = \"ci\", prop_method = \"mean\"),\n    p3 = survey_prop(vartype = \"ci\", prop_method = \"xlogit\")\n  )\n\n# A tibble: 2 × 10\n  Volunteer_Factor    p1 p1_low p1_upp    p2 p2_low p2_upp    p3 p3_low p3_upp\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260  0.233  0.288 0.260  0.232  0.287 0.260  0.233  0.288\n2 No               0.740  0.712  0.767 0.740  0.713  0.768 0.740  0.712  0.767\n\n\n\n\nSee ?survey::svyciprop for details on implementation"
+  },
+  {
+    "objectID": "Slides.html#subgroup-analysis",
+    "href": "Slides.html#subgroup-analysis",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis",
+    "text": "Subgroup analysis\n\nUsing filter() as above examples subsets data. This is done AFTER creating the design object\nUse group_by() to implement domain analysis"
+  },
+  {
+    "objectID": "Slides.html#subgroup-analysis---mean-and-median",
+    "href": "Slides.html#subgroup-analysis---mean-and-median",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis - mean and median",
+    "text": "Subgroup analysis - mean and median\n\nNetUsage is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported time of internet usage on a typical day (minutes)\n\n\n\nCode\ness_des |&gt;\n  group_by(Country) |&gt;\n  summarize(\n    Pop = survey_total(vartype = NULL),\n    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),\n    NetUse_median = survey_median(NetUsage, na.rm = TRUE)\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(columns = starts_with(\"NetUse\"), decimals = 2) |&gt;\n  fmt_number(columns = Pop, decimals = 0) |&gt;\n  opt_interactive(page_size_default = 8)"
+  },
+  {
+    "objectID": "Slides.html#subgroup-analysis---proportion-marginal",
+    "href": "Slides.html#subgroup-analysis---proportion-marginal",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis - proportion, marginal",
+    "text": "Subgroup analysis - proportion, marginal\n\nNetFreq is how often people use the internet (categorical)\nAgeGroup is a categorical age variable\n\n\n\nCode\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(AgeGroup, NetFreq) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(decimal = 1, columns = starts_with(\"p\")) |&gt;\n  fmt_number(decimal = 0, columns = c(N, N_se)) |&gt;\n  opt_interactive(page_size_default = 8)"
+  },
+  {
+    "objectID": "Slides.html#subgroup-analysis---proportion-joint",
+    "href": "Slides.html#subgroup-analysis---proportion-joint",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis - proportion, joint",
+    "text": "Subgroup analysis - proportion, joint\n\n\nCode\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(interact(AgeGroup, NetFreq)) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(decimal = 1, columns = starts_with(\"p\")) |&gt;\n  fmt_number(decimal = 0, columns = c(N, N_se)) |&gt;\n  opt_interactive(page_size_default = 8)"
+  },
+  {
+    "objectID": "Slides.html#map-survey-estimates",
+    "href": "Slides.html#map-survey-estimates",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Map survey estimates",
+    "text": "Map survey estimates\n\nCountry is a natural domain for ESS analysis\nChoropleth maps make cross-country patterns easier to spot than a table\nBuilds on two earlier pieces: survey-weighted estimation (srvyr) + country shapes (tmap/sf)"
+  },
+  {
+    "objectID": "Slides.html#step-1-estimate-weighted-mean-happiness-by-country",
+    "href": "Slides.html#step-1-estimate-weighted-mean-happiness-by-country",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 1: estimate weighted mean happiness by country",
+    "text": "Step 1: estimate weighted mean happiness by country\nHappy is the ESS happy item (0 = extremely unhappy, 10 = extremely happy), with refusal/don’t know/no answer codes already recoded to NA. We reuse ess_des, the design object built from ess_der in the ESS intro.\n\nhappy_by_country &lt;-\n  ess_des |&gt;\n  filter(!is.na(Happy)) |&gt;\n  group_by(Country) |&gt;\n  summarize(Happy_mean = survey_mean(Happy, na.rm = TRUE))\n\nhappy_by_country"
+  },
+  {
+    "objectID": "Slides.html#step-1-estimate-weighted-mean-happiness-by-country-output",
+    "href": "Slides.html#step-1-estimate-weighted-mean-happiness-by-country-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 1: estimate weighted mean happiness by country",
+    "text": "Step 1: estimate weighted mean happiness by country\n\n# A tibble: 30 × 3\n   Country  Happy_mean Happy_mean_se\n   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;\n 1 Austria        7.85        0.0494\n 2 Belgium        7.70        0.0464\n 3 Bulgaria       6.33        0.0549\n 4 Croatia        7.53        0.0569\n 5 Cyprus         6.99        0.0888\n 6 Estonia        7.31        0.0535\n 7 Finland        8.04        0.0427\n 8 France         7.43        0.0445\n 9 Germany        7.59        0.0675\n10 Greece         6.80        0.0369\n# ℹ 20 more rows"
+  },
+  {
+    "objectID": "Slides.html#step-2-join-estimates-to-country-shapes",
+    "href": "Slides.html#step-2-join-estimates-to-country-shapes",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 2: join estimates to country shapes",
+    "text": "Step 2: join estimates to country shapes\nJoin on country name, then transform/crop to the same European extent used earlier.\n\nhappy_shape &lt;-\n  World |&gt;\n  full_join(happy_by_country, by = c(\"name\" = \"Country\")) |&gt;\n  st_transform(3035) |&gt;\n  st_crop(\n    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |&gt;\n      st_transform(3035)\n  )"
+  },
+  {
+    "objectID": "Slides.html#step-3-map-colored-by-happy",
+    "href": "Slides.html#step-3-map-colored-by-happy",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 3: map colored by Happy",
+    "text": "Step 3: map colored by Happy\n\nhappy_shape |&gt;\n  tm_shape() +\n  tm_polygons(fill = \"lightgrey\", col = \"darkgrey\") +\n  tm_shape(happy_shape |&gt; filter(!is.na(Happy_mean))) +\n  tm_polygons(\n    fill = \"Happy_mean\",\n    fill.scale = tm_scale_continuous(values = \"brewer.blues\"),\n    fill.legend = tm_legend(title = \"Mean happiness\\n(0-10 scale)\")\n  ) +\n  tm_text(\"iso_a3\") +\n  tm_graticules()\n\n\n\n\ntm_scale_continuous() is used here (vs. tm_scale_categorical() in the earlier ESS-11 map) because Happy_mean is a continuous estimate, not a category\nCountries without an ESS estimate stay lightgrey because of the full_join + filter(!is.na(Happy_mean)) pattern\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join\ness_des (built from ess_der in the ESS intro) is reused here"
+  },
+  {
+    "objectID": "Slides.html#step-3-map-colored-by-happy-output",
+    "href": "Slides.html#step-3-map-colored-by-happy-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 3: map colored by Happy",
+    "text": "Step 3: map colored by Happy"
+  },
+  {
+    "objectID": "Slides.html#likert-chart-weighted-response-distribution-by-country",
+    "href": "Slides.html#likert-chart-weighted-response-distribution-by-country",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Likert chart: weighted response distribution by country",
+    "text": "Likert chart: weighted response distribution by country\nA map only shows the mean. A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country."
+  },
+  {
+    "objectID": "Slides.html#step-1-normalizing-data",
+    "href": "Slides.html#step-1-normalizing-data",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 1: Normalizing data",
+    "text": "Step 1: Normalizing data\n\nhappy_dist_country &lt;-\n  ess_des |&gt;\n  filter(!is.na(Happy)) |&gt;\n  mutate(\n    Happy_factor = factor(\n      Happy,\n      levels = 0:10,\n      labels = c(\n        \"0 - Extremely unhappy\", 1:9, \"10 - Extremely happy\"\n      )\n    )\n  ) |&gt;\n  group_by(cntry, Country, Happy_factor) |&gt;\n  summarize(n = survey_total(vartype = NULL)) |&gt;\n  # Normalize within country so each country's bar sums to 100%\n  mutate(p = n / sum(n)) |&gt;\n  ungroup()\n\nhappy_dist_country"
+  },
+  {
+    "objectID": "Slides.html#step-1-normalizing-data-output",
+    "href": "Slides.html#step-1-normalizing-data-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 1: Normalizing data",
+    "text": "Step 1: Normalizing data\n\n# A tibble: 327 × 5\n   cntry Country Happy_factor               n       p\n   &lt;chr&gt; &lt;chr&gt;   &lt;fct&gt;                  &lt;dbl&gt;   &lt;dbl&gt;\n 1 AT    Austria 0 - Extremely unhappy   2.90 0.00374\n 2 AT    Austria 1                       1.99 0.00256\n 3 AT    Austria 2                       3.83 0.00493\n 4 AT    Austria 3                      10.9  0.0141 \n 5 AT    Austria 4                       8.62 0.0111 \n 6 AT    Austria 5                      43.5  0.0560 \n 7 AT    Austria 6                      43.2  0.0556 \n 8 AT    Austria 7                     125.   0.161  \n 9 AT    Austria 8                     251.   0.323  \n10 AT    Austria 9                     198.   0.255  \n# ℹ 317 more rows"
+  },
+  {
+    "objectID": "Slides.html#step-2-keep-only-the-happiest-and-least-happy-countries",
+    "href": "Slides.html#step-2-keep-only-the-happiest-and-least-happy-countries",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 2: keep only the happiest and least happy countries",
+    "text": "Step 2: keep only the happiest and least happy countries\nTo keep the chart readable, show only the n_countries countries with the highest and lowest weighted mean happiness (8 total, as in the reference chart).\n\nn_countries &lt;- 4\n\ntop_bottom_countries &lt;-\n  happy_by_country |&gt;\n  slice_max(Happy_mean, n = n_countries) |&gt;\n  bind_rows(\n    happy_by_country |&gt; slice_min(Happy_mean, n = n_countries)\n  ) |&gt;\n  pull(Country)"
+  },
+  {
+    "objectID": "Slides.html#step-3-order-countries-by-mean-and-plot",
+    "href": "Slides.html#step-3-order-countries-by-mean-and-plot",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 3: order countries by mean and plot",
+    "text": "Step 3: order countries by mean and plot\n\nhappy_likert &lt;-\n  happy_dist_country |&gt;\n  left_join(happy_by_country, by = \"Country\") |&gt;\n  filter(Country %in% top_bottom_countries) |&gt;\n  mutate(Label = fct_reorder(paste(cntry, \"-\", Country), Happy_mean))\n\nggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +\n  # reverse = TRUE keeps \"0 - Extremely unhappy\" on the left and\n  # \"10 - Extremely happy\" on the right, matching the legend order\n  geom_col(position = position_fill(reverse = TRUE)) +\n  scale_fill_brewer(palette = \"RdBu\", direction = -1, name = NULL) +\n  scale_x_continuous(labels = scales::percent) +\n  labs(\n    title = \"How happy are you?\",\n    subtitle = glue::glue(\"Top and bottom {n_countries} countries by weighted mean\"),\n    x = NULL,\n    y = NULL\n  ) +\n  theme_light() +\n  theme(legend.position = \"bottom\")\n\n\n\n\nsurvey_total(vartype = NULL) gives a weighted count per Country x Happy_factor cell without standard errors, which is all that’s needed here since the plot shows a descriptive distribution, not an inferential estimate\nDividing by sum(n) within each country (via group_by(cntry, Country, Happy_factor) peeling the last group in summarize()) turns weighted counts into within-country proportions\nslice_max()/slice_min() on happy_by_country pick the n_countries happiest and least happy countries; adjust n_countries to show more or fewer\nfct_reorder() sorts the remaining countries by Happy_mean so the happiest lands at the top of the plot, matching the ordering convention from the reference chart\nscale_fill_brewer(palette = \"RdBu\", direction = -1) gives a diverging blue-to-red palette across the 11 response categories\nposition_fill(reverse = TRUE) is needed because geom_col()’s default stacking order would otherwise put “0 - Extremely unhappy” on the right"
+  },
+  {
+    "objectID": "Slides.html#step-3-order-countries-by-mean-and-plot-output",
+    "href": "Slides.html#step-3-order-countries-by-mean-and-plot-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Step 3: order countries by mean and plot",
+    "text": "Step 3: order countries by mean and plot"
+  },
+  {
+    "objectID": "Slides.html#references",
+    "href": "Slides.html#references",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "References",
+    "text": "References\n\n\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
   }
 ]
