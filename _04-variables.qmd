@@ -1,0 +1,91 @@
+
+# Derived Variables {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Handling Missing Data Codes {.bkg-trees}
+
+:::{.incremental}
+- Often multiple types of missing data in surveys
+    - Refused
+    - Don't know
+    - Valid skip
+- ESS uses 7s (7,77,7777), 8s, and 9s as missing data codes
+- If we leave them as is, means and statistics will be skewed incorrectly
+    - Need to recode missing data values as missing (`NA`)
+
+:::
+
+## Recoding Missing Data {.bkg-trees}
+
+```{r}
+#| label: derived-rename-noshow
+#| echo: FALSE
+ess_raw <- ess_der |> 
+  select(cntry:wt1)
+
+ess_der_update <- ess_der
+```
+
+```{r}
+#| label: derived-recodes
+#| code-line-numbers: "|4,5|6-11|11|12-22|22"
+#| eval: FALSE
+ess_der_update <-
+  ess_raw |>
+  mutate(
+    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),
+    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),
+    Volunteer_Factor = case_when(
+      volunfp == 1 ~ "Yes",
+      volunfp == 2 ~ "No",
+      TRUE ~ NA
+    ) |>
+      factor(levels = c("Yes", "No")),
+    AgeGroup = recode_values(
+      agegroup,
+      1 ~ '15-24',
+      2 ~ '25-34',
+      3 ~ '35-44',
+      4 ~ '45-54',
+      5 ~ '55-64',
+      6 ~ '65-74',
+      7 ~ '75+'
+    ) |>
+      fct_reorder(agegroup)
+  )
+
+```
+
+
+## Viewing Recodes on Raw Data {.smaller .bkg-serpent}
+
+```{r}
+#| label: derived-raw-count
+#| code-line-numbers: "|1|2"
+ess_der_update |> 
+  count(happy,Happy)
+
+```
+
+## Viewing Recodes on Design Object {.smaller .bkg-serpent}
+
+:::{.panel-tabset}
+
+### survey_count
+
+```{r}
+#| label: derived-desobj-svyct
+#| code-line-numbers: "|2"
+ess_des |> 
+  survey_count(happy,Happy)
+```
+
+### $variables
+```{r}
+#| label: derived-desobj-svyct-vars
+#| code-line-numbers: "|1|2"
+ess_des$variables |> 
+  count(happy,Happy)
+```
+
+:::
+
