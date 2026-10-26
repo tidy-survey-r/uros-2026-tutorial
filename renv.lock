@@ -706,6 +706,58 @@
       "Maintainer": "Kirill Müller <kirill@cynkra.com>",
       "Repository": "CRAN"
     },
+    "brand.yml": {
+      "Package": "brand.yml",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Title": "Unified Branding with a Simple YAML File",
+      "Authors@R": "c( person(\"Garrick\", \"Aden-Buie\", , \"garrick@posit.co\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-7111-0077\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"), comment = c(ROR = \"03wc8by49\")) )",
+      "Description": "Read and process 'brand.yml' 'YAML' files. 'brand.yml' is a simple, portable 'YAML' file that codifies your company's brand guidelines into a format that can be used by 'Quarto', 'Shiny' and 'R' tooling to create branded outputs. Maintain unified, branded theming for web applications to printed reports to dashboards and presentations with a consistent look and feel.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://posit-dev.github.io/brand-yml/pkg/r/, https://github.com/posit-dev/brand-yml",
+      "BugReports": "https://github.com/posit-dev/brand-yml/issues",
+      "Depends": [
+        "R (>= 4.1.0)"
+      ],
+      "Imports": [
+        "cli",
+        "rlang (>= 1.1.0)",
+        "utils",
+        "yaml"
+      ],
+      "Suggests": [
+        "base64enc",
+        "dplyr",
+        "flextable",
+        "ggiraph",
+        "ggplot2 (>= 4.0.0)",
+        "gt",
+        "htmltools",
+        "knitr",
+        "mime",
+        "palmerpenguins",
+        "patchwork",
+        "plotly",
+        "prismatic",
+        "rmarkdown",
+        "sass",
+        "stringr",
+        "testthat (>= 3.0.0)",
+        "thematic (>= 0.1.7.9000)",
+        "tidyr",
+        "tidyverse",
+        "withr"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/testthat/edition": "3",
+      "Config/testthat/parallel": "true",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "no",
+      "Author": "Garrick Aden-Buie [aut, cre] (ORCID: <https://orcid.org/0000-0002-7111-0077>), Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+      "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
+      "Repository": "CRAN"
+    },
     "broom": {
       "Package": "broom",
       "Version": "1.0.13",
@@ -5142,6 +5194,65 @@
       "Maintainer": "David Cooley <david.cooley.au@gmail.com>",
       "Repository": "CRAN"
     },
+    "showtext": {
+      "Package": "showtext",
+      "Version": "0.9-8",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Using Fonts More Easily in R Graphs",
+      "Date": "2026-03-21",
+      "Authors@R": "c( person(\"Yixuan\", \"Qiu\", , \"yixuan.qiu@cos.name\", c(\"aut\", \"cre\")), person(\"Dave\", \"Raggett\", , \"dsr@w3.org\", \"ctb\", comment = \"UTF-8 library. See the AUTHORS file for details\") )",
+      "Description": "Making it easy to use various types of fonts ('TrueType', 'OpenType', Type 1, web fonts, etc.) in R graphs, and supporting most output formats of R graphics including PNG, PDF and SVG. Text glyphs will be converted into polygons or raster images, hence after the plot has been created, it no longer relies on the font files. No external software such as 'Ghostscript' is needed to use this package.",
+      "Depends": [
+        "sysfonts (>= 0.7.1)",
+        "showtextdb (>= 2.0)"
+      ],
+      "Imports": [
+        "grDevices"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "prettydoc",
+        "curl",
+        "jsonlite"
+      ],
+      "SystemRequirements": "zlib, libpng, FreeType",
+      "URL": "https://github.com/yixuan/showtext",
+      "BugReports": "https://github.com/yixuan/showtext/issues",
+      "License": "Apache License (>= 2.0)",
+      "Copyright": "see file COPYRIGHTS",
+      "VignetteBuilder": "knitr, rmarkdown",
+      "RoxygenNote": "7.3.3",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Yixuan Qiu [aut, cre], Dave Raggett [ctb] (UTF-8 library. See the AUTHORS file for details)",
+      "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+      "Repository": "CRAN"
+    },
+    "showtextdb": {
+      "Package": "showtextdb",
+      "Version": "3.0",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Font Files for the 'showtext' Package",
+      "Date": "2020-05-31",
+      "Author": "Yixuan Qiu and authors/contributors of the included fonts. See file AUTHORS for details.",
+      "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+      "Description": "Providing font files that can be used by the 'showtext' package.",
+      "Imports": [
+        "sysfonts (>= 0.7)",
+        "utils"
+      ],
+      "Suggests": [
+        "curl"
+      ],
+      "License": "Apache License (>= 2.0)",
+      "Copyright": "see file COPYRIGHTS",
+      "RoxygenNote": "7.1.0",
+      "NeedsCompilation": "no",
+      "Repository": "CRAN"
+    },
     "sp": {
       "Package": "sp",
       "Version": "2.2-3",
@@ -5552,6 +5663,30 @@
       "NeedsCompilation": "yes",
       "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>), Gábor Csárdi [ctb]",
       "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "sysfonts": {
+      "Package": "sysfonts",
+      "Version": "0.8.9",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Loading Fonts into R",
+      "Date": "2024-03-02",
+      "Author": "Yixuan Qiu and authors/contributors of the included fonts. See file AUTHORS for details.",
+      "Maintainer": "Yixuan Qiu <yixuan.qiu@cos.name>",
+      "Description": "Loading system fonts and Google Fonts <https://fonts.google.com/> into R, in order to support other packages such as 'R2SWF' and 'showtext'.",
+      "Suggests": [
+        "curl",
+        "jsonlite"
+      ],
+      "Copyright": "see file COPYRIGHTS",
+      "SystemRequirements": "zlib, libpng, FreeType",
+      "URL": "https://github.com/yixuan/sysfonts",
+      "BugReports": "https://github.com/yixuan/sysfonts/issues",
+      "License": "GPL-2",
+      "RoxygenNote": "7.3.1",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
       "Repository": "CRAN"
     },
     "systemfonts": {

@@ -92,6 +92,21 @@ library(sf)
 library(tmap)
 ```
 
+```{r}
+#| label: brand-setup-r
+#| echo: false
+
+library(brand.yml)
+library(showtext)
+brand <- read_brand_yml()
+
+heading_family <- brand$typography$headings$family
+
+font_add_google(heading_family)
+showtext_auto()
+
+```
+
 ## R Packages for Survey Analysis {.bkg-ship}
 
 ::::: {.columns}
