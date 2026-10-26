@@ -1,4 +1,4 @@
-# Visualizing survey estimates
+# Visualizing survey estimates   {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Our goal
 
