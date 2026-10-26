@@ -1,6 +1,4 @@
-# Setting up the design object
-
-# Sampling designs 
+# Sampling designs {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Sampling methods
 
@@ -73,7 +71,7 @@ Divide population into mutually exclusive subgroups (clusters). Randomly sample 
 
 :::
 
-## Design-based vs. replicate weights
+## Design-based vs. replicate weights {.smaller}
 
 Two ways to tell R about a sampling design, depending on what the documentation provides:
 
@@ -96,7 +94,7 @@ Use `as_survey_rep()`
 - Some surveys provide both; others release only replicate weights to protect respondent confidentiality
 - Either path produces a `tbl_svy` object that works the same way downstream
 
-# Specifying sampling designs in {srvyr} **without** replicate weights 
+# Specifying sampling designs in {srvyr} **without** replicate weights  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## `as_survey_design()`: Syntax
 
@@ -117,7 +115,6 @@ as_survey_design(
   weights = NULL # weight variable,
 )
 ```
-
 
 ## Syntax for common designs: no stratification/clustering {.smaller}
 
@@ -151,7 +148,7 @@ Two-stage cluster sample, weights computed from population size
 apiclus2 %>% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))
 ```
 
-::: aside
+::: footer
 Examples from `srvyr` help documentation
 :::
 
@@ -171,7 +168,7 @@ Stratified, cluster design
 apistrat %>% as_survey_design(ids = dnum, strata = stype, weights = pw, nest = TRUE)
 ```
 
-::: aside
+::: footer
 Examples from `srvyr` help documentation
 :::
 
@@ -188,11 +185,11 @@ apistrat_des <- apistrat |>
 apistrat_des
 ```
 
-::: aside
+::: footer
 Data: `apistrat` from the `{survey}` package
 :::
 
-# Replicate weight methods
+# Specifying sampling designs in {srvyr} **with** replicate weights {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Replicate weights overview {.smaller}
 
@@ -210,34 +207,9 @@ Replicate weights are another method to estimate variability. In general, they a
 - Jackknife
 - Bootstrap
 
-# Specifying sampling designs in {srvyr} **with** replicate weights 
-
 ## `as_survey_rep()`: Syntax {.smaller}
 
 - `as_survey_rep()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
-
-```{r}
-#| eval: false
-as_survey_rep(
-  .data,
-  variables = NULL, # defaults to all in .data
-  repweights = NULL, # Variables specifying the replication weights
-  weights = NULL, # Variable specifying the analytic/main weight
-  type = c(
-    "BRR", "Fay", "JK1", "JKn", "bootstrap",
-    "successive-difference", "ACS", "other"
-  ), # Type of replication weight
-  combined_weights = TRUE, # TRUE if repweights already include sampling weights, usually TRUE
-  rho = NULL, # Shrinkage factor for Fay's method
-  bootstrap_average = NULL, # For type="bootstrap", if the bootstrap weights have been averaged, gives the number of iterations averaged over
-  scale = NULL, # Scaling constant for variance
-  rscales = NULL, # Scaling constants for variance
-  mse = getOption("survey.replicates.mse"), # If TRUE, compute variance based around point estimates rather than mean of replicates
-  degf = NULL, # Design degrees of freedom, otherwise calculated based on number of replicate weights
-)
-```
-
-## Worked example: BRR with real data {.smaller}
 
 ```{r}
 #| label: scd-design-demo
@@ -261,7 +233,7 @@ scd_rep <- scd |>
 scd_rep
 ```
 
-::: aside
+::: footer
 Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
 :::
 
@@ -274,13 +246,13 @@ Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
   - `as_survey_rep()`: replicate weights (BRR, Fay's, jackknife, bootstrap)
 - Once built, the design object is ready for weighted summaries in later sections
 
-# ESS sampling and weighting
+# ESS sampling and weighting  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Methodology
 
 Recall, we said: "Check the documentation such as methodology, design, analysis guide, or technical documentation"
 
-Head to the ESS website and click "Methodology": <https://www.europeansocialsurvey.org/methodology/sampling>
+Head to the ESS website and click "Methodology": [europeansocialsurvey.org/methodology/sampling](https://www.europeansocialsurvey.org/methodology/sampling){target="_blank"}
 
 ## Sampling {.smaller}
 
@@ -295,7 +267,7 @@ Key sampling principles, from the ESS Sampling Guidelines:
 
 :::
 
-::: aside
+::: footer
 <https://www.europeansocialsurvey.org/methodology/sampling>
 :::
 
@@ -319,7 +291,7 @@ Key sampling principles, from the ESS Sampling Guidelines:
 
 :::
 
-::: aside
+::: footer
 <https://www.europeansocialsurvey.org/methodology/weighting>
 :::
 
@@ -397,11 +369,3 @@ ess_des
 ```
 
 Same result: a `tbl_svy` object ready for weighted summaries.
-
-## Back to design-based vs. replicate weights
-
-ESS falls on the **strata/clusters** side of that earlier choice:
-
-- The data provide `psu` and `stratum` variables (and a single analysis weight, `anweight`) — no replicate weights
-- That's why we used `as_survey_design()`/`svydesign()`, not `as_survey_rep()`
-- A survey that instead shipped jackknife or BRR replicate weights would call for `as_survey_rep()` the same way
