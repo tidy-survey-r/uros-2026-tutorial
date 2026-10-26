@@ -2,7 +2,7 @@
 # Introduction {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 
-## About Us {.bkg-serpent}
+## Instructors {.bkg-serpent}
 
 :::: {.columns}
 
@@ -44,21 +44,6 @@ Posit
 
 ::::
 
-::: {.notes}
-Each of us give a brief intro on our experience/background
-:::
-
-## Prerequisites {.bkg-left}
-
-**Tidyverse familiarity**
-
-::: {.incremental}
-- Selecting a set of variables (`select(starts_with("TOT"))`)
-- Creating new variables with `mutate()`
-- Summarizing data with `summarize()`
-- Using `group_by()` with `summarize()` to create group summaries
-:::
-
 ## Overview of tutorial {.bkg-trees}
 
 At the end of this tutorial, you should be able to:
@@ -70,7 +55,7 @@ At the end of this tutorial, you should be able to:
    
 :::
 
-## Logistics {.bkg-right}
+## Logistics {.bkg-left}
 
   - We will be using Posit Cloud for exercises
   - All materials are found at:
@@ -78,7 +63,7 @@ At the end of this tutorial, you should be able to:
       - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
 
 
-## Libraries Needed for Today {.bkg-ship}
+## Libraries Needed for Today {.bkg-right}
 
 _Note: These are already installed in Posit Cloud_
 ```{r}
@@ -135,26 +120,90 @@ showtext_auto()
 ::::
 :::::
 
-## Why use {srvyr} over {survey}?
+## Why use {srvyr} over {survey}? {.bkg-ship}
 
 ::: {.incremental}
 
 - Use the pipe function `%>%` or `|>`
 - Ability to use tidy selection
 - Functions follow `snake_case` convention
+:::
 
+## Brief note on pipes with {survey} {.bkg-mountains}
+
+:::::{.columns}
+::::{.column width=42%}
+:::{.fragment}
+Magrittr pipe (`%>%`)
+
+:::
+:::{.fragment}
+- dot notation
+
+```{r}
+#| eval: FALSE
+design_object %>% 
+  svyglm(design = ., y ~ x)
+```
+
+:::
+::::
+
+::::{.column}
+:::{.fragment}
+Base R pipe (`|>`)
+
+:::
+
+:::{.fragment}
+- placeholder
+    
+```{r}
+#| eval: FALSE
+design_object |> 
+  svyglm(design = _, y ~ x)
+```
+
+:::
+:::{.fragment}
+- anonymous (lambda) functions
+
+```{r}
+#| eval: FALSE
+design_object |> 
+  (\(.) 
+   svyglm(design = ., y ~ x)
+  )()
+```
+
+:::
+::::
+:::::
+
+::: aside
+Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
 :::
 
 # Comparison of {dplyr} and {srvyr} Functions {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Apply {dplyr} functions to survey objects
+## Apply {dplyr} functions to survey objects {.bkg-trees}
 
+:::{.incremental}
 - A few functions in {srvyr} have counterparts in {dplyr}
   - `dplyr::summarize()` and `srvyr::summarize()`
   - `dplyr::group_by()` and `srvyr::group_by()`
 - Based on the object class, R will recognize which package to use
 
-## Using `summarize()` to calculate mean and median
+:::
+
+## Using `summarize()` to calculate mean and median {.bkg-serpent}
+
+```{r}
+#| echo: FALSE
+data(api)
+api_des <- apistrat |> as_survey_design(strata = stype, weights = pw)
+```
+
 
 ::: {.panel-tabset}
 
@@ -162,51 +211,26 @@ showtext_auto()
 
 ```{r}
 #| label: summarize-tib-ex
-#| code-line-numbers: "|1|2,4|3|"
-towny %>%
+#| code-line-numbers: "|3"
+towny |> 
   summarize(
     area_mean = mean(land_area_km2, na.rm=TRUE)
   )
 ```
 
 ### Survey object:
-
 ```{r}
 #| label: summarize-sv-ex
-#| eval: FALSE
-anes_des %>%
+#| code-line-numbers: "|3"
+api_des |> 
   summarize(
-    age_mean = survey_mean(Age, na.rm=TRUE),
+    score_mean = survey_mean(api99, na.rm=TRUE)
   )
 ```
 :::
 
-## Filtering and Selecting
-::: {.panel-tabset}
 
-### Tibble:
-
-```{r}
-#| label: filt-tib-ex
-towny %>%
-  filter(csd_type == "township") %>%
-  select(csd_type, name)
-```
-
-### Survey object:
-
-```{r}
-#| label: filt-sv-ex
-#| eval: FALSE
-
-anes_des %>%
-  filter(EducationGroup == "Graduate") %>%
-  select(Sex)
-```
-:::
-
-
-## Grouping
+## Grouping  {.bkg-serpent}
 
 ::: {.panel-tabset}
 
@@ -214,8 +238,9 @@ anes_des %>%
 
 ```{r}
 #| label: group-tib-ex
-towny %>%
-  group_by(csd_type) %>%
+#| code-line-numbers: "|2"
+towny |> 
+  group_by(csd_type) |> 
   summarize(area_mean = mean(land_area_km2))
 ```
 
@@ -223,20 +248,19 @@ towny %>%
 
 ```{r}
 #| label: group-sv-ex
-#| eval: FALSE
-
-anes_des %>%
-  group_by(EducationGroup) %>%
-  summarize(age_mean = survey_mean(Age, na.rm=TRUE))
+#| code-line-numbers: "|2"
+api_des |>
+  group_by(stype) |>
+  summarize(score_mean = survey_mean(api99, na.rm=TRUE))
 ```
 :::
 
-## Using {srvyr} functions on non-survey objects
+## Using {srvyr} functions on non-survey objects {.bkg-trees}
 
 ```{r}
 #| label: sv-non-svobj
 #| eval: false
-towny %>%
+towny |>
   summarize(area_mean = survey_mean(land_area_km2))
 ```
 
