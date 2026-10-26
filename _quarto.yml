@@ -6,12 +6,6 @@ project:
 
 website:
   title: "uRos 2026 - Tidy Survey Analysis in R"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - Slides.qmd
-      - DataCleaning.qmd
 
 format:
   html:
