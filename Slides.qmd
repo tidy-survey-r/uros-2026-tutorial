@@ -21,6 +21,7 @@ bibliography: references.bib
 {{< include _01-intro.qmd >}}
 {{< include _02-ess.qmd >}}
 {{< include _03-design.qmd >}}
+{{< include _04-variables.qmd >}}
 {{< include _05-descriptive.qmd >}}
 {{< include _06-happy-exercises.qmd >}}
 {{< include _07-closing.qmd >}}

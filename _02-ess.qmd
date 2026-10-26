@@ -1,4 +1,4 @@
-# Introduction to the European Social Survey (ESS)
+# European Social Survey (ESS) {background-color='{{< brand color blue >}}' .bkg-ship}
 
 ## Overview 
 
@@ -45,28 +45,26 @@ country_shape_col |>
 
 ## Accessing ESS data
 
-1. Create an account at the [ESS Data Portal](https://ess.sikt.no/en/register?redirectUrl=/en/) and then get your [user ID](https://ess.sikt.no/en/api)
+1. Create a ESS account and get your [user ID](https://ess.sikt.no/en/api){target="_blank"}
 
-2. Add your user ID to your R environ file by opening the file and editing as follows:
+2. Open R environ file
 
 ```r
 usethis::edit_r_environ()
 ```
 
-Edit as follows (example):
+3. Add your user ID to R environ
 
 ```r
 ESS_USERID="12345678-1234-1234-1234-12345678900"
 ```
 
-3. Restart your R session
+4. Restart your R session
 
-4. Load the ESS data into R
+5. Load the ESS data into R
 
 ```r
-url <- glue::glue(
-  "https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"
-)
+url <- glue::glue("https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}")
 ess_in <- read_parquet(url)
 ```
 
@@ -74,7 +72,7 @@ ess_in <- read_parquet(url)
 
 - This data is a subset of columns of full data
 - Includes derived variables we created for this course
-- See [data cleaning code](DataCleaning.qmd)
+- See [data cleaning code](DataCleaning.qmd){target="_blank"}
 
 ```{r}
 #| label: 02-course-dat
@@ -95,7 +93,7 @@ ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
 #| label: 02-why-weight
 #| echo: false
 
-ess_des_true <- ess_der |>
+ess_des <- ess_des_true <- ess_der |>
   as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
 ess_des_1 <- ess_der |>
   as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
@@ -149,7 +147,11 @@ allests |>
   ggplot(aes(color = Design)) +
   geom_point(aes(x = Design, y = p_est)) +
   geom_errorbar(aes(x = Design, ymin = p_low, ymax = p_upp)) +
-  theme_light() +
+  theme_light(
+    paper = brand_pluck(brand, "color", "palette", "lightteal"),
+    base_family = heading_family,
+    base_size = 20
+  ) +
   theme(
     legend.position = "bottom",
     axis.title.x = element_blank(),
@@ -165,14 +167,18 @@ allests |>
     title = "Retirement is main activity in last 7 days, ESS 11",
     y = "Estimated proportion with 95% CI"
   ) +
-  scale_y_continuous(
-    labels = scales::percent,
-    limits = c(0, max(allests$p_upp))
-  ) +
-  scale_color_manual(values = c("#0b3954", "#087e8b", "#ff8484", "#8d6b94"))
+  scale_y_continuous(labels = scales::percent) +
+  scale_color_manual(
+    values = unname(unlist(brand$color$palette[c(
+      "blue",
+      "teal",
+      "pink",
+      "purple"
+    )]))
+  )
 ```
 
 ## ESS Variable Viewer
 
-- Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1)
+- Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1){target="_blank"}
 
