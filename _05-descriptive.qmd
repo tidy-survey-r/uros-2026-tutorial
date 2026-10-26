@@ -1,4 +1,4 @@
-# Descriptive analysis
+# Descriptive analysis {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Common workflow
 
