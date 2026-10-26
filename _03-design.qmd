@@ -1,6 +1,4 @@
-# Setting up the design object  {background-color='{{< brand color blue >}}' .bkg-buildings}
-
-## Sampling designs 
+# Sampling designs {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Sampling methods
 
@@ -96,7 +94,7 @@ Use `as_survey_rep()`
 - Some surveys provide both; others release only replicate weights to protect respondent confidentiality
 - Either path produces a `tbl_svy` object that works the same way downstream
 
-## Specifying sampling designs in {srvyr} **without** replicate weights 
+# Specifying sampling designs in {srvyr} **without** replicate weights  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## `as_survey_design()`: Syntax
 
@@ -117,7 +115,6 @@ as_survey_design(
   weights = NULL # weight variable,
 )
 ```
-
 
 ## Syntax for common designs: no stratification/clustering {.smaller}
 
@@ -192,7 +189,7 @@ apistrat_des
 Data: `apistrat` from the `{survey}` package
 :::
 
-## Specifying sampling designs in {srvyr} **with** replicate weights 
+# Specifying sampling designs in {srvyr} **with** replicate weights {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Replicate weights overview {.smaller}
 
@@ -249,7 +246,7 @@ Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
   - `as_survey_rep()`: replicate weights (BRR, Fay's, jackknife, bootstrap)
 - Once built, the design object is ready for weighted summaries in later sections
 
-## ESS sampling and weighting
+# ESS sampling and weighting  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Methodology
 
@@ -372,4 +369,3 @@ ess_des
 ```
 
 Same result: a `tbl_svy` object ready for weighted summaries.
-
