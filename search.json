@@ -116,7 +116,7 @@
     "href": "Slides.html#accessing-ess-data",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Accessing ESS data",
-    "text": "Accessing ESS data\n\nCreate an account at the ESS Data Portal and then get your user ID\nAdd your user ID to your R environ file by opening the file and editing as follows:\n\nusethis::edit_r_environ()\nEdit as follows (example):\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\n  \"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\"\n)\ness_in &lt;- read_parquet(url)"
+    "text": "Accessing ESS data\n\nCreate a ESS account and get your user ID\nOpen R environ file\n\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\ness_in &lt;- read_parquet(url)"
   },
   {
     "objectID": "Slides.html#read-data-subset-for-this-course",
@@ -494,6 +494,6 @@
     "href": "Slides.html#references",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "References",
-    "text": "References\n\n\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
+    "text": "References\n\n\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nFreedman Ellis, Greg, and Ben Schneider. 2026. srvyr: ’dplyr’-Like Syntax for Summary Statistics of Survey Data. https://doi.org/10.32614/CRAN.package.srvyr.\n\n\nLumley, Thomas. 2026. survey: Analysis of Complex Survey Samples. https://doi.org/10.32614/CRAN.package.survey.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
   }
 ]

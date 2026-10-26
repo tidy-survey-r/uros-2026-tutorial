@@ -120,7 +120,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-21853479a512c954098f0669f98a04f6.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-9f9e920c5a11bb287d1fc258ae3b00d0.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -498,8 +498,8 @@ Caused by error in `cur_svy()`:
 </div>
 </section></section>
 <section>
-<section id="introduction-to-the-european-social-survey-ess" class="title-slide slide level1 center">
-<h1>Introduction to the European Social Survey (ESS)</h1>
+<section id="european-social-survey-ess" class="title-slide slide level1 bkg-ship center" data-background-color="#0b3954">
+<h1>European Social Survey (ESS)</h1>
 
 </section>
 <section id="overview" class="slide level2">
@@ -518,27 +518,27 @@ Caused by error in `cur_svy()`:
 <section id="accessing-ess-data" class="slide level2">
 <h2>Accessing ESS data</h2>
 <ol type="1">
-<li><p>Create an account at the <a href="https://ess.sikt.no/en/register?redirectUrl=/en/">ESS Data Portal</a> and then get your <a href="https://ess.sikt.no/en/api">user ID</a></p></li>
-<li><p>Add your user ID to your R environ file by opening the file and editing as follows:</p></li>
+<li><p>Create a ESS account and get your <a href="https://ess.sikt.no/en/api" target="_blank">user ID</a></p></li>
+<li><p>Open R environ file</p></li>
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Edit as follows (example):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>ESS_USERID<span class="ot">=</span><span class="st">"12345678-1234-1234-1234-12345678900"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol start="3" type="1">
+<li>Add your user ID to R environ</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>ESS_USERID<span class="ot">=</span><span class="st">"12345678-1234-1234-1234-12345678900"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
 <li><p>Restart your R session</p></li>
 <li><p>Load the ESS data into R</p></li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>url <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(</span>
-<span id="cb15-2"><a aria-label="2"></a>  <span class="st">"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"</span></span>
-<span id="cb15-3"><a aria-label="3"></a>)</span>
-<span id="cb15-4"><a aria-label="4"></a>ess_in <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>url <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"</span>)</span>
+<span id="cb15-2"><a aria-label="2"></a>ess_in <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="read-data-subset-for-this-course" class="slide level2">
 <h2>Read data subset for this course</h2>
 <ul>
 <li>This data is a subset of columns of full data</li>
 <li>Includes derived variables we created for this course</li>
-<li>See <a href="./DataCleaning.html">data cleaning code</a></li>
+<li>See <a href="./DataCleaning.html" target="_blank">data cleaning code</a></li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>ess_der <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"DerivedData"</span>, <span class="st">"ess11_der.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -560,7 +560,7 @@ Caused by error in `cur_svy()`:
 <section id="ess-variable-viewer" class="slide level2">
 <h2>ESS Variable Viewer</h2>
 <ul>
-<li>Explore ESS variables at the <a href="https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1">Variable Viewer</a></li>
+<li>Explore ESS variables at the <a href="https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1" target="_blank">Variable Viewer</a></li>
 </ul>
 </section></section>
 <section id="setting-up-the-design-object" class="title-slide slide level1 center">
@@ -977,7 +977,7 @@ Data variables:
 </ul>
 </section></section>
 <section>
-<section id="descriptive-analysis" class="title-slide slide level1 center">
+<section id="descriptive-analysis" class="title-slide slide level1 bkg-buildings center" data-background-color="#0b3954">
 <h1>Descriptive analysis</h1>
 
 </section>
@@ -1321,23 +1321,23 @@ Data variables:
 <span id="cb56-11"><a aria-label="11"></a>  <span class="fu">opt_interactive</span>(<span class="at">page_size_default =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="whfrhbycuy" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#whfrhbycuy table {
+<div id="giliuhokgz" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#giliuhokgz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#whfrhbycuy thead, #whfrhbycuy tbody, #whfrhbycuy tfoot, #whfrhbycuy tr, #whfrhbycuy td, #whfrhbycuy th {
+#giliuhokgz thead, #giliuhokgz tbody, #giliuhokgz tfoot, #giliuhokgz tr, #giliuhokgz td, #giliuhokgz th {
   border-style: none;
 }
 
-#whfrhbycuy p {
+#giliuhokgz p {
   margin: 0;
   padding: 0;
 }
 
-#whfrhbycuy .gt_table {
+#giliuhokgz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1363,12 +1363,12 @@ Data variables:
   border-left-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_caption {
+#giliuhokgz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#whfrhbycuy .gt_title {
+#giliuhokgz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1380,7 +1380,7 @@ Data variables:
   border-bottom-width: 0;
 }
 
-#whfrhbycuy .gt_subtitle {
+#giliuhokgz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1392,7 +1392,7 @@ Data variables:
   border-top-width: 0;
 }
 
-#whfrhbycuy .gt_heading {
+#giliuhokgz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1404,13 +1404,13 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_bottom_border {
+#giliuhokgz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_col_headings {
+#giliuhokgz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1425,7 +1425,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_col_heading {
+#giliuhokgz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1445,7 +1445,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#whfrhbycuy .gt_column_spanner_outer {
+#giliuhokgz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1457,15 +1457,15 @@ Data variables:
   padding-right: 4px;
 }
 
-#whfrhbycuy .gt_column_spanner_outer:first-child {
+#giliuhokgz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#whfrhbycuy .gt_column_spanner_outer:last-child {
+#giliuhokgz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#whfrhbycuy .gt_column_spanner {
+#giliuhokgz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1477,11 +1477,11 @@ Data variables:
   width: 100%;
 }
 
-#whfrhbycuy .gt_spanner_row {
+#giliuhokgz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#whfrhbycuy .gt_group_heading {
+#giliuhokgz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1507,7 +1507,7 @@ Data variables:
   text-align: left;
 }
 
-#whfrhbycuy .gt_empty_group_heading {
+#giliuhokgz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1522,15 +1522,15 @@ Data variables:
   vertical-align: middle;
 }
 
-#whfrhbycuy .gt_from_md > :first-child {
+#giliuhokgz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#whfrhbycuy .gt_from_md > :last-child {
+#giliuhokgz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#whfrhbycuy .gt_row {
+#giliuhokgz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1549,7 +1549,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#whfrhbycuy .gt_stub {
+#giliuhokgz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1562,7 +1562,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#whfrhbycuy .gt_stub_row_group {
+#giliuhokgz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1576,15 +1576,15 @@ Data variables:
   vertical-align: top;
 }
 
-#whfrhbycuy .gt_row_group_first td {
+#giliuhokgz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#whfrhbycuy .gt_row_group_first th {
+#giliuhokgz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#whfrhbycuy .gt_summary_row {
+#giliuhokgz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1594,16 +1594,16 @@ Data variables:
   padding-right: 5px;
 }
 
-#whfrhbycuy .gt_first_summary_row {
+#giliuhokgz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_first_summary_row.thick {
+#giliuhokgz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#whfrhbycuy .gt_last_summary_row {
+#giliuhokgz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1613,7 +1613,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_grand_summary_row {
+#giliuhokgz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1623,7 +1623,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#whfrhbycuy .gt_first_grand_summary_row {
+#giliuhokgz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1633,7 +1633,7 @@ Data variables:
   border-top-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_last_grand_summary_row_top {
+#giliuhokgz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1643,11 +1643,11 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_striped {
+#giliuhokgz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#whfrhbycuy .gt_table_body {
+#giliuhokgz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1656,7 +1656,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_footnotes {
+#giliuhokgz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1670,7 +1670,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_footnote {
+#giliuhokgz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1679,7 +1679,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#whfrhbycuy .gt_sourcenotes {
+#giliuhokgz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1693,7 +1693,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#whfrhbycuy .gt_sourcenote {
+#giliuhokgz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1701,77 +1701,77 @@ Data variables:
   padding-right: 5px;
 }
 
-#whfrhbycuy .gt_left {
+#giliuhokgz .gt_left {
   text-align: left;
 }
 
-#whfrhbycuy .gt_center {
+#giliuhokgz .gt_center {
   text-align: center;
 }
 
-#whfrhbycuy .gt_right {
+#giliuhokgz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#whfrhbycuy .gt_font_normal {
+#giliuhokgz .gt_font_normal {
   font-weight: normal;
 }
 
-#whfrhbycuy .gt_font_bold {
+#giliuhokgz .gt_font_bold {
   font-weight: bold;
 }
 
-#whfrhbycuy .gt_font_italic {
+#giliuhokgz .gt_font_italic {
   font-style: italic;
 }
 
-#whfrhbycuy .gt_super {
+#giliuhokgz .gt_super {
   font-size: 65%;
 }
 
-#whfrhbycuy .gt_footnote_marks {
+#giliuhokgz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#whfrhbycuy .gt_asterisk {
+#giliuhokgz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#whfrhbycuy .gt_indent_1 {
+#giliuhokgz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#whfrhbycuy .gt_indent_2 {
+#giliuhokgz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#whfrhbycuy .gt_indent_3 {
+#giliuhokgz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#whfrhbycuy .gt_indent_4 {
+#giliuhokgz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#whfrhbycuy .gt_indent_5 {
+#giliuhokgz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#whfrhbycuy .katex-display {
+#giliuhokgz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#whfrhbycuy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#giliuhokgz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="whfrhbycuy" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="whfrhbycuy">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589825,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.64240588767419,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"whfrhbycuy","dataKey":"27f82e6d7dfb61f4bd5f4e3f7fb4cf7c"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
+<div id="giliuhokgz" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="giliuhokgz">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589825,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.64240588767419,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"giliuhokgz","dataKey":"27f82e6d7dfb61f4bd5f4e3f7fb4cf7c"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -1798,23 +1798,23 @@ Data variables:
 <span id="cb57-11"><a aria-label="11"></a>  <span class="fu">opt_interactive</span>(<span class="at">page_size_default =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="fsgckmdmgr" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fsgckmdmgr table {
+<div id="xtzwylfpdt" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xtzwylfpdt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fsgckmdmgr thead, #fsgckmdmgr tbody, #fsgckmdmgr tfoot, #fsgckmdmgr tr, #fsgckmdmgr td, #fsgckmdmgr th {
+#xtzwylfpdt thead, #xtzwylfpdt tbody, #xtzwylfpdt tfoot, #xtzwylfpdt tr, #xtzwylfpdt td, #xtzwylfpdt th {
   border-style: none;
 }
 
-#fsgckmdmgr p {
+#xtzwylfpdt p {
   margin: 0;
   padding: 0;
 }
 
-#fsgckmdmgr .gt_table {
+#xtzwylfpdt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1840,12 +1840,12 @@ Data variables:
   border-left-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_caption {
+#xtzwylfpdt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fsgckmdmgr .gt_title {
+#xtzwylfpdt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1857,7 +1857,7 @@ Data variables:
   border-bottom-width: 0;
 }
 
-#fsgckmdmgr .gt_subtitle {
+#xtzwylfpdt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1869,7 +1869,7 @@ Data variables:
   border-top-width: 0;
 }
 
-#fsgckmdmgr .gt_heading {
+#xtzwylfpdt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1881,13 +1881,13 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_bottom_border {
+#xtzwylfpdt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_col_headings {
+#xtzwylfpdt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1902,7 +1902,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_col_heading {
+#xtzwylfpdt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1922,7 +1922,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#fsgckmdmgr .gt_column_spanner_outer {
+#xtzwylfpdt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1934,15 +1934,15 @@ Data variables:
   padding-right: 4px;
 }
 
-#fsgckmdmgr .gt_column_spanner_outer:first-child {
+#xtzwylfpdt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fsgckmdmgr .gt_column_spanner_outer:last-child {
+#xtzwylfpdt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fsgckmdmgr .gt_column_spanner {
+#xtzwylfpdt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1954,11 +1954,11 @@ Data variables:
   width: 100%;
 }
 
-#fsgckmdmgr .gt_spanner_row {
+#xtzwylfpdt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fsgckmdmgr .gt_group_heading {
+#xtzwylfpdt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1984,7 +1984,7 @@ Data variables:
   text-align: left;
 }
 
-#fsgckmdmgr .gt_empty_group_heading {
+#xtzwylfpdt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1999,15 +1999,15 @@ Data variables:
   vertical-align: middle;
 }
 
-#fsgckmdmgr .gt_from_md > :first-child {
+#xtzwylfpdt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fsgckmdmgr .gt_from_md > :last-child {
+#xtzwylfpdt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fsgckmdmgr .gt_row {
+#xtzwylfpdt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2026,7 +2026,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#fsgckmdmgr .gt_stub {
+#xtzwylfpdt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2039,7 +2039,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#fsgckmdmgr .gt_stub_row_group {
+#xtzwylfpdt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2053,15 +2053,15 @@ Data variables:
   vertical-align: top;
 }
 
-#fsgckmdmgr .gt_row_group_first td {
+#xtzwylfpdt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fsgckmdmgr .gt_row_group_first th {
+#xtzwylfpdt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fsgckmdmgr .gt_summary_row {
+#xtzwylfpdt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2071,16 +2071,16 @@ Data variables:
   padding-right: 5px;
 }
 
-#fsgckmdmgr .gt_first_summary_row {
+#xtzwylfpdt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_first_summary_row.thick {
+#xtzwylfpdt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fsgckmdmgr .gt_last_summary_row {
+#xtzwylfpdt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2090,7 +2090,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_grand_summary_row {
+#xtzwylfpdt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2100,7 +2100,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#fsgckmdmgr .gt_first_grand_summary_row {
+#xtzwylfpdt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2110,7 +2110,7 @@ Data variables:
   border-top-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_last_grand_summary_row_top {
+#xtzwylfpdt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2120,11 +2120,11 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_striped {
+#xtzwylfpdt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fsgckmdmgr .gt_table_body {
+#xtzwylfpdt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2133,7 +2133,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_footnotes {
+#xtzwylfpdt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2147,7 +2147,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_footnote {
+#xtzwylfpdt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2156,7 +2156,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#fsgckmdmgr .gt_sourcenotes {
+#xtzwylfpdt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2170,7 +2170,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#fsgckmdmgr .gt_sourcenote {
+#xtzwylfpdt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2178,77 +2178,77 @@ Data variables:
   padding-right: 5px;
 }
 
-#fsgckmdmgr .gt_left {
+#xtzwylfpdt .gt_left {
   text-align: left;
 }
 
-#fsgckmdmgr .gt_center {
+#xtzwylfpdt .gt_center {
   text-align: center;
 }
 
-#fsgckmdmgr .gt_right {
+#xtzwylfpdt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fsgckmdmgr .gt_font_normal {
+#xtzwylfpdt .gt_font_normal {
   font-weight: normal;
 }
 
-#fsgckmdmgr .gt_font_bold {
+#xtzwylfpdt .gt_font_bold {
   font-weight: bold;
 }
 
-#fsgckmdmgr .gt_font_italic {
+#xtzwylfpdt .gt_font_italic {
   font-style: italic;
 }
 
-#fsgckmdmgr .gt_super {
+#xtzwylfpdt .gt_super {
   font-size: 65%;
 }
 
-#fsgckmdmgr .gt_footnote_marks {
+#xtzwylfpdt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fsgckmdmgr .gt_asterisk {
+#xtzwylfpdt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fsgckmdmgr .gt_indent_1 {
+#xtzwylfpdt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fsgckmdmgr .gt_indent_2 {
+#xtzwylfpdt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fsgckmdmgr .gt_indent_3 {
+#xtzwylfpdt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fsgckmdmgr .gt_indent_4 {
+#xtzwylfpdt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fsgckmdmgr .gt_indent_5 {
+#xtzwylfpdt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#fsgckmdmgr .katex-display {
+#xtzwylfpdt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#fsgckmdmgr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#xtzwylfpdt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="fsgckmdmgr" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="fsgckmdmgr">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"NetFreq":["Only occasionally","A few times a week","Most days","Every day","Only occasionally","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day"],"N":[40254.5156171373,54941.3325842297,985973.663718145,8159302.85264478,184533.436980945,264447.538150958,6356212.37420816,41590.7713042323,97612.3599987657,151262.471608959,528422.894158936,7738219.11043573,215268.101673223,421050.471526484,363809.445599976,799547.373731868,7218228.05951011,768229.700542856,967739.238036506,663438.65885605,1017672.56703703,5794516.86718151,1293235.6999679,583407.238149269,673845.329394957,824273.858789924,4025920.56274747,2899841.85112961,658893.60346754,407122.561694724,492333.25721072,1525626.6175468],"N_se":[40254.5156171373,54941.3325842297,246792.379522231,586824.16184926,92304.1913232295,101814.515937528,475559.606121325,41590.7713042323,56512.6373061378,76562.6485124443,152299.219191211,497974.11054214,106143.087814052,133340.514847088,126530.716895935,185505.749052408,480959.744951353,168858.700720752,181369.308488357,150366.325571587,166705.023719628,409368.930951012,229568.247815536,147058.922349094,143266.721103002,159903.829590765,329503.970910268,326819.870152403,151519.810328996,132834.899379983,125324.378559609,214869.078392573],"p":[0.435632660637003,0.594572796532798,10.6701651693319,88.2996293991892,2.71165604724912,3.88596656370686,93.4023773890532,0.48603772690416,1.14071675239936,1.76768229714205,6.17525124639578,90.4303118906305,2.38711916669862,4.66905061263104,4.03430184781597,8.86622237623151,80.0433060509488,8.33981011005112,10.505662020027,7.20221104531802,11.0477322333347,62.9045848105348,17.4745459885944,7.88315433402911,9.10517796408192,11.1378084350752,54.3993132850891,48.4613987919548,11.0112576364137,6.80372580033155,8.22774466360671,25.4958731252344],"p_se":[0.434304908053932,0.592628156621299,2.49058228866707,2.71276734709151,1.33156776328547,1.4601430674117,1.8835263571398,0.486761823695305,0.661100228680426,0.882439945666399,1.70345770065859,2.06987488150031,1.16260027797468,1.44406828742972,1.36826274726384,1.97534965563371,2.7750901823364,1.7423079386822,1.89859240305187,1.54338880208255,1.76192714893799,2.85930675398322,2.81958278229679,1.89050729565303,1.76936586289467,1.97755731720227,3.41723338189174,3.93113639513395,2.33420659457729,2.06996075028029,2.07256682372488,3.17197162076798],"AgeGroup":["15-24","15-24","15-24","15-24","25-34","25-34","25-34","35-44","35-44","35-44","35-44","35-44","45-54","45-54","45-54","45-54","45-54","55-64","55-64","55-64","55-64","55-64","65-74","65-74","65-74","65-74","65-74","75+","75+","75+","75+","75+"]},"columns":[{"id":"NetFreq","name":"NetFreq","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"N","name":"N","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","985,974","8,159,303","184,533","264,448","6,356,212","41,591","97,612","151,262","528,423","7,738,219","215,268","421,050","363,809","799,547","7,218,228","768,230","967,739","663,439","1,017,673","5,794,517","1,293,236","583,407","673,845","824,274","4,025,921","2,899,842","658,894","407,123","492,333","1,525,627"],"html":true,"align":"right"},{"id":"N_se","name":"N_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","246,792","586,824","92,304","101,815","475,560","41,591","56,513","76,563","152,299","497,974","106,143","133,341","126,531","185,506","480,960","168,859","181,369","150,366","166,705","409,369","229,568","147,059","143,267","159,904","329,504","326,820","151,520","132,835","125,324","214,869"],"html":true,"align":"right"},{"id":"p","name":"p","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.4","0.6","10.7","88.3","2.7","3.9","93.4","0.5","1.1","1.8","6.2","90.4","2.4","4.7","4.0","8.9","80.0","8.3","10.5","7.2","11.0","62.9","17.5","7.9","9.1","11.1","54.4","48.5","11.0","6.8","8.2","25.5"],"html":true,"align":"right"},{"id":"p_se","name":"p_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.4","0.6","2.5","2.7","1.3","1.5","1.9","0.5","0.7","0.9","1.7","2.1","1.2","1.4","1.4","2.0","2.8","1.7","1.9","1.5","1.8","2.9","2.8","1.9","1.8","2.0","3.4","3.9","2.3","2.1","2.1","3.2"],"html":true,"align":"right"},{"id":"AgeGroup","name":[],"type":"factor","na":"NA","minWidth":125,"style":{"font-weight":"initial"},"grouped":"\n      function(cellInfo) {\n        return cellInfo.value\n      }","html":true}],"groupBy":["AgeGroup"],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"defaultExpanded":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"fsgckmdmgr","dataKey":"a44502b29ef313c707cf318d7e024965"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.grouped"],"jsHooks":[]}</script>
+<div id="xtzwylfpdt" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="xtzwylfpdt">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"NetFreq":["Only occasionally","A few times a week","Most days","Every day","Only occasionally","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day"],"N":[40254.5156171373,54941.3325842297,985973.663718145,8159302.85264478,184533.436980945,264447.538150958,6356212.37420816,41590.7713042323,97612.3599987657,151262.471608959,528422.894158936,7738219.11043573,215268.101673223,421050.471526484,363809.445599976,799547.373731868,7218228.05951011,768229.700542856,967739.238036506,663438.65885605,1017672.56703703,5794516.86718151,1293235.6999679,583407.238149269,673845.329394957,824273.858789924,4025920.56274747,2899841.85112961,658893.60346754,407122.561694724,492333.25721072,1525626.6175468],"N_se":[40254.5156171373,54941.3325842297,246792.379522231,586824.16184926,92304.1913232295,101814.515937528,475559.606121325,41590.7713042323,56512.6373061378,76562.6485124443,152299.219191211,497974.11054214,106143.087814052,133340.514847088,126530.716895935,185505.749052408,480959.744951353,168858.700720752,181369.308488357,150366.325571587,166705.023719628,409368.930951012,229568.247815536,147058.922349094,143266.721103002,159903.829590765,329503.970910268,326819.870152403,151519.810328996,132834.899379983,125324.378559609,214869.078392573],"p":[0.435632660637003,0.594572796532798,10.6701651693319,88.2996293991892,2.71165604724912,3.88596656370686,93.4023773890532,0.48603772690416,1.14071675239936,1.76768229714205,6.17525124639578,90.4303118906305,2.38711916669862,4.66905061263104,4.03430184781597,8.86622237623151,80.0433060509488,8.33981011005112,10.505662020027,7.20221104531802,11.0477322333347,62.9045848105348,17.4745459885944,7.88315433402911,9.10517796408192,11.1378084350752,54.3993132850891,48.4613987919548,11.0112576364137,6.80372580033155,8.22774466360671,25.4958731252344],"p_se":[0.434304908053932,0.592628156621299,2.49058228866707,2.71276734709151,1.33156776328547,1.4601430674117,1.8835263571398,0.486761823695305,0.661100228680426,0.882439945666399,1.70345770065859,2.06987488150031,1.16260027797468,1.44406828742972,1.36826274726384,1.97534965563371,2.7750901823364,1.7423079386822,1.89859240305187,1.54338880208255,1.76192714893799,2.85930675398322,2.81958278229679,1.89050729565303,1.76936586289467,1.97755731720227,3.41723338189174,3.93113639513395,2.33420659457729,2.06996075028029,2.07256682372488,3.17197162076798],"AgeGroup":["15-24","15-24","15-24","15-24","25-34","25-34","25-34","35-44","35-44","35-44","35-44","35-44","45-54","45-54","45-54","45-54","45-54","55-64","55-64","55-64","55-64","55-64","65-74","65-74","65-74","65-74","65-74","75+","75+","75+","75+","75+"]},"columns":[{"id":"NetFreq","name":"NetFreq","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"N","name":"N","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","985,974","8,159,303","184,533","264,448","6,356,212","41,591","97,612","151,262","528,423","7,738,219","215,268","421,050","363,809","799,547","7,218,228","768,230","967,739","663,439","1,017,673","5,794,517","1,293,236","583,407","673,845","824,274","4,025,921","2,899,842","658,894","407,123","492,333","1,525,627"],"html":true,"align":"right"},{"id":"N_se","name":"N_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","246,792","586,824","92,304","101,815","475,560","41,591","56,513","76,563","152,299","497,974","106,143","133,341","126,531","185,506","480,960","168,859","181,369","150,366","166,705","409,369","229,568","147,059","143,267","159,904","329,504","326,820","151,520","132,835","125,324","214,869"],"html":true,"align":"right"},{"id":"p","name":"p","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.4","0.6","10.7","88.3","2.7","3.9","93.4","0.5","1.1","1.8","6.2","90.4","2.4","4.7","4.0","8.9","80.0","8.3","10.5","7.2","11.0","62.9","17.5","7.9","9.1","11.1","54.4","48.5","11.0","6.8","8.2","25.5"],"html":true,"align":"right"},{"id":"p_se","name":"p_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.4","0.6","2.5","2.7","1.3","1.5","1.9","0.5","0.7","0.9","1.7","2.1","1.2","1.4","1.4","2.0","2.8","1.7","1.9","1.5","1.8","2.9","2.8","1.9","1.8","2.0","3.4","3.9","2.3","2.1","2.1","3.2"],"html":true,"align":"right"},{"id":"AgeGroup","name":[],"type":"factor","na":"NA","minWidth":125,"style":{"font-weight":"initial"},"grouped":"\n      function(cellInfo) {\n        return cellInfo.value\n      }","html":true}],"groupBy":["AgeGroup"],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"defaultExpanded":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"xtzwylfpdt","dataKey":"a44502b29ef313c707cf318d7e024965"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.grouped"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -2271,23 +2271,23 @@ Data variables:
 <span id="cb58-11"><a aria-label="11"></a>  <span class="fu">opt_interactive</span>(<span class="at">page_size_default =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="gznnvxorqn" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gznnvxorqn table {
+<div id="yzyhfwbsui" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yzyhfwbsui table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gznnvxorqn thead, #gznnvxorqn tbody, #gznnvxorqn tfoot, #gznnvxorqn tr, #gznnvxorqn td, #gznnvxorqn th {
+#yzyhfwbsui thead, #yzyhfwbsui tbody, #yzyhfwbsui tfoot, #yzyhfwbsui tr, #yzyhfwbsui td, #yzyhfwbsui th {
   border-style: none;
 }
 
-#gznnvxorqn p {
+#yzyhfwbsui p {
   margin: 0;
   padding: 0;
 }
 
-#gznnvxorqn .gt_table {
+#yzyhfwbsui .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2313,12 +2313,12 @@ Data variables:
   border-left-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_caption {
+#yzyhfwbsui .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gznnvxorqn .gt_title {
+#yzyhfwbsui .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2330,7 +2330,7 @@ Data variables:
   border-bottom-width: 0;
 }
 
-#gznnvxorqn .gt_subtitle {
+#yzyhfwbsui .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2342,7 +2342,7 @@ Data variables:
   border-top-width: 0;
 }
 
-#gznnvxorqn .gt_heading {
+#yzyhfwbsui .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2354,13 +2354,13 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_bottom_border {
+#yzyhfwbsui .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_col_headings {
+#yzyhfwbsui .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2375,7 +2375,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_col_heading {
+#yzyhfwbsui .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2395,7 +2395,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#gznnvxorqn .gt_column_spanner_outer {
+#yzyhfwbsui .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2407,15 +2407,15 @@ Data variables:
   padding-right: 4px;
 }
 
-#gznnvxorqn .gt_column_spanner_outer:first-child {
+#yzyhfwbsui .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gznnvxorqn .gt_column_spanner_outer:last-child {
+#yzyhfwbsui .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gznnvxorqn .gt_column_spanner {
+#yzyhfwbsui .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2427,11 +2427,11 @@ Data variables:
   width: 100%;
 }
 
-#gznnvxorqn .gt_spanner_row {
+#yzyhfwbsui .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gznnvxorqn .gt_group_heading {
+#yzyhfwbsui .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2457,7 +2457,7 @@ Data variables:
   text-align: left;
 }
 
-#gznnvxorqn .gt_empty_group_heading {
+#yzyhfwbsui .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2472,15 +2472,15 @@ Data variables:
   vertical-align: middle;
 }
 
-#gznnvxorqn .gt_from_md > :first-child {
+#yzyhfwbsui .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gznnvxorqn .gt_from_md > :last-child {
+#yzyhfwbsui .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gznnvxorqn .gt_row {
+#yzyhfwbsui .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2499,7 +2499,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#gznnvxorqn .gt_stub {
+#yzyhfwbsui .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2512,7 +2512,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#gznnvxorqn .gt_stub_row_group {
+#yzyhfwbsui .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2526,15 +2526,15 @@ Data variables:
   vertical-align: top;
 }
 
-#gznnvxorqn .gt_row_group_first td {
+#yzyhfwbsui .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gznnvxorqn .gt_row_group_first th {
+#yzyhfwbsui .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gznnvxorqn .gt_summary_row {
+#yzyhfwbsui .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2544,16 +2544,16 @@ Data variables:
   padding-right: 5px;
 }
 
-#gznnvxorqn .gt_first_summary_row {
+#yzyhfwbsui .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_first_summary_row.thick {
+#yzyhfwbsui .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gznnvxorqn .gt_last_summary_row {
+#yzyhfwbsui .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2563,7 +2563,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_grand_summary_row {
+#yzyhfwbsui .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2573,7 +2573,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#gznnvxorqn .gt_first_grand_summary_row {
+#yzyhfwbsui .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2583,7 +2583,7 @@ Data variables:
   border-top-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_last_grand_summary_row_top {
+#yzyhfwbsui .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2593,11 +2593,11 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_striped {
+#yzyhfwbsui .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gznnvxorqn .gt_table_body {
+#yzyhfwbsui .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2606,7 +2606,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_footnotes {
+#yzyhfwbsui .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2620,7 +2620,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_footnote {
+#yzyhfwbsui .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2629,7 +2629,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#gznnvxorqn .gt_sourcenotes {
+#yzyhfwbsui .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2643,7 +2643,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#gznnvxorqn .gt_sourcenote {
+#yzyhfwbsui .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2651,77 +2651,77 @@ Data variables:
   padding-right: 5px;
 }
 
-#gznnvxorqn .gt_left {
+#yzyhfwbsui .gt_left {
   text-align: left;
 }
 
-#gznnvxorqn .gt_center {
+#yzyhfwbsui .gt_center {
   text-align: center;
 }
 
-#gznnvxorqn .gt_right {
+#yzyhfwbsui .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gznnvxorqn .gt_font_normal {
+#yzyhfwbsui .gt_font_normal {
   font-weight: normal;
 }
 
-#gznnvxorqn .gt_font_bold {
+#yzyhfwbsui .gt_font_bold {
   font-weight: bold;
 }
 
-#gznnvxorqn .gt_font_italic {
+#yzyhfwbsui .gt_font_italic {
   font-style: italic;
 }
 
-#gznnvxorqn .gt_super {
+#yzyhfwbsui .gt_super {
   font-size: 65%;
 }
 
-#gznnvxorqn .gt_footnote_marks {
+#yzyhfwbsui .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gznnvxorqn .gt_asterisk {
+#yzyhfwbsui .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gznnvxorqn .gt_indent_1 {
+#yzyhfwbsui .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gznnvxorqn .gt_indent_2 {
+#yzyhfwbsui .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gznnvxorqn .gt_indent_3 {
+#yzyhfwbsui .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gznnvxorqn .gt_indent_4 {
+#yzyhfwbsui .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gznnvxorqn .gt_indent_5 {
+#yzyhfwbsui .gt_indent_5 {
   text-indent: 25px;
 }
 
-#gznnvxorqn .katex-display {
+#yzyhfwbsui .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#gznnvxorqn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yzyhfwbsui div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="gznnvxorqn" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="gznnvxorqn">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AgeGroup":["15-24","15-24","15-24","15-24","25-34","25-34","25-34","35-44","35-44","35-44","35-44","35-44","45-54","45-54","45-54","45-54","45-54","55-64","55-64","55-64","55-64","55-64","65-74","65-74","65-74","65-74","65-74","75+","75+","75+","75+","75+"],"NetFreq":["Only occasionally","A few times a week","Most days","Every day","Only occasionally","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day"],"N":[40254.5156171373,54941.3325842297,985973.663718145,8159302.85264478,184533.436980945,264447.538150958,6356212.37420816,41590.7713042323,97612.3599987657,151262.471608959,528422.894158936,7738219.11043573,215268.101673223,421050.471526484,363809.445599976,799547.373731868,7218228.05951011,768229.700542856,967739.238036506,663438.65885605,1017672.56703703,5794516.86718151,1293235.6999679,583407.238149269,673845.329394957,824273.858789924,4025920.56274747,2899841.85112961,658893.60346754,407122.561694724,492333.25721072,1525626.6175468],"N_se":[40254.5156171373,54941.3325842297,246792.379522231,586824.16184926,92304.1913232295,101814.515937528,475559.606121325,41590.7713042323,56512.6373061378,76562.6485124443,152299.219191211,497974.11054214,106143.087814052,133340.514847088,126530.716895935,185505.749052408,480959.744951353,168858.700720752,181369.308488357,150366.325571587,166705.023719628,409368.930951012,229568.247815536,147058.922349094,143266.721103002,159903.829590765,329503.970910268,326819.870152403,151519.810328996,132834.899379983,125324.378559609,214869.078392573],"p":[0.0716058793080436,0.0977312094647083,1.75387810297537,14.5140003888485,0.328253335676932,0.470406815480647,11.3066116759022,0.0739828489967243,0.17363564712926,0.269069997881877,0.939973700151649,13.7649646303306,0.382925032682757,0.748976581216907,0.647154641559591,1.42225764903075,12.8399897334533,1.36654887966181,1.72144220623228,1.18014358901706,1.81026500075455,10.3074517863516,2.3004445113674,1.03778141766124,1.19865527107626,1.46624182515688,7.16142220322578,5.15832131840687,1.17205871499537,0.72420122141115,0.875776426159789,2.71382809542291],"p_se":[0.0715986522727925,0.0975152316484015,0.431578110121333,0.916898916500778,0.164136230796866,0.180533687863009,0.761707526757418,0.0740398956204536,0.100608662140102,0.13567228155165,0.267717873971689,0.78203165861469,0.188029275804652,0.234675959003549,0.222690049636137,0.325294260991867,0.823208041959443,0.296114783528209,0.315200213122057,0.263913207671552,0.294027769425013,0.714376927996421,0.402455625123314,0.259122176508835,0.252495777202824,0.278033674269559,0.590753610676897,0.557715578493862,0.269196756743548,0.235595663419199,0.222958371781792,0.380840749049901]},"columns":[{"id":"AgeGroup","name":"AgeGroup","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"NetFreq","name":"NetFreq","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"N","name":"N","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","985,974","8,159,303","184,533","264,448","6,356,212","41,591","97,612","151,262","528,423","7,738,219","215,268","421,050","363,809","799,547","7,218,228","768,230","967,739","663,439","1,017,673","5,794,517","1,293,236","583,407","673,845","824,274","4,025,921","2,899,842","658,894","407,123","492,333","1,525,627"],"html":true,"align":"right"},{"id":"N_se","name":"N_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","246,792","586,824","92,304","101,815","475,560","41,591","56,513","76,563","152,299","497,974","106,143","133,341","126,531","185,506","480,960","168,859","181,369","150,366","166,705","409,369","229,568","147,059","143,267","159,904","329,504","326,820","151,520","132,835","125,324","214,869"],"html":true,"align":"right"},{"id":"p","name":"p","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.1","0.1","1.8","14.5","0.3","0.5","11.3","0.1","0.2","0.3","0.9","13.8","0.4","0.7","0.6","1.4","12.8","1.4","1.7","1.2","1.8","10.3","2.3","1.0","1.2","1.5","7.2","5.2","1.2","0.7","0.9","2.7"],"html":true,"align":"right"},{"id":"p_se","name":"p_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.1","0.1","0.4","0.9","0.2","0.2","0.8","0.1","0.1","0.1","0.3","0.8","0.2","0.2","0.2","0.3","0.8","0.3","0.3","0.3","0.3","0.7","0.4","0.3","0.3","0.3","0.6","0.6","0.3","0.2","0.2","0.4"],"html":true,"align":"right"}],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"gznnvxorqn","dataKey":"10c56644dea0b08372d9405c874554de"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
+<div id="yzyhfwbsui" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="yzyhfwbsui">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"AgeGroup":["15-24","15-24","15-24","15-24","25-34","25-34","25-34","35-44","35-44","35-44","35-44","35-44","45-54","45-54","45-54","45-54","45-54","55-64","55-64","55-64","55-64","55-64","65-74","65-74","65-74","65-74","65-74","75+","75+","75+","75+","75+"],"NetFreq":["Only occasionally","A few times a week","Most days","Every day","Only occasionally","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day","Never","Only occasionally","A few times a week","Most days","Every day"],"N":[40254.5156171373,54941.3325842297,985973.663718145,8159302.85264478,184533.436980945,264447.538150958,6356212.37420816,41590.7713042323,97612.3599987657,151262.471608959,528422.894158936,7738219.11043573,215268.101673223,421050.471526484,363809.445599976,799547.373731868,7218228.05951011,768229.700542856,967739.238036506,663438.65885605,1017672.56703703,5794516.86718151,1293235.6999679,583407.238149269,673845.329394957,824273.858789924,4025920.56274747,2899841.85112961,658893.60346754,407122.561694724,492333.25721072,1525626.6175468],"N_se":[40254.5156171373,54941.3325842297,246792.379522231,586824.16184926,92304.1913232295,101814.515937528,475559.606121325,41590.7713042323,56512.6373061378,76562.6485124443,152299.219191211,497974.11054214,106143.087814052,133340.514847088,126530.716895935,185505.749052408,480959.744951353,168858.700720752,181369.308488357,150366.325571587,166705.023719628,409368.930951012,229568.247815536,147058.922349094,143266.721103002,159903.829590765,329503.970910268,326819.870152403,151519.810328996,132834.899379983,125324.378559609,214869.078392573],"p":[0.0716058793080436,0.0977312094647083,1.75387810297537,14.5140003888485,0.328253335676932,0.470406815480647,11.3066116759022,0.0739828489967243,0.17363564712926,0.269069997881877,0.939973700151649,13.7649646303306,0.382925032682757,0.748976581216907,0.647154641559591,1.42225764903075,12.8399897334533,1.36654887966181,1.72144220623228,1.18014358901706,1.81026500075455,10.3074517863516,2.3004445113674,1.03778141766124,1.19865527107626,1.46624182515688,7.16142220322578,5.15832131840687,1.17205871499537,0.72420122141115,0.875776426159789,2.71382809542291],"p_se":[0.0715986522727925,0.0975152316484015,0.431578110121333,0.916898916500778,0.164136230796866,0.180533687863009,0.761707526757418,0.0740398956204536,0.100608662140102,0.13567228155165,0.267717873971689,0.78203165861469,0.188029275804652,0.234675959003549,0.222690049636137,0.325294260991867,0.823208041959443,0.296114783528209,0.315200213122057,0.263913207671552,0.294027769425013,0.714376927996421,0.402455625123314,0.259122176508835,0.252495777202824,0.278033674269559,0.590753610676897,0.557715578493862,0.269196756743548,0.235595663419199,0.222958371781792,0.380840749049901]},"columns":[{"id":"AgeGroup","name":"AgeGroup","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"NetFreq","name":"NetFreq","type":"factor","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"N","name":"N","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","985,974","8,159,303","184,533","264,448","6,356,212","41,591","97,612","151,262","528,423","7,738,219","215,268","421,050","363,809","799,547","7,218,228","768,230","967,739","663,439","1,017,673","5,794,517","1,293,236","583,407","673,845","824,274","4,025,921","2,899,842","658,894","407,123","492,333","1,525,627"],"html":true,"align":"right"},{"id":"N_se","name":"N_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["40,255","54,941","246,792","586,824","92,304","101,815","475,560","41,591","56,513","76,563","152,299","497,974","106,143","133,341","126,531","185,506","480,960","168,859","181,369","150,366","166,705","409,369","229,568","147,059","143,267","159,904","329,504","326,820","151,520","132,835","125,324","214,869"],"html":true,"align":"right"},{"id":"p","name":"p","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.1","0.1","1.8","14.5","0.3","0.5","11.3","0.1","0.2","0.3","0.9","13.8","0.4","0.7","0.6","1.4","12.8","1.4","1.7","1.2","1.8","10.3","2.3","1.0","1.2","1.5","7.2","5.2","1.2","0.7","0.9","2.7"],"html":true,"align":"right"},{"id":"p_se","name":"p_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.1","0.1","0.4","0.9","0.2","0.2","0.8","0.1","0.1","0.1","0.3","0.8","0.2","0.2","0.2","0.3","0.8","0.3","0.3","0.3","0.3","0.7","0.4","0.3","0.3","0.3","0.6","0.6","0.3","0.2","0.2","0.4"],"html":true,"align":"right"}],"defaultPageSize":8,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"yzyhfwbsui","dataKey":"10c56644dea0b08372d9405c874554de"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -2962,6 +2962,12 @@ European Social Survey European Research Infrastructure (ESS ERIC). 2024a. <em>E
 </div>
 <div id="ref-ESS-doc" class="csl-entry" role="listitem">
 European Social Survey European Research Infrastructure (ESS ERIC). 2024b. <em>European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe</em>. <a href="https://doi.org/10.21338/ESS11-2023">https://doi.org/10.21338/ESS11-2023</a>.
+</div>
+<div id="ref-srvyr" class="csl-entry" role="listitem">
+Freedman Ellis, Greg, and Ben Schneider. 2026. <em><span class="nocase">s</span>rvyr: ’<span class="nocase">d</span>plyr’-Like Syntax for Summary Statistics of Survey Data</em>. <a href="https://doi.org/10.32614/CRAN.package.srvyr">https://doi.org/10.32614/CRAN.package.srvyr</a>.
+</div>
+<div id="ref-survey" class="csl-entry" role="listitem">
+Lumley, Thomas. 2026. <em><span class="nocase">s</span>urvey: Analysis of Complex Survey Samples</em>. <a href="https://doi.org/10.32614/CRAN.package.survey">https://doi.org/10.32614/CRAN.package.survey</a>.
 </div>
 <div id="ref-ecsdar" class="csl-entry" role="listitem">
 Zimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. <em>Exploring Complex Survey Data Analysis Using <span>R</span>: A Tidy Introduction with {<span class="nocase">s</span>rvyr} and {<span class="nocase">s</span>urvey}</em>. CRC Press.
