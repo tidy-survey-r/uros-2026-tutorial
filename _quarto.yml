@@ -1,6 +1,6 @@
 project:
   type: website
-  render: 
+  render:
   - "DataCleaning.qmd"
   - "*.qmd"
 
