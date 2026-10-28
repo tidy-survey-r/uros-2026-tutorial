@@ -14,5 +14,4 @@
 
 .vscode
 
-/_freeze/*
-!/_freeze/DataCleaning/
+/_freeze/

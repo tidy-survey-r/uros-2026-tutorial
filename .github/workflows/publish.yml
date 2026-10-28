@@ -37,6 +37,14 @@ jobs:
         with:
           cache-version: 1
 
+      - name: Restore DataCleaning freeze and derived data
+        uses: actions/cache@v4
+        with:
+          path: |
+            _freeze/DataCleaning
+            DerivedData/ess11_der.rds
+          key: freeze-DataCleaning-${{ hashFiles('DataCleaning.qmd') }}
+
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
