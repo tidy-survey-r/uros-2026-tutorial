@@ -37,13 +37,14 @@ jobs:
         with:
           cache-version: 1
 
+      # The freeze-data branch holds only _freeze/DataCleaning and
+      # DerivedData/ess11_der.rds, so DataCleaning.qmd re-runs (and calls
+      # the ESS API) only when its code changes.
       - name: Restore DataCleaning freeze and derived data
-        uses: actions/cache@v4
-        with:
-          path: |
-            _freeze/DataCleaning
-            DerivedData/ess11_der.rds
-          key: freeze-DataCleaning-${{ hashFiles('DataCleaning.qmd') }}
+        run: |
+          if git fetch --depth=1 origin freeze-data; then
+            git archive FETCH_HEAD | tar -x
+          fi
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
@@ -52,3 +53,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ESS_USERID: ${{ secrets.ESS_USERID }}
+
+      - name: Save DataCleaning freeze and derived data
+        env:
+          GIT_INDEX_FILE: ${{ runner.temp }}/freeze-data-index
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898783+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898783+github-actions[bot]@users.noreply.github.com
+        run: |
+          git add --force _freeze/DataCleaning DerivedData/ess11_der.rds
+          tree=$(git write-tree)
+          message="Update DataCleaning freeze from $GITHUB_SHA"
+          if git fetch --depth=1 origin freeze-data; then
+            if [ "$tree" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
+              echo "DataCleaning output unchanged"
+              exit 0
+            fi
+            commit=$(git commit-tree "$tree" -p FETCH_HEAD -m "$message")
+          else
+            commit=$(git commit-tree "$tree" -m "$message")
+          fi
+          git push origin "$commit:refs/heads/freeze-data"
