@@ -27,7 +27,6 @@ Reuse `ess_des`, the design object built from `ess_der` in the ESS intro, to est
 
 ```{r}
 #| label: happy-by-country-exercise
-#| output-location: slide
 #| echo: false
 happy_by_country <-
   ess_des |>
@@ -66,7 +65,6 @@ A map only shows the mean. A Likert-style stacked bar shows the full weighted di
 
 ```{r}
 #| label: happy-dist-country-exercise
-#| output-location: slide
 #| echo: false
 happy_dist_country <-
   ess_des |>
@@ -156,7 +154,6 @@ top_bottom_countries <-
 
 ```{r}
 #| label: happy-likert-plot-exercise
-#| output-location: slide
 #| echo: false
 happy_likert <-
   happy_dist_country |>
@@ -261,7 +258,6 @@ happy_shape <-
 
 ```{r}
 #| label: happy-map-plot-exercise
-#| output-location: slide
 #| echo: false
 happy_shape |>
   tm_shape() +
