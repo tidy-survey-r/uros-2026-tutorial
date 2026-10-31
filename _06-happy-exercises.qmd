@@ -182,7 +182,7 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 
 ## Exercise 5: join country shapes to mean estimates
 
-Get a base map from {{tmap}} using the object `World` and join the mean estimates on. Crop the map to the extent of ESS using this code:
+Get a base map from {tmap} using the object `World` and join the mean estimates on. Crop the map to the extent of ESS using this code:
 
 ```r
 dat_sf |>

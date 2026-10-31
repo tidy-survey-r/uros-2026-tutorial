@@ -315,7 +315,7 @@ ess_der |>
   filter(n > 1)
 ```
 
-By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead — the same `nest` argument from the `as_survey_design()` syntax earlier
+By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead. This is the same `nest = TRUE` we saw in the stratified, cluster design example earlier.
 
 ## Applying weights, fixed {.bkg-mountains}
 
