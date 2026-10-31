@@ -1,5 +1,7 @@
 # Closing {background-color='{{< brand color blue >}}' .bkg-mountains}
 
+## Q & A
+
 ## References
 
 ---
