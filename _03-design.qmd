@@ -1,6 +1,6 @@
 # Sampling designs {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Sampling methods
+## Sampling methods {.bkg-mountains}
 
 Units can be selected in various ways such as:
 
@@ -28,7 +28,7 @@ Probability of selection is proportional to "size"
 
 :::
 
-## Complex designs
+## Complex designs {.bkg-mountains}
 
 Designs can also incorporate stratification and/or clustering:
 
@@ -48,15 +48,18 @@ Divide population into mutually exclusive subgroups (clusters). Randomly sample 
 
 :::
 
-## Why does design matter? {.incremental}
+## Why does design matter? {.bkg-serpent}
 
+::: {.incremental}
 - The design type impacts the variability of the estimates
 
 - Weights impact the point estimate and the variability estimates
 
 - Specifying the components of the design (strata and/or clusters) and weights in R is necessary to get correct estimates
 
-## Determining the design {.smaller}
+:::
+
+## Determining the design {.smaller .bkg-serpent}
 
 ::: {.incremental}
 
@@ -71,7 +74,7 @@ Divide population into mutually exclusive subgroups (clusters). Randomly sample 
 
 :::
 
-## Design-based vs. replicate weights {.smaller}
+## Design-based vs. replicate weights {.smaller .bkg-serpent}
 
 Two ways to tell R about a sampling design, depending on what the documentation provides:
 
@@ -96,35 +99,7 @@ Use `as_survey_rep()`
 
 # Specifying sampling designs in {srvyr} **without** replicate weights  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## `as_survey_design()`: Syntax
-
-- Specifying the sampling design when you don't have replicate weights
-
-- `as_survey_design()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
-
-```{r}
-#| eval: false
-as_survey_design(
-  .data,
-  ids = NULL, # cluster IDs/PSUs
-  strata = NULL, # strata variables
-  variables = NULL, # defaults to all in .data
-  fpc = NULL, # variables defining the fpc
-  nest = FALSE, # TRUE/FALSE - relabel clusters to nest within strata
-  check_strata = !nest, # check that clusters are nested in strata
-  weights = NULL # weight variable,
-)
-```
-
-## Syntax for common designs: no stratification/clustering {.smaller}
-
-Load in the example data from {survey} package:
-
-```r
-data(api, package="survey")
-```
-
-. . .
+## Syntax for common designs: no stratification/clustering {.smaller .bkg-trees}
 
 Simple Random Sample (SRS)
 
@@ -152,7 +127,7 @@ apiclus2 %>% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))
 Examples from `srvyr` help documentation
 :::
 
-## Syntax for common designs: with stratification {.smaller}
+## Syntax for common designs: with stratification {.smaller .bkg-trees}
 
 Stratified SRS
 
@@ -172,10 +147,10 @@ apistrat %>% as_survey_design(ids = dnum, strata = stype, weights = pw, nest = T
 Examples from `srvyr` help documentation
 :::
 
-## What does the design object look like? {.smaller}
+## What does the design object look like? {.smaller .bkg-trees}
 
 ```{r}
-#| label: apistrat-design-demo
+#| label: 03-apistrat-design-demo
 data(api, package = "survey")
 
 apistrat_des <- apistrat |>
@@ -191,7 +166,7 @@ Data: `apistrat` from the `{survey}` package
 
 # Specifying sampling designs in {srvyr} **with** replicate weights {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Replicate weights overview {.smaller}
+## Replicate weights overview {.smaller .bkg-ship}
 
 Replicate weights are another method to estimate variability. In general, they are constructed by:
 
@@ -200,19 +175,22 @@ Replicate weights are another method to estimate variability. In general, they a
 3. Calculate estimates for each replicate using the same method as the full-sample estimate
 4. Calculate the estimated variance, which is proportional to the variance of the replicate estimates
 
-## Common replicate weight methods
+## Common replicate weight methods {.bkg-ship}
 
 - Balanced repeated replication (BRR)
 - Fay's BRR
 - Jackknife
 - Bootstrap
 
-## `as_survey_rep()`: Syntax {.smaller}
+## `as_survey_rep()`: Syntax {.smaller .bkg-ship}
 
 - `as_survey_rep()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
 
+
 ```{r}
-#| label: scd-design-demo
+#| label: 03-scd-setup
+#| echo: false
+
 data(scd, package = "survey")
 
 scd <- scd |>
@@ -222,7 +200,10 @@ scd <- scd |>
     rep3 = 2 * c(0, 1, 1, 0, 0, 1),
     rep4 = 2 * c(0, 1, 0, 1, 1, 0)
   )
+```
 
+```{r}
+#| label: 03-scd-design-demo
 scd_rep <- scd |>
   as_survey_rep(
     type = "BRR",
@@ -237,7 +218,7 @@ scd_rep
 Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
 :::
 
-## Recap
+## Recap {.bkg-left .smaller}
 
 - Design type (SRS, stratified, clustered) shapes the variability of estimates
 - Weights shape both point estimates and variance
@@ -248,13 +229,13 @@ Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
 
 # ESS sampling and weighting  {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Methodology
+## Methodology {.bkg-buildings}
 
 Recall, we said: "Check the documentation such as methodology, design, analysis guide, or technical documentation"
 
 Head to the ESS website and click "Methodology": [europeansocialsurvey.org/methodology/sampling](https://www.europeansocialsurvey.org/methodology/sampling){target="_blank"}
 
-## Sampling {.smaller}
+## Sampling {.smaller .bkg-buildings}
 
 Key sampling principles, from the ESS Sampling Guidelines:
 
@@ -271,7 +252,7 @@ Key sampling principles, from the ESS Sampling Guidelines:
 <https://www.europeansocialsurvey.org/methodology/sampling>
 :::
 
-## Weighting {.smaller}
+## Weighting {.smaller .bkg-buildings}
 
 > Four weighting variables are available: Analysis weight (anweight - combination of pspwght and pweight), Post-stratification weight (pspwght), Design weight (dweight), and Population weight (pweight).
 
@@ -295,7 +276,7 @@ Key sampling principles, from the ESS Sampling Guidelines:
 <https://www.europeansocialsurvey.org/methodology/weighting>
 :::
 
-## Weighting: the provided code {.smaller}
+## Weighting: the provided code {.smaller .bkg-mountains}
 
 Clicking into the "weighting guide," we find example R code using `anweight`, the recommended weight:
 
@@ -307,11 +288,12 @@ design <- svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,
 data = data1)
 ```
 
-## First attempt
+## First attempt {.bkg-mountains}
 
 Using exactly the syntax from the weighting guide, we get an error:
 
 ```{r}
+#| label: 03-des-error
 #| error: true
 svydesign(
   ids = ~ psu,
@@ -321,24 +303,26 @@ svydesign(
 )
 ```
 
-## Why the error? {.smaller}
+## Why the error? {.smaller .bkg-mountains}
 
 A handful of `psu` codes repeat across different `stratum` values in the raw file:
 
 ```{r}
+#| label: 03-des-why-error
 ess_der |>
   distinct(cntry, psu, stratum) |>
   add_count(psu) |>
   filter(n > 1)
 ```
 
-By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead — the same `nest` argument from the `as_survey_design()` syntax earlier
+By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead. This is the same `nest = TRUE` we saw in the stratified, cluster design example earlier.
 
-## Applying weights, fixed
+## Applying weights, fixed {.bkg-mountains}
 
 Including `nest = TRUE`, we get the design object:
 
 ```{r}
+#| label: 03-des-survey-true
 ess_des_true <- svydesign(
   ids = ~ psu,
   strata = ~ stratum,
@@ -350,12 +334,12 @@ ess_des_true <- svydesign(
 ess_des_true
 ```
 
-## From `{survey}` to `{srvyr}`
+## From `{survey}` to `{srvyr}` {.bkg-mountains}
 
 The same design, specified with tidy syntax:
 
 ```{r}
-#| label: ess-design-demo
+#| label: 03-ess-design-demo
 #| output-location: slide
 ess_des <- ess_der |>
   as_survey_design(
