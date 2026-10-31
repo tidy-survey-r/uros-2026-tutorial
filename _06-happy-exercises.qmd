@@ -26,7 +26,7 @@
 Reuse `ess_des`, the design object built from `ess_der` in the ESS intro, to estimate weighted mean happiness by country.
 
 ```{r}
-#| label: happy-by-country-exercise
+#| label: 06-happy-by-country-exercise
 #| echo: false
 happy_by_country <-
   ess_des |>
@@ -39,32 +39,26 @@ happy_by_country
 
 {{< countdown "5:30" >}}
 
-## Exercise 1: estimate weighted mean happiness by country
+## Exercise 1: estimate weighted mean happiness by country {.smaller}
 
 ```{r}
-#| label: happy-by-country-solution
-#| output-location: slide
-happy_by_country <-
-  ess_des |>
-  filter(!is.na(Happy)) |>
-  group_by(Country) |>
-  summarize(Happy_mean = survey_mean(Happy, na.rm = TRUE))
-
-happy_by_country
+#| label: 06-happy-by-country-exercise
+#| echo: true
+#| eval: false
 ```
 
 {{< countdown "5:30" >}}
 
 ## Likert chart: weighted response distribution by country
 
-A map only shows the mean. A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country.
+A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country.
 
 ![](images/likert-example.png){fig-align="center"}
 
-## Exercise 2: Normalize data
+## Exercise 2: Calculate distribution of happiness level by country
 
 ```{r}
-#| label: happy-dist-country-exercise
+#| label: 06-happy-dist-country-exercise
 #| echo: false
 happy_dist_country <-
   ess_des |>
@@ -78,49 +72,31 @@ happy_dist_country <-
       )
     )
   ) |>
-  group_by(cntry, Country, Happy_factor) |>
-  summarize(n = survey_total(vartype = NULL)) |>
-  # Normalize within country so each country's bar sums to 100%
-  mutate(p = n / sum(n)) |>
+  group_by(interact(cntry, Country), Happy_factor) |>
+  summarize(
+    n = survey_total(vartype = NULL),
+    p = survey_mean(vartype = NULL)
+    ) |>
   ungroup()
 
-happy_dist_country
+happy_dist_country |>
+  print(n = Inf)
 ```
 
 {{< countdown "5:30" >}}
 
-## Exercise 2: Normalize data
+## Exercise 2: Calculate distribution of happiness level by country
 
 ```{r}
-#| label: happy-dist-country-solution
-#| output-location: slide
-happy_dist_country <-
-  ess_des |>
-  filter(!is.na(Happy)) |>
-  mutate(
-    Happy_factor = factor(
-      Happy,
-      levels = 0:10,
-      labels = c(
-        "0 - Extremely unhappy", 1:9, "10 - Extremely happy"
-      )
-    )
-  ) |>
-  group_by(cntry, Country, Happy_factor) |>
-  summarize(n = survey_total(vartype = NULL)) |>
-  # Normalize within country so each country's bar sums to 100%
-  mutate(p = n / sum(n)) |>
-  ungroup()
-
-happy_dist_country
+#| label: 06-happy-dist-country-exercise
+#| echo: true
+#| eval: false
 ```
 
-## Exercise 3: keep only the happiest and least happy countries
-
-To keep the chart readable, show only the `n_countries` countries with the highest and lowest weighted mean happiness (8 total, as in the reference chart).
+## Exercise 3: identify the happiest and least happy countries
 
 ```{r}
-#| label: happy-top-bottom-exercise
+#| label: 06-happy-top-bottom-exercise
 #| echo: false
 n_countries <- 4
 
@@ -133,27 +109,29 @@ top_bottom_countries <-
   pull(Country)
 ```
 
-{{< countdown "3:00" >}}
-
-## Exercise 3: keep only the happiest and least happy countries
+To keep the chart readable, identify the top and bottom `r n_countries` based on mean happiness (`r 2*n_countries` total, as in the reference chart).
 
 ```{r}
-#| label: happy-top-bottom-solution
-n_countries <- 4
+#| label: 06-print-top-countries
+#| echo: false
 
-top_bottom_countries <-
-  happy_by_country |>
-  slice_max(Happy_mean, n = n_countries) |>
-  bind_rows(
-    happy_by_country |> slice_min(Happy_mean, n = n_countries)
-  ) |>
-  pull(Country)
+print(top_bottom_countries)
 ```
 
-## Exercise 4: order countries by mean and plot
+{{< countdown "3:00" >}}
+
+## Exercise 3: identify the happiest and least happy countries
 
 ```{r}
-#| label: happy-likert-plot-exercise
+#| label: 06-happy-top-bottom-exercise
+#| echo: true
+#| eval: false
+```
+
+## Exercise 4: make bar chart with country subset ordered by mean
+
+```{r}
+#| label: 06-happy-likert-plot-exercise
 #| echo: false
 happy_likert <-
   happy_dist_country |>
@@ -186,47 +164,36 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 - `position_fill(reverse = TRUE)` is needed because `geom_col()`'s default stacking order would otherwise put "0 - Extremely unhappy" on the right
 :::
 
-## Exercise 4: order countries by mean and plot
+## Exercise 4: make bar chart with country subset ordered by mean
 
 ```{r}
-#| label: happy-likert-plot-solution
-#| output-location: slide
-happy_likert <-
-  happy_dist_country |>
-  left_join(happy_by_country, by = "Country") |>
-  filter(Country %in% top_bottom_countries) |>
-  mutate(Label = fct_reorder(paste(cntry, "-", Country), Happy_mean))
-
-ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
-  # reverse = TRUE keeps "0 - Extremely unhappy" on the left and
-  # "10 - Extremely happy" on the right, matching the legend order
-  geom_col(position = position_fill(reverse = TRUE)) +
-  scale_fill_brewer(palette = "RdBu", direction = -1, name = NULL) +
-  scale_x_continuous(labels = scales::percent) +
-  labs(
-    title = "How happy are you?",
-    subtitle = glue::glue("Top and bottom {n_countries} countries by weighted mean"),
-    x = NULL,
-    y = NULL
-  ) +
-  theme_light() +
-  theme(legend.position = "bottom")
+#| label: 06-happy-likert-plot-exercise
+#| echo: true
+#| eval: false
 ```
 
 ## Map survey estimates
 
 - Country is a natural domain for ESS analysis
 - Choropleth maps make cross-country patterns easier to spot than a table
-- Builds on two earlier pieces: survey-weighted estimation (`srvyr`) + country shapes (`tmap`/`sf`)
+- Builds on two earlier pieces: survey-weighted estimation (`srvyr`) + country shapes (`sf`) + `ggplot2`
 
 ![](images/map-example.png){fig-align="center"}
 
-## Exercise 1: join estimates to country shapes
+## Exercise 5: join country shapes to mean estimates
 
-Join on country name, then transform/crop to the same European extent used earlier.
+Get a base map from {{tmap}} using the object `World` and join the mean estimates on. Crop the map to the extent of ESS using this code:
+
+```r
+dat_sf |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  )
+```
 
 ```{r}
-#| label: happy-map-join-exercise
+#| label: 06-happy-map-join-exercise
 #| echo: false
 happy_shape <-
   World |>
@@ -240,68 +207,59 @@ happy_shape <-
 
 {{< countdown "5:30" >}}
 
-## Exercise 1: join estimates to country shapes
+## Exercise 5: join country shapes to mean estimates
 
 ```{r}
-#| label: happy-map-join-solution
-happy_shape <-
-  World |>
-  full_join(happy_by_country, by = c("name" = "Country")) |>
-  st_transform(3035) |>
-  st_crop(
-    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
-      st_transform(3035)
-  )
+#| label: 06-happy-map-join-exercise
+#| echo: true
+#| eval: false
 ```
 
-## Exercise 2: map colored by `Happy`
+## Exercise 6: map colored by `Happy`
 
 ```{r}
-#| label: happy-map-plot-exercise
+#| label: 06-happy-map-plot-exercise
 #| echo: false
 happy_shape |>
-  tm_shape() +
-  tm_polygons(fill = "lightgrey", col = "darkgrey") +
-  tm_shape(happy_shape |> filter(!is.na(Happy_mean))) +
-  tm_polygons(
-    fill = "Happy_mean",
-    fill.scale = tm_scale_continuous(values = "brewer.blues"),
-    fill.legend = tm_legend(title = "Mean happiness\n(0-10 scale)")
+  ggplot() +
+  geom_sf(aes(fill = Happy_mean), color = "darkgrey") +
+  geom_sf_text(
+    data = happy_shape |> filter(!is.na(Happy_mean)),
+    aes(label = iso_a3),
+    size = 3
   ) +
-  tm_text("iso_a3") +
-  tm_graticules()
+  scale_fill_distiller(
+    palette = "Blues",
+    direction = 1,
+    na.value = "lightgrey",
+    name = "Mean happiness\n(0-10 scale)"
+  ) +
+  labs(x = NULL, y = NULL) +
+  theme_light()
 ```
 
 {{< countdown "3:00" >}}
 
 ::: {.notes}
-- `tm_scale_continuous()` is used here (vs. `tm_scale_categorical()` in the earlier ESS-11 map) because `Happy_mean` is a continuous estimate, not a category
-- Countries without an ESS estimate stay `lightgrey` because of the `full_join` + `filter(!is.na(Happy_mean))` pattern
+- `geom_sf()` draws the polygons in the data's CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically
+- `scale_fill_distiller()` gives a continuous Brewer scale because `Happy_mean` is a continuous estimate, not a category; `direction = 1` makes higher happiness darker
+- Countries without an ESS estimate have `NA` for `Happy_mean` after the `full_join`, so `na.value = "lightgrey"` shades them grey
+- Only countries with an estimate are labelled, via `data = ... filter(!is.na(Happy_mean))` in `geom_sf_text()`
 - Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
-- `ess_des` (built from `ess_der` in the ESS intro) is reused here
 :::
 
-## Exercise 2: map colored by `Happy`
+## Exercise 6: map colored by `Happy`
 
 ```{r}
-#| label: happy-map-plot-solution
-#| output-location: slide
-happy_shape |>
-  tm_shape() +
-  tm_polygons(fill = "lightgrey", col = "darkgrey") +
-  tm_shape(happy_shape |> filter(!is.na(Happy_mean))) +
-  tm_polygons(
-    fill = "Happy_mean",
-    fill.scale = tm_scale_continuous(values = "brewer.blues"),
-    fill.legend = tm_legend(title = "Mean happiness\n(0-10 scale)")
-  ) +
-  tm_text("iso_a3") +
-  tm_graticules()
+#| label: 06-happy-map-plot-exercise
+#| echo: true
+#| eval: false
 ```
 
 ::: {.notes}
-- `tm_scale_continuous()` is used here (vs. `tm_scale_categorical()` in the earlier ESS-11 map) because `Happy_mean` is a continuous estimate, not a category
-- Countries without an ESS estimate stay `lightgrey` because of the `full_join` + `filter(!is.na(Happy_mean))` pattern
+- `geom_sf()` draws the polygons in the data's CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically
+- `scale_fill_distiller()` gives a continuous Brewer scale because `Happy_mean` is a continuous estimate, not a category; `direction = 1` makes higher happiness darker
+- Countries without an ESS estimate have `NA` for `Happy_mean` after the `full_join`, so `na.value = "lightgrey"` shades them grey
+- Only countries with an estimate are labelled, via `data = ... filter(!is.na(Happy_mean))` in `geom_sf_text()`
 - Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
-- `ess_des` (built from `ess_der` in the ESS intro) is reused here
 :::
