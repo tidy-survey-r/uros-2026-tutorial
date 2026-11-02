@@ -18,7 +18,7 @@
     "href": "index.html#logistics",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Logistics",
-    "text": "Logistics\n\nWe will be using Posit Cloud for exercises\nAll materials are found at:\n\nhttps://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html (Site)\nhttps://github.com/tidy-survey-r/uros-2026-tutorial (Source)"
+    "text": "Logistics\n\nWe will be using Posit Cloud for exercises\nAll materials are found at:\n\nhttps://tidy-survey-r.github.io/uros-2026-tutorial/ (Slides)\nhttps://github.com/tidy-survey-r/uros-2026-tutorial (Source)"
   },
   {
     "objectID": "index.html#libraries-needed-for-today",
@@ -46,7 +46,7 @@
     "href": "index.html#brief-note-on-pipes-with-survey",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Brief note on pipes with {survey}",
-    "text": "Brief note on pipes with {survey}\n\n\n\nMagrittr pipe (%&gt;%)\n\n\n\ndot notation\n\n\ndesign_object %&gt;% \n  svyglm(design = ., y ~ x)\n\n\n\n\nBase R pipe (|&gt;)\n\n\n\nplaceholder\n\n\ndesign_object |&gt; \n  svyglm(design = _, y ~ x)\n\n\n\n\nanonymous (lambda) functions\n\n\ndesign_object |&gt; \n  (\\(.) \n   svyglm(design = ., y ~ x)\n  )()\n\n\n\n\n\nCheck out Isabella’s article on the base pipe"
+    "text": "Brief note on pipes with {survey}\n\n\n\nMagrittr pipe (%&gt;%)\n\n\n\ndot notation\n\ndesign_object %&gt;% \n  svyglm(design = ., y ~ x)\n\n\n\nBase R pipe (|&gt;)\n\n\n\nplaceholder\n\ndesign_object |&gt; \n  svyglm(design = _, y ~ x)\n\n\n\nanonymous (lambda) functions\n\ndesign_object |&gt; \n  (\\(.) \n   svyglm(design = ., y ~ x)\n  )()\n\n\n\n\nCheck out Isabella’s article on the base pipe"
   },
   {
     "objectID": "index.html#apply-dplyr-functions-to-survey-objects",
@@ -74,28 +74,28 @@
     "href": "index.html#using-srvyr-functions-on-non-survey-objects",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Using {srvyr} functions on non-survey objects",
-    "text": "Using {srvyr} functions on non-survey objects\n\ntowny |&gt;\n  summarize(area_mean = survey_mean(land_area_km2))\n\n\n\n\nError in `summarize()`:\nℹ In argument: `area_mean = survey_mean(land_area_km2)`.\nCaused by error in `cur_svy()`:\n! Survey context not set"
+    "text": "Using {srvyr} functions on non-survey objects\n\ntowny |&gt;\n  summarize(area_mean = survey_mean(land_area_km2))\n\n\n\nError in `summarize()`:\nℹ In argument: `area_mean = survey_mean(land_area_km2)`.\nCaused by error in `cur_svy()`:\n! Survey context not set"
   },
   {
     "objectID": "index.html#overview",
     "href": "index.html#overview",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Overview",
-    "text": "Overview\n\nConducted across Europe every 2 years since 2001\nCross-sectional sample (new samples each round)\nTopics include living conditions, social structure, public opinion and attitudes\nSampling designs vary by country but have oversight for rigor"
+    "text": "Overview\n\nConducted across Europe every 2 years since 2001\nCross-sectional sample (new samples each round)\nTopics include living conditions, social structure, public opinion and attitudes\nSampling designs vary by country but have oversight for rigor\nMost recent data available for round 11 (2023 - 2024)"
   },
   {
-    "objectID": "index.html#countries-for-round-11-2023-2024",
-    "href": "index.html#countries-for-round-11-2023-2024",
+    "objectID": "index.html#countries-for-round-11",
+    "href": "index.html#countries-for-round-11",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Countries for round 11 (2023-2024)",
-    "text": "Countries for round 11 (2023-2024)"
+    "section": "Countries for round 11",
+    "text": "Countries for round 11"
   },
   {
-    "objectID": "index.html#accessing-ess-data",
-    "href": "index.html#accessing-ess-data",
+    "objectID": "index.html#accessing-ess-data---full-data",
+    "href": "index.html#accessing-ess-data---full-data",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Accessing ESS data",
-    "text": "Accessing ESS data\n\nCreate a ESS account and get your user ID\nOpen R environ file\n\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\ness_in &lt;- read_parquet(url)"
+    "section": "Accessing ESS data - full data",
+    "text": "Accessing ESS data - full data\n\nCreate a ESS account and get your user ID\n\n\n\nOpen R environ file\n\nusethis::edit_r_environ()\n\n\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\n\n\nRestart your R session\n\n\n\n\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\ness_in &lt;- read_parquet(url)"
   },
   {
     "objectID": "index.html#read-data-subset-for-this-course",
@@ -161,18 +161,11 @@
     "text": "Design-based vs. replicate weights\nTwo ways to tell R about a sampling design, depending on what the documentation provides:\n\n\nStrata / clusters / weights are available\nUse as_survey_design()\n\nOnly replicate weights are available\nUse as_survey_rep()\n\n\nSome surveys provide both; others release only replicate weights to protect respondent confidentiality\nEither path produces a tbl_svy object that works the same way downstream"
   },
   {
-    "objectID": "index.html#as_survey_design-syntax",
-    "href": "index.html#as_survey_design-syntax",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "as_survey_design(): Syntax",
-    "text": "as_survey_design(): Syntax\n\nSpecifying the sampling design when you don’t have replicate weights\nas_survey_design() creates a tbl_svy object that then correctly calculates weighted estimates and SEs\n\n\nas_survey_design(\n  .data,\n  ids = NULL, # cluster IDs/PSUs\n  strata = NULL, # strata variables\n  variables = NULL, # defaults to all in .data\n  fpc = NULL, # variables defining the fpc\n  nest = FALSE, # TRUE/FALSE - relabel clusters to nest within strata\n  check_strata = !nest, # check that clusters are nested in strata\n  weights = NULL # weight variable,\n)"
-  },
-  {
     "objectID": "index.html#syntax-for-common-designs-no-stratificationclustering",
     "href": "index.html#syntax-for-common-designs-no-stratificationclustering",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Syntax for common designs: no stratification/clustering",
-    "text": "Syntax for common designs: no stratification/clustering\nLoad in the example data from {survey} package:\ndata(api, package=\"survey\")\n\nSimple Random Sample (SRS)\napisrs %&gt;% as_survey_design(fpc = fpc)\n\n\nOne-stage cluster sample with a FPC variable\napiclus1 %&gt;% as_survey_design(ids = dnum, weights = pw, fpc = fpc)\n\n\nTwo-stage cluster sample, weights computed from population size\napiclus2 %&gt;% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))\n\nExamples from srvyr help documentation"
+    "text": "Syntax for common designs: no stratification/clustering\nSimple Random Sample (SRS)\napisrs %&gt;% as_survey_design(fpc = fpc)\n\nOne-stage cluster sample with a FPC variable\napiclus1 %&gt;% as_survey_design(ids = dnum, weights = pw, fpc = fpc)\n\n\nTwo-stage cluster sample, weights computed from population size\napiclus2 %&gt;% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))\n\nExamples from srvyr help documentation"
   },
   {
     "objectID": "index.html#syntax-for-common-designs-with-stratification",
@@ -207,7 +200,7 @@
     "href": "index.html#as_survey_rep-syntax",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "as_survey_rep(): Syntax",
-    "text": "as_survey_rep(): Syntax\n\nas_survey_rep() creates a tbl_svy object that then correctly calculates weighted estimates and SEs\n\n\ndata(scd, package = \"survey\")\n\nscd &lt;- scd |&gt;\n  mutate(\n    rep1 = 2 * c(1, 0, 1, 0, 1, 0),\n    rep2 = 2 * c(1, 0, 0, 1, 0, 1),\n    rep3 = 2 * c(0, 1, 1, 0, 0, 1),\n    rep4 = 2 * c(0, 1, 0, 1, 1, 0)\n  )\n\nscd_rep &lt;- scd |&gt;\n  as_survey_rep(\n    type = \"BRR\",\n    repweights = starts_with(\"rep\"),\n    combined_weights = FALSE\n  )\n\nscd_rep\n\nCall: Called via srvyr\nBalanced Repeated Replicates with 4 replicates.\nSampling variables:\n  - repweights: `rep1 + rep2 + rep3 + rep4` \nData variables: \n  - ESA (int), ambulance (int), arrests (dbl), alive (dbl), rep1 (dbl), rep2\n    (dbl), rep3 (dbl), rep4 (dbl)\n\n\n\nData: scd from the {survey} package (Levy and Lemeshow BRR example)"
+    "text": "as_survey_rep(): Syntax\n\nas_survey_rep() creates a tbl_svy object that then correctly calculates weighted estimates and SEs\n\n\nscd_rep &lt;- scd |&gt;\n  as_survey_rep(\n    type = \"BRR\",\n    repweights = starts_with(\"rep\"),\n    combined_weights = FALSE\n  )\n\nscd_rep\n\nCall: Called via srvyr\nBalanced Repeated Replicates with 4 replicates.\nSampling variables:\n  - repweights: `rep1 + rep2 + rep3 + rep4` \nData variables: \n  - ESA (int), ambulance (int), arrests (dbl), alive (dbl), rep1\n    (dbl), rep2 (dbl), rep3 (dbl), rep4 (dbl)\n\n\n\nData: scd from the {survey} package (Levy and Lemeshow BRR example)"
   },
   {
     "objectID": "index.html#recap",
@@ -256,7 +249,7 @@
     "href": "index.html#why-the-error",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Why the error?",
-    "text": "Why the error?\nA handful of psu codes repeat across different stratum values in the raw file:\n\ness_der |&gt;\n  distinct(cntry, psu, stratum) |&gt;\n  add_count(psu) |&gt;\n  filter(n &gt; 1)\n\n# A tibble: 6 × 4\n  cntry   psu stratum     n\n  &lt;chr&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt;\n1 HU    12809     855     2\n2 HU    13338     815     2\n3 HU    13247     855     2\n4 HU    13247     779     2\n5 HU    12809     851     2\n6 HU    13338     884     2\n\n\nBy default, svydesign() assumes cluster (psu) IDs are unique across the whole data set. nest = TRUE tells it to relabel clusters so they’re uniquely identified within each stratum instead — the same nest argument from the as_survey_design() syntax earlier"
+    "text": "Why the error?\nA handful of psu codes repeat across different stratum values in the raw file:\n\ness_der |&gt;\n  distinct(cntry, psu, stratum) |&gt;\n  add_count(psu) |&gt;\n  filter(n &gt; 1)\n\n# A tibble: 6 × 4\n  cntry   psu stratum     n\n  &lt;chr&gt; &lt;int&gt;   &lt;int&gt; &lt;int&gt;\n1 HU    12809     855     2\n2 HU    13338     815     2\n3 HU    13247     855     2\n4 HU    13247     779     2\n5 HU    12809     851     2\n6 HU    13338     884     2\n\n\nBy default, svydesign() assumes cluster (psu) IDs are unique across the whole data set. nest = TRUE tells it to relabel clusters so they’re uniquely identified within each stratum instead. This is the same nest = TRUE we saw in the stratified, cluster design example earlier."
   },
   {
     "objectID": "index.html#applying-weights-fixed",
@@ -277,7 +270,7 @@
     "href": "index.html#from-survey-to-srvyr-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "From {survey} to {srvyr}",
-    "text": "From {survey} to {srvyr}\n\nStratified 1 - level Cluster Sampling design (with replacement)\nWith (24791) clusters.\nCalled via srvyr\nSampling variables:\n  - ids: psu \n  - strata: stratum \n  - weights: anweight \nData variables: \n  - cntry (chr), anweight (dbl), nwspol (int), netusoft (int), netustm (int),\n    volunfp (int), happy (int), wrhpp (int), agegroup (int), pdwrk (int), edctn\n    (int), uempla (int), uempli (int), dsbld (int), rtrd (int), cmsrv (int),\n    hswrk (int), dngoth (int), dngref (int), dngdk (int), dngna (int), stratum\n    (int), psu (int), pdwrk_rec (int), edctn_rec (int), uempla_rec (int),\n    uempli_rec (int), dsbld_rec (int), rtrd_rec (int), cmsrv_rec (int),\n    hswrk_rec (int), dngoth_rec (int), Retired (lgl), wt1 (dbl), Happy_Freq\n    (int), Happy (int), News (int), Country (chr), Volunteer_12 (int),\n    Volunteer_01 (dbl), Volunteer_Factor (fct), NetUsage (dbl), NetFreq (fct),\n    AgeGroup (fct)"
+    "text": "From {survey} to {srvyr}\n\nStratified 1 - level Cluster Sampling design (with replacement)\nWith (24791) clusters.\nCalled via srvyr\nSampling variables:\n  - ids: psu \n  - strata: stratum \n  - weights: anweight \nData variables: \n  - cntry (chr), anweight (dbl), nwspol (int), netusoft (int),\n    netustm (int), volunfp (int), happy (int), wrhpp (int),\n    agegroup (int), pdwrk (int), edctn (int), uempla (int),\n    uempli (int), dsbld (int), rtrd (int), cmsrv (int), hswrk\n    (int), dngoth (int), dngref (int), dngdk (int), dngna (int),\n    stratum (int), psu (int), pdwrk_rec (int), edctn_rec (int),\n    uempla_rec (int), uempli_rec (int), dsbld_rec (int),\n    rtrd_rec (int), cmsrv_rec (int), hswrk_rec (int), dngoth_rec\n    (int), Retired (lgl), wt1 (dbl), Happy_Freq (int), Happy\n    (int), News (int), Country (chr), Volunteer_12 (int),\n    Volunteer_01 (dbl), Volunteer_Factor (fct), NetUsage (dbl),\n    NetFreq (fct), AgeGroup (fct)"
   },
   {
     "objectID": "index.html#handling-missing-data-codes",
@@ -329,46 +322,60 @@
     "text": "Mean examples\n\nna.rmvartypelevel and dfdeff\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News),\n    H2 = survey_mean(News, na.rm = TRUE)\n  )\n\n# A tibble: 1 × 4\n     H1 H1_se    H2 H2_se\n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    NA   NaN  56.9  3.27\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = c(\"se\", \"ci\", \"var\", \"cv\")),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = NULL)\n  )\n\n# A tibble: 1 × 7\n     H1 H1_se H1_low H1_upp H1_var  H1_cv    H2\n  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1  56.9  3.27   50.4   63.3   10.7 0.0575  56.9\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.8),\n    H3 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95, df = 10)\n  )\n\n# A tibble: 1 × 9\n     H1 H1_low H1_upp    H2 H2_low H2_upp    H3 H3_low H3_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1  56.9   50.4   63.3  56.9   52.7   61.1  56.9   49.6   64.1\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(H1 = survey_mean(News, na.rm = TRUE, deff = \"replace\"))\n\n# A tibble: 1 × 3\n     H1 H1_se H1_deff\n  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1  56.9  3.27    1.39\n\n\n\n\n\n\n\nna.rm removes NA before calculation, similar to many other functions in R\nvartype can choose no option OR multiple\nlevel and df control confidence intervals\ndeff is a design effect, a ratio of the variance under this design compared to a design which is SRS, &gt;1 means less statistically efficient"
   },
   {
-    "objectID": "index.html#proportion-example---motivation",
-    "href": "index.html#proportion-example---motivation",
+    "objectID": "index.html#proportion-example-motivation",
+    "href": "index.html#proportion-example-motivation",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - motivation",
-    "text": "Proportion example - motivation\nAnd still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (volunfp)\n\n1: yes\n2: no\n7: Refusal*\n8: Don’t know*\n9: No answer*"
+    "section": "Proportion example: motivation",
+    "text": "Proportion example: motivation\nAnd still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (volunfp)\n\n1: yes\n2: no\n7: Refusal*\n8: Don’t know*\n9: No answer*"
   },
   {
-    "objectID": "index.html#proportion-example---variable-coding",
-    "href": "index.html#proportion-example---variable-coding",
+    "objectID": "index.html#proportion-example-variable-coding",
+    "href": "index.html#proportion-example-variable-coding",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - variable coding",
-    "text": "Proportion example - variable coding\nDerived variable coding options (unweighted raw data):\n\ness_der |&gt;\n  count(\n    volunfp,\n    Volunteer_12,\n    Volunteer_01,\n    Volunteer_Factor\n  )\n\n# A tibble: 5 × 5\n  volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n\n    &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt; &lt;fct&gt;            &lt;int&gt;\n1       1            1            1 Yes               9305\n2       2            2            0 No               40643\n3       7           NA           NA &lt;NA&gt;                92\n4       8           NA           NA &lt;NA&gt;                65\n5       9           NA           NA &lt;NA&gt;                11"
+    "section": "Proportion example: variable coding",
+    "text": "Proportion example: variable coding\nDerived variable coding options (unweighted raw data):\n\ness_der |&gt;\n  count(\n    volunfp,\n    Volunteer_12,\n    Volunteer_01,\n    Volunteer_Factor\n  )\n\n# A tibble: 5 × 5\n  volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n\n    &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt; &lt;fct&gt;            &lt;int&gt;\n1       1            1            1 Yes               9305\n2       2            2            0 No               40643\n3       7           NA           NA &lt;NA&gt;                92\n4       8           NA           NA &lt;NA&gt;                65\n5       9           NA           NA &lt;NA&gt;                11"
   },
   {
-    "objectID": "index.html#proportion-example---2-ways",
-    "href": "index.html#proportion-example---2-ways",
+    "objectID": "index.html#proportion-example-2-ways",
+    "href": "index.html#proportion-example-2-ways",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - 2 ways",
-    "text": "Proportion example - 2 ways\nTwo methods for proportions\n\nFor binary outcomes, use survey_mean(x)\n\nx is either 1/0 or TRUE/FALSE\ncan use with across() and several outcomes\n\nGroup the data by the variable (x) and then use survey_prop()\n\nx can have 2 or more levels\nonly analyze one outcome at a time\n\n\n\n\nSee Calculating estimates for many outcomes for extending to multiple outcomes"
+    "section": "Proportion example: 2 ways",
+    "text": "Proportion example: 2 ways\nTwo methods for proportions\n\nFor binary outcomes, use survey_mean(x)\n\nx is either 1/0 or TRUE/FALSE\ncan use with across() and several outcomes\n\nGroup the data by the variable (x) and then use survey_prop()\n\nx can have 2 or more levels\nonly analyze one outcome at a time\n\n\n\n\nSee Calculating estimates for many outcomes for extending to multiple outcomes"
   },
   {
-    "objectID": "index.html#proportion-example---2-ways-1",
-    "href": "index.html#proportion-example---2-ways-1",
+    "objectID": "index.html#proportion-example-2-ways-1",
+    "href": "index.html#proportion-example-2-ways-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - 2 ways",
-    "text": "Proportion example - 2 ways\n\nsurvey_mean()survey_prop()\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    across(\n      c(Volunteer_12, Volunteer_01),\n      ~ survey_mean(.x, na.rm = TRUE)\n    )\n  )\n\n# A tibble: 1 × 4\n  Volunteer_12 Volunteer_12_se Volunteer_01 Volunteer_01_se\n         &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;           &lt;dbl&gt;\n1         1.74          0.0139        0.260          0.0139\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(p = survey_prop())\n\n# A tibble: 2 × 3\n  Volunteer_Factor     p   p_se\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260 0.0139\n2 No               0.740 0.0139\n\n\n\n\n\n\n\nsurvey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once\nsurvey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels"
+    "section": "Proportion example: 2 ways",
+    "text": "Proportion example: 2 ways\n\nsurvey_mean()survey_prop()\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    across(\n      c(Volunteer_12, Volunteer_01),\n      ~ survey_mean(.x, na.rm = TRUE)\n    )\n  )\n\n# A tibble: 1 × 4\n  Volunteer_12 Volunteer_12_se Volunteer_01 Volunteer_01_se\n         &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;           &lt;dbl&gt;\n1         1.74          0.0139        0.260          0.0139\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(p = survey_prop())\n\n# A tibble: 2 × 3\n  Volunteer_Factor     p   p_se\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260 0.0139\n2 No               0.740 0.0139\n\n\n\n\n\n\n\nsurvey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once\nsurvey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels"
   },
   {
-    "objectID": "index.html#proportion-example---arguments",
-    "href": "index.html#proportion-example---arguments",
+    "objectID": "index.html#proportion-example-arguments",
+    "href": "index.html#proportion-example-arguments",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - arguments",
-    "text": "Proportion example - arguments\nproportion argument in survey_mean()\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = \"ci\"),\n    p2 = survey_mean(\n      Volunteer_01,\n      na.rm = TRUE,\n      vartype = \"ci\",\n      proportion = TRUE\n    )\n  )\n\n# A tibble: 1 × 6\n     p1 p1_low p1_upp    p2 p2_low p2_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 0.260  0.232  0.287 0.260  0.233  0.288\n\n\n\n\nproportion = TRUE argument only impacts confidence intervals"
+    "section": "Proportion example: arguments",
+    "text": "Proportion example: arguments\nproportion argument in survey_mean()\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = \"ci\"),\n    p2 = survey_mean(\n      Volunteer_01,\n      na.rm = TRUE,\n      vartype = \"ci\",\n      proportion = TRUE\n    )\n  )\n\n\n\n\nproportion = TRUE argument only impacts confidence intervals"
   },
   {
-    "objectID": "index.html#proportion-example---arguments-1",
-    "href": "index.html#proportion-example---arguments-1",
+    "objectID": "index.html#proportion-example-arguments-output",
+    "href": "index.html#proportion-example-arguments-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example - arguments",
-    "text": "Proportion example - arguments\nprop_method argument in survey_mean()/survey_prop()\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(\n    p1 = survey_prop(vartype = \"ci\", prop_method = \"logit\"),\n    p2 = survey_prop(vartype = \"ci\", prop_method = \"mean\"),\n    p3 = survey_prop(vartype = \"ci\", prop_method = \"xlogit\")\n  )\n\n# A tibble: 2 × 10\n  Volunteer_Factor    p1 p1_low p1_upp    p2 p2_low p2_upp    p3 p3_low p3_upp\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260  0.233  0.288 0.260  0.232  0.287 0.260  0.233  0.288\n2 No               0.740  0.712  0.767 0.740  0.713  0.768 0.740  0.712  0.767\n\n\n\n\nSee ?survey::svyciprop for details on implementation"
+    "section": "Proportion example: arguments",
+    "text": "Proportion example: arguments\n\n# A tibble: 1 × 6\n     p1 p1_low p1_upp    p2 p2_low p2_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 0.260  0.232  0.287 0.260  0.233  0.288"
+  },
+  {
+    "objectID": "index.html#proportion-example-arguments-1",
+    "href": "index.html#proportion-example-arguments-1",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example: arguments",
+    "text": "Proportion example: arguments\nprop_method argument in survey_mean()/survey_prop()\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(\n    p1 = survey_prop(vartype = \"ci\", prop_method = \"logit\"),\n    p2 = survey_prop(vartype = \"ci\", prop_method = \"mean\"),\n    p3 = survey_prop(vartype = \"ci\", prop_method = \"xlogit\")\n  ) |&gt;\n  print(width = Inf)\n\n\n\n\nSee ?survey::svyciprop for details on implementation"
+  },
+  {
+    "objectID": "index.html#proportion-example-arguments-1-output",
+    "href": "index.html#proportion-example-arguments-1-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Proportion example: arguments",
+    "text": "Proportion example: arguments\n\n# A tibble: 2 × 10\n  Volunteer_Factor    p1 p1_low p1_upp    p2 p2_low p2_upp    p3\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1 Yes              0.260  0.233  0.288 0.260  0.232  0.287 0.260\n2 No               0.740  0.712  0.767 0.740  0.713  0.768 0.740\n  p3_low p3_upp\n   &lt;dbl&gt;  &lt;dbl&gt;\n1  0.233  0.288\n2  0.712  0.767"
   },
   {
     "objectID": "index.html#subgroup-analysis",
@@ -378,25 +385,46 @@
     "text": "Subgroup analysis\n\nUsing filter() as above examples subsets data. This is done AFTER creating the design object\nUse group_by() to implement domain analysis"
   },
   {
-    "objectID": "index.html#subgroup-analysis---mean-and-median",
-    "href": "index.html#subgroup-analysis---mean-and-median",
+    "objectID": "index.html#subgroup-analysis-mean-median",
+    "href": "index.html#subgroup-analysis-mean-median",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis - mean and median",
-    "text": "Subgroup analysis - mean and median\n\nNetUsage is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported time of internet usage on a typical day (minutes)\n\n\n\nCode\ness_des |&gt;\n  group_by(Country) |&gt;\n  summarize(\n    Pop = survey_total(vartype = NULL),\n    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),\n    NetUse_median = survey_median(NetUsage, na.rm = TRUE)\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(columns = starts_with(\"NetUse\"), decimals = 2) |&gt;\n  fmt_number(columns = Pop, decimals = 0) |&gt;\n  opt_interactive(page_size_default = 8)"
+    "section": "Subgroup analysis: mean & median",
+    "text": "Subgroup analysis: mean & median\n\nNetUsage is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day\n\n\ness_des |&gt;\n  group_by(Country) |&gt;\n  summarize(\n    Pop = survey_total(vartype = NULL),\n    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),\n    NetUse_median = survey_median(NetUsage, na.rm = TRUE)\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(columns = starts_with(\"NetUse\"), decimals = 2) |&gt;\n  fmt_number(columns = Pop, decimals = 0) |&gt;\n  opt_interactive()"
   },
   {
-    "objectID": "index.html#subgroup-analysis---proportion-marginal",
-    "href": "index.html#subgroup-analysis---proportion-marginal",
+    "objectID": "index.html#subgroup-analysis-mean-median-output",
+    "href": "index.html#subgroup-analysis-mean-median-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis - proportion, marginal",
-    "text": "Subgroup analysis - proportion, marginal\n\nNetFreq is how often people use the internet (categorical)\nAgeGroup is a categorical age variable\n\n\n\nCode\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(AgeGroup, NetFreq) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(decimal = 1, columns = starts_with(\"p\")) |&gt;\n  fmt_number(decimal = 0, columns = c(N, N_se)) |&gt;\n  opt_interactive(page_size_default = 8)"
+    "section": "Subgroup analysis: mean & median",
+    "text": "Subgroup analysis: mean & median"
   },
   {
-    "objectID": "index.html#subgroup-analysis---proportion-joint",
-    "href": "index.html#subgroup-analysis---proportion-joint",
+    "objectID": "index.html#subgroup-analysis-prop.-marginal",
+    "href": "index.html#subgroup-analysis-prop.-marginal",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis - proportion, joint",
-    "text": "Subgroup analysis - proportion, joint\n\n\nCode\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(interact(AgeGroup, NetFreq)) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(decimal = 1, columns = starts_with(\"p\")) |&gt;\n  fmt_number(decimal = 0, columns = c(N, N_se)) |&gt;\n  opt_interactive(page_size_default = 8)"
+    "section": "Subgroup analysis: prop., marginal",
+    "text": "Subgroup analysis: prop., marginal\n\nNetFreq is how often people use the internet (categorical)\nAgeGroup is a categorical age variable\n\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(AgeGroup, NetFreq) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
+  },
+  {
+    "objectID": "index.html#subgroup-analysis-prop.-marginal-output",
+    "href": "index.html#subgroup-analysis-prop.-marginal-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis: prop., marginal",
+    "text": "Subgroup analysis: prop., marginal\n\n# A tibble: 32 × 6\n# Groups:   AgeGroup [7]\n   AgeGroup NetFreq                   N    N_se      p  p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.436 0.434\n 2 15-24    A few times a week   54941.  54941.  0.595 0.593\n 3 15-24    Most days           985974. 246792. 10.7   2.49 \n 4 15-24    Every day          8159303. 586824. 88.3   2.71 \n 5 25-34    Only occasionally   184533.  92304.  2.71  1.33 \n 6 25-34    Most days           264448. 101815.  3.89  1.46 \n 7 25-34    Every day          6356212. 475560. 93.4   1.88 \n 8 35-44    Never                41591.  41591.  0.486 0.487\n 9 35-44    Only occasionally    97612.  56513.  1.14  0.661\n10 35-44    A few times a week  151262.  76563.  1.77  0.882\n11 35-44    Most days           528423. 152299.  6.18  1.70 \n12 35-44    Every day          7738219. 497974. 90.4   2.07 \n13 45-54    Never               215268. 106143.  2.39  1.16 \n14 45-54    Only occasionally   421050. 133341.  4.67  1.44 \n15 45-54    A few times a week  363809. 126531.  4.03  1.37 \n16 45-54    Most days           799547. 185506.  8.87  1.98 \n17 45-54    Every day          7218228. 480960. 80.0   2.78 \n18 55-64    Never               768230. 168859.  8.34  1.74 \n19 55-64    Only occasionally   967739. 181369. 10.5   1.90 \n20 55-64    A few times a week  663439. 150366.  7.20  1.54 \n21 55-64    Most days          1017673. 166705. 11.0   1.76 \n22 55-64    Every day          5794517. 409369. 62.9   2.86 \n23 65-74    Never              1293236. 229568. 17.5   2.82 \n24 65-74    Only occasionally   583407. 147059.  7.88  1.89 \n25 65-74    A few times a week  673845. 143267.  9.11  1.77 \n26 65-74    Most days           824274. 159904. 11.1   1.98 \n27 65-74    Every day          4025921. 329504. 54.4   3.42 \n28 75+      Never              2899842. 326820. 48.5   3.93 \n29 75+      Only occasionally   658894. 151520. 11.0   2.33 \n30 75+      A few times a week  407123. 132835.  6.80  2.07 \n31 75+      Most days           492333. 125324.  8.23  2.07 \n32 75+      Every day          1525627. 214869. 25.5   3.17"
+  },
+  {
+    "objectID": "index.html#subgroup-analysis-prop.-joint",
+    "href": "index.html#subgroup-analysis-prop.-joint",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis: prop., joint",
+    "text": "Subgroup analysis: prop., joint\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(interact(AgeGroup, NetFreq)) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
+  },
+  {
+    "objectID": "index.html#subgroup-analysis-prop.-joint-output",
+    "href": "index.html#subgroup-analysis-prop.-joint-output",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Subgroup analysis: prop., joint",
+    "text": "Subgroup analysis: prop., joint\n\n# A tibble: 32 × 6\n   AgeGroup NetFreq                   N    N_se       p   p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.0716 0.0716\n 2 15-24    A few times a week   54941.  54941.  0.0977 0.0975\n 3 15-24    Most days           985974. 246792.  1.75   0.432 \n 4 15-24    Every day          8159303. 586824. 14.5    0.917 \n 5 25-34    Only occasionally   184533.  92304.  0.328  0.164 \n 6 25-34    Most days           264448. 101815.  0.470  0.181 \n 7 25-34    Every day          6356212. 475560. 11.3    0.762 \n 8 35-44    Never                41591.  41591.  0.0740 0.0740\n 9 35-44    Only occasionally    97612.  56513.  0.174  0.101 \n10 35-44    A few times a week  151262.  76563.  0.269  0.136 \n11 35-44    Most days           528423. 152299.  0.940  0.268 \n12 35-44    Every day          7738219. 497974. 13.8    0.782 \n13 45-54    Never               215268. 106143.  0.383  0.188 \n14 45-54    Only occasionally   421050. 133341.  0.749  0.235 \n15 45-54    A few times a week  363809. 126531.  0.647  0.223 \n16 45-54    Most days           799547. 185506.  1.42   0.325 \n17 45-54    Every day          7218228. 480960. 12.8    0.823 \n18 55-64    Never               768230. 168859.  1.37   0.296 \n19 55-64    Only occasionally   967739. 181369.  1.72   0.315 \n20 55-64    A few times a week  663439. 150366.  1.18   0.264 \n21 55-64    Most days          1017673. 166705.  1.81   0.294 \n22 55-64    Every day          5794517. 409369. 10.3    0.714 \n23 65-74    Never              1293236. 229568.  2.30   0.402 \n24 65-74    Only occasionally   583407. 147059.  1.04   0.259 \n25 65-74    A few times a week  673845. 143267.  1.20   0.252 \n26 65-74    Most days           824274. 159904.  1.47   0.278 \n27 65-74    Every day          4025921. 329504.  7.16   0.591 \n28 75+      Never              2899842. 326820.  5.16   0.558 \n29 75+      Only occasionally   658894. 151520.  1.17   0.269 \n30 75+      A few times a week  407123. 132835.  0.724  0.236 \n31 75+      Most days           492333. 125324.  0.876  0.223 \n32 75+      Every day          1525627. 214869.  2.71   0.381"
   },
   {
     "objectID": "index.html#our-goal",
@@ -420,116 +448,95 @@
     "text": "Exercise 1: estimate weighted mean happiness by country\n\nhappy_by_country &lt;-\n  ess_des |&gt;\n  filter(!is.na(Happy)) |&gt;\n  group_by(Country) |&gt;\n  summarize(Happy_mean = survey_mean(Happy, na.rm = TRUE))\n\nhappy_by_country"
   },
   {
-    "objectID": "index.html#exercise-1-estimate-weighted-mean-happiness-by-country-1-output",
-    "href": "index.html#exercise-1-estimate-weighted-mean-happiness-by-country-1-output",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 1: estimate weighted mean happiness by country",
-    "text": "Exercise 1: estimate weighted mean happiness by country\n\n# A tibble: 30 × 3\n   Country  Happy_mean Happy_mean_se\n   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;\n 1 Austria        7.85        0.0494\n 2 Belgium        7.70        0.0464\n 3 Bulgaria       6.33        0.0549\n 4 Croatia        7.53        0.0569\n 5 Cyprus         6.99        0.0888\n 6 Estonia        7.31        0.0535\n 7 Finland        8.04        0.0427\n 8 France         7.43        0.0445\n 9 Germany        7.59        0.0675\n10 Greece         6.80        0.0369\n# ℹ 20 more rows"
-  },
-  {
     "objectID": "index.html#likert-chart-weighted-response-distribution-by-country",
     "href": "index.html#likert-chart-weighted-response-distribution-by-country",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Likert chart: weighted response distribution by country",
-    "text": "Likert chart: weighted response distribution by country\nA map only shows the mean. A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country."
+    "text": "Likert chart: weighted response distribution by country\nA Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country."
   },
   {
-    "objectID": "index.html#exercise-2-normalize-data",
-    "href": "index.html#exercise-2-normalize-data",
+    "objectID": "index.html#exercise-2-calculate-distribution-of-happiness-level-by-country",
+    "href": "index.html#exercise-2-calculate-distribution-of-happiness-level-by-country",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: Normalize data",
-    "text": "Exercise 2: Normalize data\n\n\n# A tibble: 327 × 5\n   cntry Country Happy_factor               n       p\n   &lt;chr&gt; &lt;chr&gt;   &lt;fct&gt;                  &lt;dbl&gt;   &lt;dbl&gt;\n 1 AT    Austria 0 - Extremely unhappy   2.90 0.00374\n 2 AT    Austria 1                       1.99 0.00256\n 3 AT    Austria 2                       3.83 0.00493\n 4 AT    Austria 3                      10.9  0.0141 \n 5 AT    Austria 4                       8.62 0.0111 \n 6 AT    Austria 5                      43.5  0.0560 \n 7 AT    Austria 6                      43.2  0.0556 \n 8 AT    Austria 7                     125.   0.161  \n 9 AT    Austria 8                     251.   0.323  \n10 AT    Austria 9                     198.   0.255  \n# ℹ 317 more rows"
+    "section": "Exercise 2: Calculate distribution of happiness level by country",
+    "text": "Exercise 2: Calculate distribution of happiness level by country\n\n\n# A tibble: 327 × 5\n    cntry Country        Happy_factor                  n        p\n    &lt;chr&gt; &lt;chr&gt;          &lt;fct&gt;                     &lt;dbl&gt;    &lt;dbl&gt;\n  1 AT    Austria        0 - Extremely unhappy    2.90   0.00374 \n  2 AT    Austria        1                        1.99   0.00256 \n  3 AT    Austria        2                        3.83   0.00493 \n  4 AT    Austria        3                       10.9    0.0141  \n  5 AT    Austria        4                        8.62   0.0111  \n  6 AT    Austria        5                       43.5    0.0560  \n  7 AT    Austria        6                       43.2    0.0556  \n  8 AT    Austria        7                      125.     0.161   \n  9 AT    Austria        8                      251.     0.323   \n 10 AT    Austria        9                      198.     0.255   \n 11 AT    Austria        10 - Extremely happy    88.3    0.114   \n 12 BE    Belgium        0 - Extremely unhappy    1.73   0.00177 \n 13 BE    Belgium        1                        1.16   0.00118 \n 14 BE    Belgium        2                        6.60   0.00673 \n 15 BE    Belgium        3                       15.0    0.0153  \n 16 BE    Belgium        4                       15.2    0.0155  \n 17 BE    Belgium        5                       45.8    0.0467  \n 18 BE    Belgium        6                       63.9    0.0651  \n 19 BE    Belgium        7                      191.     0.195   \n 20 BE    Belgium        8                      362.     0.369   \n 21 BE    Belgium        9                      199.     0.203   \n 22 BE    Belgium        10 - Extremely happy    79.6    0.0812  \n 23 BG    Bulgaria       0 - Extremely unhappy   11.1    0.0202  \n 24 BG    Bulgaria       1                        4.70   0.00850 \n 25 BG    Bulgaria       2                       15.9    0.0287  \n 26 BG    Bulgaria       3                       24.4    0.0442  \n 27 BG    Bulgaria       4                       32.2    0.0582  \n 28 BG    Bulgaria       5                       98.8    0.179   \n 29 BG    Bulgaria       6                       78.1    0.141   \n 30 BG    Bulgaria       7                      116.     0.210   \n 31 BG    Bulgaria       8                      100.     0.182   \n 32 BG    Bulgaria       9                       29.4    0.0533  \n 33 BG    Bulgaria       10 - Extremely happy    41.6    0.0753  \n 34 CH    Switzerland    0 - Extremely unhappy    1.13   0.00151 \n 35 CH    Switzerland    1                        0.516  0.000691\n 36 CH    Switzerland    2                        2.82   0.00377 \n 37 CH    Switzerland    3                        8.33   0.0112  \n 38 CH    Switzerland    4                        7.30   0.00977 \n 39 CH    Switzerland    5                       27.4    0.0366  \n 40 CH    Switzerland    6                       24.0    0.0321  \n 41 CH    Switzerland    7                      104.     0.139   \n 42 CH    Switzerland    8                      251.     0.336   \n 43 CH    Switzerland    9                      205.     0.275   \n 44 CH    Switzerland    10 - Extremely happy   116.     0.155   \n 45 CY    Cyprus         0 - Extremely unhappy    0.688  0.00899 \n 46 CY    Cyprus         1                        0.740  0.00967 \n 47 CY    Cyprus         2                        0.969  0.0127  \n 48 CY    Cyprus         3                        2.00   0.0261  \n 49 CY    Cyprus         4                        3.04   0.0397  \n 50 CY    Cyprus         5                       10.9    0.143   \n 51 CY    Cyprus         6                        6.55   0.0857  \n 52 CY    Cyprus         7                       16.7    0.218   \n 53 CY    Cyprus         8                       19.6    0.256   \n 54 CY    Cyprus         9                        6.81   0.0890  \n 55 CY    Cyprus         10 - Extremely happy     8.51   0.111   \n 56 DE    Germany        0 - Extremely unhappy    8.11   0.00112 \n 57 DE    Germany        1                       40.3    0.00557 \n 58 DE    Germany        2                       74.5    0.0103  \n 59 DE    Germany        3                      164.     0.0227  \n 60 DE    Germany        4                      130.     0.0180  \n 61 DE    Germany        5                      525.     0.0725  \n 62 DE    Germany        6                      583.     0.0805  \n 63 DE    Germany        7                     1122.     0.155   \n 64 DE    Germany        8                     2361.     0.326   \n 65 DE    Germany        9                     1396.     0.193   \n 66 DE    Germany        10 - Extremely happy   833.     0.115   \n 67 EE    Estonia        0 - Extremely unhappy    0.369  0.00325 \n 68 EE    Estonia        1                        0.328  0.00288 \n 69 EE    Estonia        2                        1.02   0.00899 \n 70 EE    Estonia        3                        2.98   0.0262  \n 71 EE    Estonia        4                        4.03   0.0354  \n 72 EE    Estonia        5                       11.8    0.103   \n 73 EE    Estonia        6                        8.19   0.0720  \n 74 EE    Estonia        7                       24.4    0.215   \n 75 EE    Estonia        8                       31.4    0.276   \n 76 EE    Estonia        9                       18.3    0.160   \n 77 EE    Estonia        10 - Extremely happy    11.1    0.0973  \n 78 ES    Spain          0 - Extremely unhappy   10.2    0.00247 \n 79 ES    Spain          1                        2.13   0.000513\n 80 ES    Spain          2                       21.9    0.00527 \n 81 ES    Spain          3                       41.0    0.00989 \n 82 ES    Spain          4                       56.8    0.0137  \n 83 ES    Spain          5                      213.     0.0514  \n 84 ES    Spain          6                      312.     0.0753  \n 85 ES    Spain          7                      798.     0.192   \n 86 ES    Spain          8                     1228.     0.296   \n 87 ES    Spain          9                      773.     0.186   \n 88 ES    Spain          10 - Extremely happy   694.     0.167   \n 89 FI    Finland        0 - Extremely unhappy    0.393  0.000833\n 90 FI    Finland        1                        0.396  0.000840\n 91 FI    Finland        2                        3.31   0.00703 \n 92 FI    Finland        3                        7.50   0.0159  \n 93 FI    Finland        4                        9.12   0.0194  \n 94 FI    Finland        5                       11.6    0.0246  \n 95 FI    Finland        6                       17.5    0.0370  \n 96 FI    Finland        7                       61.4    0.130   \n 97 FI    Finland        8                      163.     0.345   \n 98 FI    Finland        9                      147.     0.312   \n 99 FI    Finland        10 - Extremely happy    50.9    0.108   \n100 FR    France         0 - Extremely unhappy   28.0    0.00499 \n101 FR    France         1                        3.74   0.000665\n102 FR    France         2                       22.7    0.00404 \n103 FR    France         3                       67.2    0.0119  \n104 FR    France         4                      115.     0.0205  \n105 FR    France         5                      589.     0.105   \n106 FR    France         6                      497.     0.0884  \n107 FR    France         7                     1262.     0.225   \n108 FR    France         8                     1603.     0.285   \n109 FR    France         9                      860.     0.153   \n110 FR    France         10 - Extremely happy   574.     0.102   \n111 GB    United Kingdom 0 - Extremely unhappy   47.2    0.00848 \n112 GB    United Kingdom 1                       22.4    0.00403 \n113 GB    United Kingdom 2                       68.1    0.0122  \n114 GB    United Kingdom 3                       86.2    0.0155  \n115 GB    United Kingdom 4                      184.     0.0331  \n116 GB    United Kingdom 5                      349.     0.0627  \n117 GB    United Kingdom 6                      482.     0.0865  \n118 GB    United Kingdom 7                     1098.     0.197   \n119 GB    United Kingdom 8                     1583.     0.284   \n120 GB    United Kingdom 9                      892.     0.160   \n121 GB    United Kingdom 10 - Extremely happy   759.     0.136   \n122 GR    Greece         0 - Extremely unhappy    0.838  0.000930\n123 GR    Greece         1                        5.18   0.00575 \n124 GR    Greece         2                        6.31   0.00700 \n125 GR    Greece         3                       25.3    0.0281  \n126 GR    Greece         4                       33.8    0.0375  \n127 GR    Greece         5                      107.     0.119   \n128 GR    Greece         6                      134.     0.149   \n129 GR    Greece         7                      243.     0.270   \n130 GR    Greece         8                      259.     0.288   \n131 GR    Greece         9                       78.4    0.0871  \n132 GR    Greece         10 - Extremely happy     7.27   0.00807 \n133 HR    Croatia        0 - Extremely unhappy    0.374  0.00114 \n134 HR    Croatia        1                        0.951  0.00289 \n135 HR    Croatia        2                        4.27   0.0130  \n136 HR    Croatia        3                        5.90   0.0180  \n137 HR    Croatia        4                       11.1    0.0338  \n138 HR    Croatia        5                       34.5    0.105   \n139 HR    Croatia        6                       26.1    0.0793  \n140 HR    Croatia        7                       57.0    0.173   \n141 HR    Croatia        8                       81.5    0.248   \n142 HR    Croatia        9                       47.8    0.145   \n143 HR    Croatia        10 - Extremely happy    59.2    0.180   \n144 HU    Hungary        0 - Extremely unhappy    3.46   0.00423 \n145 HU    Hungary        1                        3.18   0.00389 \n146 HU    Hungary        2                       15.7    0.0192  \n147 HU    Hungary        3                       22.0    0.0269  \n148 HU    Hungary        4                       27.1    0.0331  \n149 HU    Hungary        5                       82.1    0.100   \n150 HU    Hungary        6                       96.5    0.118   \n151 HU    Hungary        7                      161.     0.197   \n152 HU    Hungary        8                      194.     0.238   \n153 HU    Hungary        9                      104.     0.127   \n154 HU    Hungary        10 - Extremely happy   109.     0.133   \n155 IE    Ireland        0 - Extremely unhappy    0.502  0.00118 \n156 IE    Ireland        1                        0.388  0.000912\n157 IE    Ireland        2                        3.11   0.00732 \n158 IE    Ireland        3                        4.51   0.0106  \n159 IE    Ireland        4                        8.92   0.0210  \n160 IE    Ireland        5                       20.2    0.0474  \n161 IE    Ireland        6                       41.2    0.0969  \n162 IE    Ireland        7                       80.0    0.188   \n163 IE    Ireland        8                      133.     0.314   \n164 IE    Ireland        9                       81.9    0.193   \n165 IE    Ireland        10 - Extremely happy    51.1    0.120   \n166 IL    Israel         0 - Extremely unhappy    8.19   0.0122  \n167 IL    Israel         1                        4.11   0.00611 \n168 IL    Israel         2                        5.27   0.00783 \n169 IL    Israel         3                       11.6    0.0173  \n170 IL    Israel         4                       17.3    0.0258  \n171 IL    Israel         5                       38.9    0.0578  \n172 IL    Israel         6                       76.6    0.114   \n173 IL    Israel         7                      143.     0.212   \n174 IL    Israel         8                      183.     0.271   \n175 IL    Israel         9                      102.     0.151   \n176 IL    Israel         10 - Extremely happy    83.6    0.124   \n177 IS    Iceland        0 - Extremely unhappy    0.0496 0.00157 \n178 IS    Iceland        2                        0.183  0.00579 \n179 IS    Iceland        3                        0.765  0.0242  \n180 IS    Iceland        4                        0.785  0.0249  \n181 IS    Iceland        5                        1.15   0.0365  \n182 IS    Iceland        6                        1.53   0.0484  \n183 IS    Iceland        7                        4.81   0.152   \n184 IS    Iceland        8                       10.7    0.339   \n185 IS    Iceland        9                        7.98   0.253   \n186 IS    Iceland        10 - Extremely happy     3.61   0.114   \n187 IT    Italy          0 - Extremely unhappy   31.2    0.00607 \n188 IT    Italy          1                       32.7    0.00637 \n189 IT    Italy          2                       52.6    0.0102  \n190 IT    Italy          3                      126.     0.0245  \n191 IT    Italy          4                      185.     0.0361  \n192 IT    Italy          5                      456.     0.0889  \n193 IT    Italy          6                      897.     0.175   \n194 IT    Italy          7                     1382.     0.269   \n195 IT    Italy          8                     1300.     0.253   \n196 IT    Italy          9                      432.     0.0843  \n197 IT    Italy          10 - Extremely happy   236.     0.0459  \n198 LT    Lithuania      0 - Extremely unhappy    1.92   0.00791 \n199 LT    Lithuania      1                        0.533  0.00220 \n200 LT    Lithuania      2                        2.53   0.0104  \n201 LT    Lithuania      3                        4.50   0.0186  \n202 LT    Lithuania      4                        8.65   0.0357  \n203 LT    Lithuania      5                       21.7    0.0894  \n204 LT    Lithuania      6                       19.0    0.0785  \n205 LT    Lithuania      7                       41.0    0.169   \n206 LT    Lithuania      8                       64.1    0.264   \n207 LT    Lithuania      9                       42.9    0.177   \n208 LT    Lithuania      10 - Extremely happy    35.5    0.147   \n209 LV    Latvia         0 - Extremely unhappy    1.15   0.00731 \n210 LV    Latvia         1                        1.24   0.00786 \n211 LV    Latvia         2                        1.90   0.0121  \n212 LV    Latvia         3                        3.93   0.0250  \n213 LV    Latvia         4                        6.95   0.0442  \n214 LV    Latvia         5                       24.6    0.157   \n215 LV    Latvia         6                       13.0    0.0829  \n216 LV    Latvia         7                       33.2    0.211   \n217 LV    Latvia         8                       40.1    0.255   \n218 LV    Latvia         9                       17.8    0.113   \n219 LV    Latvia         10 - Extremely happy    13.3    0.0845  \n220 ME    Montenegro     0 - Extremely unhappy    0.165  0.00327 \n221 ME    Montenegro     1                        0.231  0.00459 \n222 ME    Montenegro     2                        0.456  0.00906 \n223 ME    Montenegro     3                        0.868  0.0172  \n224 ME    Montenegro     4                        3.70   0.0735  \n225 ME    Montenegro     5                       14.4    0.286   \n226 ME    Montenegro     6                        6.66   0.132   \n227 ME    Montenegro     7                        6.61   0.131   \n228 ME    Montenegro     8                        7.07   0.140   \n229 ME    Montenegro     9                        3.85   0.0765  \n230 ME    Montenegro     10 - Extremely happy     6.34   0.126   \n231 NL    Netherlands    0 - Extremely unhappy    8.39   0.00557 \n232 NL    Netherlands    2                        1.79   0.00119 \n233 NL    Netherlands    3                        4.88   0.00324 \n234 NL    Netherlands    4                       16.3    0.0108  \n235 NL    Netherlands    5                       39.9    0.0265  \n236 NL    Netherlands    6                       77.5    0.0514  \n237 NL    Netherlands    7                      262.     0.174   \n238 NL    Netherlands    8                      639.     0.424   \n239 NL    Netherlands    9                      364.     0.242   \n240 NL    Netherlands    10 - Extremely happy    92.7    0.0615  \n241 NO    Norway         1                        0.286  0.000627\n242 NO    Norway         2                        3.45   0.00755 \n243 NO    Norway         3                        6.99   0.0153  \n244 NO    Norway         4                        6.82   0.0150  \n245 NO    Norway         5                       20.1    0.0441  \n246 NO    Norway         6                       29.5    0.0646  \n247 NO    Norway         7                       76.4    0.167   \n248 NO    Norway         8                      141.     0.309   \n249 NO    Norway         9                      109.     0.240   \n250 NO    Norway         10 - Extremely happy    62.3    0.136   \n251 PL    Poland         0 - Extremely unhappy    4.19   0.00136 \n252 PL    Poland         1                        9.30   0.00301 \n253 PL    Poland         2                       34.9    0.0113  \n254 PL    Poland         3                       61.4    0.0199  \n255 PL    Poland         4                       59.2    0.0192  \n256 PL    Poland         5                      245.     0.0795  \n257 PL    Poland         6                      292.     0.0946  \n258 PL    Poland         7                      541.     0.175   \n259 PL    Poland         8                      850.     0.275   \n260 PL    Poland         9                      464.     0.150   \n261 PL    Poland         10 - Extremely happy   524.     0.170   \n262 PT    Portugal       0 - Extremely unhappy    4.27   0.00469 \n263 PT    Portugal       1                        5.53   0.00608 \n264 PT    Portugal       2                       10.6    0.0116  \n265 PT    Portugal       3                       16.8    0.0184  \n266 PT    Portugal       4                       25.9    0.0285  \n267 PT    Portugal       5                      107.     0.117   \n268 PT    Portugal       6                       96.1    0.106   \n269 PT    Portugal       7                      182.     0.200   \n270 PT    Portugal       8                      244.     0.268   \n271 PT    Portugal       9                      121.     0.133   \n272 PT    Portugal       10 - Extremely happy    97.9    0.108   \n273 RS    Serbia         0 - Extremely unhappy    7.09   0.0125  \n274 RS    Serbia         1                        4.51   0.00796 \n275 RS    Serbia         2                        6.00   0.0106  \n276 RS    Serbia         3                       11.1    0.0195  \n277 RS    Serbia         4                       17.7    0.0312  \n278 RS    Serbia         5                       61.7    0.109   \n279 RS    Serbia         6                       42.8    0.0755  \n280 RS    Serbia         7                      101.     0.178   \n281 RS    Serbia         8                      143.     0.252   \n282 RS    Serbia         9                       71.5    0.126   \n283 RS    Serbia         10 - Extremely happy   101.     0.179   \n284 SE    Sweden         0 - Extremely unhappy    3.28   0.00379 \n285 SE    Sweden         1                        3.81   0.00439 \n286 SE    Sweden         2                        4.49   0.00518 \n287 SE    Sweden         3                        9.32   0.0108  \n288 SE    Sweden         4                       16.4    0.0189  \n289 SE    Sweden         5                       41.3    0.0477  \n290 SE    Sweden         6                       73.4    0.0847  \n291 SE    Sweden         7                      160.     0.185   \n292 SE    Sweden         8                      289.     0.333   \n293 SE    Sweden         9                      185.     0.213   \n294 SE    Sweden         10 - Extremely happy    81.0    0.0934  \n295 SI    Slovenia       0 - Extremely unhappy    0.399  0.00224 \n296 SI    Slovenia       1                        0.674  0.00378 \n297 SI    Slovenia       2                        1.00   0.00563 \n298 SI    Slovenia       3                        2.85   0.0160  \n299 SI    Slovenia       4                        3.70   0.0208  \n300 SI    Slovenia       5                        9.76   0.0548  \n301 SI    Slovenia       6                       12.5    0.0701  \n302 SI    Slovenia       7                       30.1    0.169   \n303 SI    Slovenia       8                       56.6    0.318   \n304 SI    Slovenia       9                       34.7    0.195   \n305 SI    Slovenia       10 - Extremely happy    26.0    0.146   \n306 SK    Slovakia       0 - Extremely unhappy    2.81   0.00621 \n307 SK    Slovakia       1                        1.61   0.00355 \n308 SK    Slovakia       2                        6.72   0.0149  \n309 SK    Slovakia       3                       26.3    0.0580  \n310 SK    Slovakia       4                       31.1    0.0687  \n311 SK    Slovakia       5                       56.9    0.126   \n312 SK    Slovakia       6                       50.8    0.112   \n313 SK    Slovakia       7                       87.8    0.194   \n314 SK    Slovakia       8                       92.7    0.205   \n315 SK    Slovakia       9                       50.4    0.111   \n316 SK    Slovakia       10 - Extremely happy    45.8    0.101   \n317 UA    Ukraine        0 - Extremely unhappy  106.     0.0312  \n318 UA    Ukraine        1                       47.5    0.0140  \n319 UA    Ukraine        2                      112.     0.0329  \n320 UA    Ukraine        3                      189.     0.0556  \n321 UA    Ukraine        4                      179.     0.0526  \n322 UA    Ukraine        5                      785.     0.231   \n323 UA    Ukraine        6                      288.     0.0847  \n324 UA    Ukraine        7                      442.     0.130   \n325 UA    Ukraine        8                      528.     0.155   \n326 UA    Ukraine        9                      254.     0.0746  \n327 UA    Ukraine        10 - Extremely happy   472.     0.139"
   },
   {
-    "objectID": "index.html#exercise-2-normalize-data-1",
-    "href": "index.html#exercise-2-normalize-data-1",
+    "objectID": "index.html#exercise-2-calculate-distribution-of-happiness-level-by-country-1",
+    "href": "index.html#exercise-2-calculate-distribution-of-happiness-level-by-country-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: Normalize data",
-    "text": "Exercise 2: Normalize data\n\nhappy_dist_country &lt;-\n  ess_des |&gt;\n  filter(!is.na(Happy)) |&gt;\n  mutate(\n    Happy_factor = factor(\n      Happy,\n      levels = 0:10,\n      labels = c(\n        \"0 - Extremely unhappy\", 1:9, \"10 - Extremely happy\"\n      )\n    )\n  ) |&gt;\n  group_by(cntry, Country, Happy_factor) |&gt;\n  summarize(n = survey_total(vartype = NULL)) |&gt;\n  # Normalize within country so each country's bar sums to 100%\n  mutate(p = n / sum(n)) |&gt;\n  ungroup()\n\nhappy_dist_country"
+    "section": "Exercise 2: Calculate distribution of happiness level by country",
+    "text": "Exercise 2: Calculate distribution of happiness level by country\n\nhappy_dist_country &lt;-\n  ess_des |&gt;\n  filter(!is.na(Happy)) |&gt;\n  mutate(\n    Happy_factor = factor(\n      Happy,\n      levels = 0:10,\n      labels = c(\n        \"0 - Extremely unhappy\", 1:9, \"10 - Extremely happy\"\n      )\n    )\n  ) |&gt;\n  group_by(interact(cntry, Country), Happy_factor) |&gt;\n  summarize(\n    n = survey_total(vartype = NULL),\n    p = survey_mean(vartype = NULL)\n    ) |&gt;\n  ungroup()\n\nhappy_dist_country |&gt;\n  print(n = Inf)"
   },
   {
-    "objectID": "index.html#exercise-2-normalize-data-1-output",
-    "href": "index.html#exercise-2-normalize-data-1-output",
+    "objectID": "index.html#exercise-3-identify-the-happiest-and-least-happy-countries",
+    "href": "index.html#exercise-3-identify-the-happiest-and-least-happy-countries",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: Normalize data",
-    "text": "Exercise 2: Normalize data\n\n# A tibble: 327 × 5\n   cntry Country Happy_factor               n       p\n   &lt;chr&gt; &lt;chr&gt;   &lt;fct&gt;                  &lt;dbl&gt;   &lt;dbl&gt;\n 1 AT    Austria 0 - Extremely unhappy   2.90 0.00374\n 2 AT    Austria 1                       1.99 0.00256\n 3 AT    Austria 2                       3.83 0.00493\n 4 AT    Austria 3                      10.9  0.0141 \n 5 AT    Austria 4                       8.62 0.0111 \n 6 AT    Austria 5                      43.5  0.0560 \n 7 AT    Austria 6                      43.2  0.0556 \n 8 AT    Austria 7                     125.   0.161  \n 9 AT    Austria 8                     251.   0.323  \n10 AT    Austria 9                     198.   0.255  \n# ℹ 317 more rows"
+    "section": "Exercise 3: identify the happiest and least happy countries",
+    "text": "Exercise 3: identify the happiest and least happy countries\nTo keep the chart readable, identify the top and bottom 4 based on mean happiness (8 total, as in the reference chart).\n\n\n[1] \"Switzerland\" \"Finland\"     \"Norway\"      \"Netherlands\"\n[5] \"Bulgaria\"    \"Ukraine\"     \"Montenegro\"  \"Slovakia\""
   },
   {
-    "objectID": "index.html#exercise-3-keep-only-the-happiest-and-least-happy-countries",
-    "href": "index.html#exercise-3-keep-only-the-happiest-and-least-happy-countries",
+    "objectID": "index.html#exercise-3-identify-the-happiest-and-least-happy-countries-1",
+    "href": "index.html#exercise-3-identify-the-happiest-and-least-happy-countries-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 3: keep only the happiest and least happy countries",
-    "text": "Exercise 3: keep only the happiest and least happy countries\nTo keep the chart readable, show only the n_countries countries with the highest and lowest weighted mean happiness (8 total, as in the reference chart)."
+    "section": "Exercise 3: identify the happiest and least happy countries",
+    "text": "Exercise 3: identify the happiest and least happy countries\n\nn_countries &lt;- 4\n\ntop_bottom_countries &lt;-\n  happy_by_country |&gt;\n  slice_max(Happy_mean, n = n_countries) |&gt;\n  bind_rows(\n    happy_by_country |&gt; slice_min(Happy_mean, n = n_countries)\n  ) |&gt;\n  pull(Country)"
   },
   {
-    "objectID": "index.html#exercise-3-keep-only-the-happiest-and-least-happy-countries-1",
-    "href": "index.html#exercise-3-keep-only-the-happiest-and-least-happy-countries-1",
+    "objectID": "index.html#exercise-4-make-bar-chart-with-country-subset-ordered-by-mean",
+    "href": "index.html#exercise-4-make-bar-chart-with-country-subset-ordered-by-mean",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 3: keep only the happiest and least happy countries",
-    "text": "Exercise 3: keep only the happiest and least happy countries\n\nn_countries &lt;- 4\n\ntop_bottom_countries &lt;-\n  happy_by_country |&gt;\n  slice_max(Happy_mean, n = n_countries) |&gt;\n  bind_rows(\n    happy_by_country |&gt; slice_min(Happy_mean, n = n_countries)\n  ) |&gt;\n  pull(Country)"
+    "section": "Exercise 4: make bar chart with country subset ordered by mean",
+    "text": "Exercise 4: make bar chart with country subset ordered by mean\n\n\n\nsurvey_total(vartype = NULL) gives a weighted count per Country x Happy_factor cell without standard errors, which is all that’s needed here since the plot shows a descriptive distribution, not an inferential estimate\nDividing by sum(n) within each country (via group_by(cntry, Country, Happy_factor) peeling the last group in summarize()) turns weighted counts into within-country proportions\nslice_max()/slice_min() on happy_by_country pick the n_countries happiest and least happy countries; adjust n_countries to show more or fewer\nfct_reorder() sorts the remaining countries by Happy_mean so the happiest lands at the top of the plot, matching the ordering convention from the reference chart\nscale_fill_brewer(palette = \"RdBu\", direction = -1) gives a diverging blue-to-red palette across the 11 response categories\nposition_fill(reverse = TRUE) is needed because geom_col()’s default stacking order would otherwise put “0 - Extremely unhappy” on the right"
   },
   {
-    "objectID": "index.html#exercise-4-order-countries-by-mean-and-plot",
-    "href": "index.html#exercise-4-order-countries-by-mean-and-plot",
+    "objectID": "index.html#exercise-4-make-bar-chart-with-country-subset-ordered-by-mean-1",
+    "href": "index.html#exercise-4-make-bar-chart-with-country-subset-ordered-by-mean-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 4: order countries by mean and plot",
-    "text": "Exercise 4: order countries by mean and plot\n\n\n\nsurvey_total(vartype = NULL) gives a weighted count per Country x Happy_factor cell without standard errors, which is all that’s needed here since the plot shows a descriptive distribution, not an inferential estimate\nDividing by sum(n) within each country (via group_by(cntry, Country, Happy_factor) peeling the last group in summarize()) turns weighted counts into within-country proportions\nslice_max()/slice_min() on happy_by_country pick the n_countries happiest and least happy countries; adjust n_countries to show more or fewer\nfct_reorder() sorts the remaining countries by Happy_mean so the happiest lands at the top of the plot, matching the ordering convention from the reference chart\nscale_fill_brewer(palette = \"RdBu\", direction = -1) gives a diverging blue-to-red palette across the 11 response categories\nposition_fill(reverse = TRUE) is needed because geom_col()’s default stacking order would otherwise put “0 - Extremely unhappy” on the right"
-  },
-  {
-    "objectID": "index.html#exercise-4-order-countries-by-mean-and-plot-1",
-    "href": "index.html#exercise-4-order-countries-by-mean-and-plot-1",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 4: order countries by mean and plot",
-    "text": "Exercise 4: order countries by mean and plot\n\nhappy_likert &lt;-\n  happy_dist_country |&gt;\n  left_join(happy_by_country, by = \"Country\") |&gt;\n  filter(Country %in% top_bottom_countries) |&gt;\n  mutate(Label = fct_reorder(paste(cntry, \"-\", Country), Happy_mean))\n\nggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +\n  # reverse = TRUE keeps \"0 - Extremely unhappy\" on the left and\n  # \"10 - Extremely happy\" on the right, matching the legend order\n  geom_col(position = position_fill(reverse = TRUE)) +\n  scale_fill_brewer(palette = \"RdBu\", direction = -1, name = NULL) +\n  scale_x_continuous(labels = scales::percent) +\n  labs(\n    title = \"How happy are you?\",\n    subtitle = glue::glue(\"Top and bottom {n_countries} countries by weighted mean\"),\n    x = NULL,\n    y = NULL\n  ) +\n  theme_light() +\n  theme(legend.position = \"bottom\")"
-  },
-  {
-    "objectID": "index.html#exercise-4-order-countries-by-mean-and-plot-1-output",
-    "href": "index.html#exercise-4-order-countries-by-mean-and-plot-1-output",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 4: order countries by mean and plot",
-    "text": "Exercise 4: order countries by mean and plot"
+    "section": "Exercise 4: make bar chart with country subset ordered by mean",
+    "text": "Exercise 4: make bar chart with country subset ordered by mean\n\nhappy_likert &lt;-\n  happy_dist_country |&gt;\n  left_join(happy_by_country, by = \"Country\") |&gt;\n  filter(Country %in% top_bottom_countries) |&gt;\n  mutate(Label = fct_reorder(paste(cntry, \"-\", Country), Happy_mean))\n\nggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +\n  # reverse = TRUE keeps \"0 - Extremely unhappy\" on the left and\n  # \"10 - Extremely happy\" on the right, matching the legend order\n  geom_col(position = position_fill(reverse = TRUE)) +\n  scale_fill_brewer(palette = \"RdBu\", direction = -1, name = NULL) +\n  scale_x_continuous(labels = scales::percent) +\n  labs(\n    title = \"How happy are you?\",\n    subtitle = glue::glue(\"Top and bottom {n_countries} countries by weighted mean\"),\n    x = NULL,\n    y = NULL\n  ) +\n  theme_light() +\n  theme(legend.position = \"bottom\")"
   },
   {
     "objectID": "index.html#map-survey-estimates",
     "href": "index.html#map-survey-estimates",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Map survey estimates",
-    "text": "Map survey estimates\n\nCountry is a natural domain for ESS analysis\nChoropleth maps make cross-country patterns easier to spot than a table\nBuilds on two earlier pieces: survey-weighted estimation (srvyr) + country shapes (tmap/sf)"
+    "text": "Map survey estimates\n\nCountry is a natural domain for ESS analysis\nChoropleth maps make cross-country patterns easier to spot than a table\nBuilds on two earlier pieces: survey-weighted estimation (srvyr) + country shapes (sf) + ggplot2"
   },
   {
-    "objectID": "index.html#exercise-1-join-estimates-to-country-shapes",
-    "href": "index.html#exercise-1-join-estimates-to-country-shapes",
+    "objectID": "index.html#exercise-5-join-country-shapes-to-mean-estimates",
+    "href": "index.html#exercise-5-join-country-shapes-to-mean-estimates",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 1: join estimates to country shapes",
-    "text": "Exercise 1: join estimates to country shapes\nJoin on country name, then transform/crop to the same European extent used earlier."
+    "section": "Exercise 5: join country shapes to mean estimates",
+    "text": "Exercise 5: join country shapes to mean estimates\nGet a base map from {tmap} using the object World and join the mean estimates on. Crop the map to the extent of ESS using this code:\ndat_sf |&gt;\n  st_crop(\n    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |&gt;\n      st_transform(3035)\n  )"
   },
   {
-    "objectID": "index.html#exercise-1-join-estimates-to-country-shapes-1",
-    "href": "index.html#exercise-1-join-estimates-to-country-shapes-1",
+    "objectID": "index.html#exercise-5-join-country-shapes-to-mean-estimates-1",
+    "href": "index.html#exercise-5-join-country-shapes-to-mean-estimates-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 1: join estimates to country shapes",
-    "text": "Exercise 1: join estimates to country shapes\n\nhappy_shape &lt;-\n  World |&gt;\n  full_join(happy_by_country, by = c(\"name\" = \"Country\")) |&gt;\n  st_transform(3035) |&gt;\n  st_crop(\n    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |&gt;\n      st_transform(3035)\n  )"
+    "section": "Exercise 5: join country shapes to mean estimates",
+    "text": "Exercise 5: join country shapes to mean estimates\n\nhappy_shape &lt;-\n  World |&gt;\n  full_join(happy_by_country, by = c(\"name\" = \"Country\")) |&gt;\n  st_transform(3035) |&gt;\n  st_crop(\n    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |&gt;\n      st_transform(3035)\n  )"
   },
   {
-    "objectID": "index.html#exercise-2-map-colored-by-happy",
-    "href": "index.html#exercise-2-map-colored-by-happy",
+    "objectID": "index.html#exercise-6-map-colored-by-happy",
+    "href": "index.html#exercise-6-map-colored-by-happy",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: map colored by Happy",
-    "text": "Exercise 2: map colored by Happy\n\n\n \n\n\ntm_scale_continuous() is used here (vs. tm_scale_categorical() in the earlier ESS-11 map) because Happy_mean is a continuous estimate, not a category\nCountries without an ESS estimate stay lightgrey because of the full_join + filter(!is.na(Happy_mean)) pattern\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join\ness_des (built from ess_der in the ESS intro) is reused here"
+    "section": "Exercise 6: map colored by Happy",
+    "text": "Exercise 6: map colored by Happy\n\n\n \n\n\ngeom_sf() draws the polygons in the data’s CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically\nscale_fill_distiller() gives a continuous Brewer scale because Happy_mean is a continuous estimate, not a category; direction = 1 makes higher happiness darker\nCountries without an ESS estimate have NA for Happy_mean after the full_join, so na.value = \"lightgrey\" shades them grey\nOnly countries with an estimate are labelled, via data = ... filter(!is.na(Happy_mean)) in geom_sf_text()\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join"
   },
   {
-    "objectID": "index.html#exercise-2-map-colored-by-happy-1",
-    "href": "index.html#exercise-2-map-colored-by-happy-1",
+    "objectID": "index.html#exercise-6-map-colored-by-happy-1",
+    "href": "index.html#exercise-6-map-colored-by-happy-1",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: map colored by Happy",
-    "text": "Exercise 2: map colored by Happy\n\nhappy_shape |&gt;\n  tm_shape() +\n  tm_polygons(fill = \"lightgrey\", col = \"darkgrey\") +\n  tm_shape(happy_shape |&gt; filter(!is.na(Happy_mean))) +\n  tm_polygons(\n    fill = \"Happy_mean\",\n    fill.scale = tm_scale_continuous(values = \"brewer.blues\"),\n    fill.legend = tm_legend(title = \"Mean happiness\\n(0-10 scale)\")\n  ) +\n  tm_text(\"iso_a3\") +\n  tm_graticules()\n\n\n\n\ntm_scale_continuous() is used here (vs. tm_scale_categorical() in the earlier ESS-11 map) because Happy_mean is a continuous estimate, not a category\nCountries without an ESS estimate stay lightgrey because of the full_join + filter(!is.na(Happy_mean)) pattern\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join\ness_des (built from ess_der in the ESS intro) is reused here"
+    "section": "Exercise 6: map colored by Happy",
+    "text": "Exercise 6: map colored by Happy\n\nhappy_shape |&gt;\n  ggplot() +\n  geom_sf(aes(fill = Happy_mean), color = \"darkgrey\") +\n  geom_sf_text(\n    data = happy_shape |&gt; filter(!is.na(Happy_mean)),\n    aes(label = iso_a3),\n    size = 3\n  ) +\n  scale_fill_distiller(\n    palette = \"Blues\",\n    direction = 1,\n    na.value = \"lightgrey\",\n    name = \"Mean happiness\\n(0-10 scale)\"\n  ) +\n  labs(x = NULL, y = NULL) +\n  theme_light()\n\n\n\ngeom_sf() draws the polygons in the data’s CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically\nscale_fill_distiller() gives a continuous Brewer scale because Happy_mean is a continuous estimate, not a category; direction = 1 makes higher happiness darker\nCountries without an ESS estimate have NA for Happy_mean after the full_join, so na.value = \"lightgrey\" shades them grey\nOnly countries with an estimate are labelled, via data = ... filter(!is.na(Happy_mean)) in geom_sf_text()\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join"
   },
   {
-    "objectID": "index.html#exercise-2-map-colored-by-happy-1-output",
-    "href": "index.html#exercise-2-map-colored-by-happy-1-output",
+    "objectID": "index.html#q-a",
+    "href": "index.html#q-a",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Exercise 2: map colored by Happy",
-    "text": "Exercise 2: map colored by Happy"
+    "section": "Q & A",
+    "text": "Q & A"
   },
   {
     "objectID": "index.html#references",
