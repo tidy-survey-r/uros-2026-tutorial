@@ -1,8 +1,8 @@
 # Descriptive analysis {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Common workflow
+## Common workflow {.bkg-trees}
 
-::: incremental
+::: {.incremental}
 
 1. Create a `tbl_svy` object (a survey object) using: `as_survey_design()` or `as_survey_rep()`
 
@@ -14,7 +14,7 @@
 
 :::
 
-## Descriptive functions {.smaller}
+## Descriptive functions {.smaller .bkg-trees}
 
 :::: {.columns}
 
@@ -55,7 +55,7 @@ Common arguments
 - survey_var - no deff, no cv
 :::
 
-## Mean examples
+## Mean examples {.bkg-mountains}
 
 ::: {.panel-tabset}
 
@@ -118,7 +118,7 @@ ess_des |>
 :::
 
 
-## Proportion example - motivation
+## Proportion example: motivation {.bkg-mountains}
 
 And still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (`volunfp`)
 
@@ -128,7 +128,7 @@ And still thinking about different ways of trying to improve things in [country]
 - 8: Don't know*
 - 9: No answer*
 
-## Proportion example - variable coding
+## Proportion example: variable coding {.bkg-mountains}
 
 Derived variable coding options (unweighted raw data):
 
@@ -144,7 +144,7 @@ ess_der |>
   )
 ```
 
-## Proportion example - 2 ways
+## Proportion example: 2 ways {.bkg-mountains}
 
 Two methods for proportions
 
@@ -160,7 +160,7 @@ Two methods for proportions
 See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/tidy-survey-book/c05-descriptive-analysis.html#calculating-estimates-for-many-outcomes) for extending to multiple outcomes
 :::
 
-## Proportion example - 2 ways
+## Proportion example: 2 ways {.bkg-mountains}
 
 ::: {.panel-tabset}
 
@@ -197,12 +197,13 @@ ess_des |>
 - survey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels
 :::
 
-## Proportion example - arguments
+## Proportion example: arguments {.bkg-trees}
 
 `proportion` argument in `survey_mean()`
 
 ```{r}
 #| label: 05-np-proportion-arg
+#| output-location: slide
 
 ess_des |>
   filter(cntry == "SE") |>
@@ -222,14 +223,13 @@ ess_des |>
 - proportion = TRUE argument only impacts confidence intervals
 :::
 
-## Proportion example - arguments
+## Proportion example: arguments {.bkg-trees}
 
 `prop_method` argument in `survey_mean()/survey_prop()`
 
-
-
 ```{r}
 #| label: 05-np-prop-method-arg
+#| output-location: slide
 
 ess_des |>
   filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
@@ -238,7 +238,8 @@ ess_des |>
     p1 = survey_prop(vartype = "ci", prop_method = "logit"),
     p2 = survey_prop(vartype = "ci", prop_method = "mean"),
     p3 = survey_prop(vartype = "ci", prop_method = "xlogit")
-  )
+  ) |>
+  print(width = Inf)
 ```
 
 ::: aside
@@ -250,13 +251,13 @@ See [`?survey::svyciprop`](https://cran.r-project.org/web/packages/survey/refman
 - Using `filter()` as above examples subsets data. This is done AFTER creating the design object
 - Use `group_by()` to implement domain analysis
 
-## Subgroup analysis - mean and median
+## Subgroup analysis: mean & median
 
-- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported time of internet usage on a typical day (minutes)
+- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day
 
 ```{r}
 #| label: 05-net-by-country
-#| code-fold: show
+#| output-location: slide
 
 ess_des |>
   group_by(Country) |>
@@ -268,17 +269,17 @@ ess_des |>
   gt() |>
   fmt_number(columns = starts_with("NetUse"), decimals = 2) |>
   fmt_number(columns = Pop, decimals = 0) |>
-  opt_interactive(page_size_default = 8)
+  opt_interactive()
 ```
 
-## Subgroup analysis - proportion, marginal
+## Subgroup analysis: prop., marginal {.smaller}
 
 - `NetFreq` is how often people use the internet (categorical)
 - `AgeGroup` is a categorical age variable
 
 ```{r}
 #| label: 05-net-freq-age-marg
-#| code-fold: show
+#| output-location: slide
 
 ess_des |>
   filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
@@ -287,18 +288,15 @@ ess_des |>
     N = survey_total() * 10000,
     p = survey_prop() * 100
   ) |>
-  gt() |>
-  fmt_number(decimal = 1, columns = starts_with("p")) |>
-  fmt_number(decimal = 0, columns = c(N, N_se)) |>
-  opt_interactive(page_size_default = 8)
+  print(n = Inf)
 ```
 
 
-## Subgroup analysis - proportion, joint
+## Subgroup analysis: prop., joint {.smaller}
 
 ```{r}
 #| label: 05-net-freq-age-joint
-#| code-fold: show
+#| output-location: slide
 
 ess_des |>
   filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
@@ -307,9 +305,6 @@ ess_des |>
     N = survey_total() * 10000,
     p = survey_prop() * 100
   ) |>
-  gt() |>
-  fmt_number(decimal = 1, columns = starts_with("p")) |>
-  fmt_number(decimal = 0, columns = c(N, N_se)) |>
-  opt_interactive(page_size_default = 8)
+  print(n = Inf)
 ```
 

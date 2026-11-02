@@ -13,6 +13,13 @@
   border: unset !important;
 }
 
+// The background classes offset the code wrapper, so the pre inside it
+// fills the wrapper instead of being offset a second time
+.reveal div.sourceCode pre {
+  margin-left: 0;
+  width: 100%;
+}
+
 div.sourceCode {
   background-color: unset !important;
 }
@@ -46,9 +53,15 @@ div.sourceCode {
     background-image: url('../../../../images/bkg-left.png');
     @include background-full;
   }
-  h1, h2, h3, h4, h5, p, li, pre {
+  h1, h2, h3, h4, h5, p, li {
     margin-left: 25%;
     width: 85%;
+  }
+
+  // Code boxes don't wrap, so keep margin + width within the slide
+  pre, div.sourceCode {
+    margin-left: 25%;
+    width: 75%;
   }
 }
 
@@ -63,9 +76,15 @@ div.sourceCode {
     width: 90%;
   }
 
-  h1, h3, h4, h5, p, li, ul, pre {
+  h1, h3, h4, h5, p, li, ul {
     margin-left: -15px;
     width: 90%;
+  }
+
+  // Code boxes don't wrap, so stop them before the background art
+  pre, div.sourceCode {
+    margin-left: -15px;
+    width: 70%;
   }
 }
 
@@ -74,7 +93,7 @@ div.sourceCode {
     background-image: url('../../../../images/bkg-ship.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, pre {
+  h2, h3, h4, h5, p, pre, div.sourceCode {
     margin-left: 15%;
     width: 90%;
   }
@@ -90,7 +109,7 @@ div.sourceCode {
     background-image: url('../../../../images/bkg-buildings.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, li, pre {
+  h2, h3, h4, h5, p, li, pre, div.sourceCode {
     margin-left: 8%;
     width: 90%;
   }
@@ -101,7 +120,7 @@ div.sourceCode {
     background-image: url('../../../../images/bkg-trees.png');
     @include background-full;
   }
-  h2, h3, h4, h5, p, li, pre {
+  h2, h3, h4, h5, p, li, pre, div.sourceCode {
     margin-left: 8%;
     width: 90%;
   }

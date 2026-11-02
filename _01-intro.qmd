@@ -59,7 +59,7 @@ At the end of this tutorial, you should be able to:
 
   - We will be using Posit Cloud for exercises
   - All materials are found at:
-      - <https://tidy-survey-r.github.io/uros-2026-tutorial/Slides.html> (Site)
+      - <https://tidy-survey-r.github.io/uros-2026-tutorial/> (Slides)
       - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
 
 
@@ -67,7 +67,7 @@ At the end of this tutorial, you should be able to:
 
 _Note: These are already installed in Posit Cloud_
 ```{r}
-#| label: neccessary-packages
+#| label: 01-neccessary-packages
 
 library(tidyverse)
 library(survey)
@@ -78,7 +78,7 @@ library(tmap)
 ```
 
 ```{r}
-#| label: brand-setup-r
+#| label: 01-brand-setup-r
 #| echo: false
 
 library(brand.yml)
@@ -89,7 +89,7 @@ heading_family <- brand$typography$headings$family
 
 font_add_google(heading_family)
 showtext_auto()
-
+options(width=65)
 ```
 
 ## R Packages for Survey Analysis {.bkg-ship}
@@ -140,8 +140,7 @@ Magrittr pipe (`%>%`)
 :::{.fragment}
 - dot notation
 
-```{r}
-#| eval: FALSE
+```r
 design_object %>% 
   svyglm(design = ., y ~ x)
 ```
@@ -158,8 +157,7 @@ Base R pipe (`|>`)
 :::{.fragment}
 - placeholder
     
-```{r}
-#| eval: FALSE
+```r
 design_object |> 
   svyglm(design = _, y ~ x)
 ```
@@ -168,8 +166,7 @@ design_object |>
 :::{.fragment}
 - anonymous (lambda) functions
 
-```{r}
-#| eval: FALSE
+```r
 design_object |> 
   (\(.) 
    svyglm(design = ., y ~ x)
@@ -188,7 +185,7 @@ Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/un
 
 ## Apply {dplyr} functions to survey objects {.bkg-trees}
 
-:::{.incremental}
+::: {.incremental}
 - A few functions in {srvyr} have counterparts in {dplyr}
   - `dplyr::summarize()` and `srvyr::summarize()`
   - `dplyr::group_by()` and `srvyr::group_by()`
@@ -199,6 +196,7 @@ Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/un
 ## Using `summarize()` to calculate mean and median {.bkg-serpent}
 
 ```{r}
+#| label: 01-api-des-setup
 #| echo: FALSE
 data(api)
 api_des <- apistrat |> as_survey_design(strata = stype, weights = pw)
@@ -210,7 +208,7 @@ api_des <- apistrat |> as_survey_design(strata = stype, weights = pw)
 ### Tibble:
 
 ```{r}
-#| label: summarize-tib-ex
+#| label: 01-summarize-tib-ex
 #| code-line-numbers: "|3"
 towny |> 
   summarize(
@@ -220,7 +218,7 @@ towny |>
 
 ### Survey object:
 ```{r}
-#| label: summarize-sv-ex
+#| label: 01-summarize-sv-ex
 #| code-line-numbers: "|3"
 api_des |> 
   summarize(
@@ -237,7 +235,7 @@ api_des |>
 ### Tibble:
 
 ```{r}
-#| label: group-tib-ex
+#| label: 01-group-tib-ex
 #| code-line-numbers: "|2"
 towny |> 
   group_by(csd_type) |> 
@@ -247,7 +245,7 @@ towny |>
 ### Survey object:
 
 ```{r}
-#| label: group-sv-ex
+#| label: 01-group-sv-ex
 #| code-line-numbers: "|2"
 api_des |>
   group_by(stype) |>
@@ -258,18 +256,9 @@ api_des |>
 ## Using {srvyr} functions on non-survey objects {.bkg-trees}
 
 ```{r}
-#| label: sv-non-svobj
-#| eval: false
+#| label: 01-sv-non-svobj
+#| output-location: fragment
+#| error: true
 towny |>
   summarize(area_mean = survey_mean(land_area_km2))
 ```
-
-. . .
-
-```{r}
-#| label: sv-non-svobj
-#| eval: true
-#| error: true
-#| echo: false
-```
-

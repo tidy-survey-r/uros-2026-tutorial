@@ -13,6 +13,8 @@ format:
       - custom.scss
     resources:
       - images/
+    slide-number: true
+    show-slide-number: speaker
 revealjs-plugins:
   - tabset
 bibliography: references.bib

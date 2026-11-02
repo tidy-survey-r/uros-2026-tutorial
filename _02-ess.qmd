@@ -1,13 +1,14 @@
 # European Social Survey (ESS) {background-color='{{< brand color blue >}}' .bkg-ship}
 
-## Overview 
+## Overview {.bkg-mountains}
 
 - Conducted across Europe every 2 years since 2001
 - Cross-sectional sample (new samples each round)
 - Topics include living conditions, social structure, public opinion and attitudes
 - Sampling designs vary by country but have oversight for rigor
+- Most recent data available for round 11 (2023 - 2024)
 
-## Countries for round 11 (2023-2024)
+## Countries for round 11
 
 ```{r}
 #| label: 02-round-11-map
@@ -24,28 +25,68 @@ country_shape_col <-
   full_join(ess_11_countries, by = c("name" = "Country")) |>
   st_transform(3035) |>
   st_crop(
-    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 40, ymax = 70), crs = 4326) |>
       st_transform(3035)
   ) |>
   mutate(ESS11 = !is.na(cntry))
 
+assign_map_colors <- function(dat_sf, idvar) {
+  ids <- dat_sf[[idvar]]
+
+  touching_polys <- tibble(
+    from = ids,
+    to = map(st_intersects(dat_sf), \(index) ids[index])
+  ) |>
+    unnest(to) |>
+    filter(from < to)
+
+  poly_graph <- igraph::graph_from_data_frame(
+    touching_polys,
+    directed = FALSE,
+    vertices = tibble(name = ids)
+  )
+
+  colors <- igraph::greedy_vertex_coloring(
+    poly_graph,
+    heuristic = "colored_neighbors"
+  )
+
+  tibble(id = names(colors), ColorCat = letters[colors]) |>
+    set_names(c(idvar, "ColorCat"))
+}
+
+country_shape_color <-
+  country_shape_col |>
+  left_join(
+    assign_map_colors(country_shape_col |> filter(ESS11), "cntry"),
+    by = "cntry"
+  )
+
 country_shape_col |>
   tm_shape() +
   tm_polygons(fill = "lightgrey", col = "darkgrey") +
-  tm_shape(country_shape_col |> filter(ESS11)) +
+  tm_shape(country_shape_color |> filter(ESS11)) +
   tm_polygons(
-    fill = "MAP_COLORS",
+    fill = "ColorCat",
     fill.scale = tm_scale_categorical(
-      values = c("#0b3954", "#087e8b", "#bfd7ea", "#ff8484", "#8d6b94")
-    )
+      values = unname(unlist(brand$color$palette))[c(5, 2, 4, 1)]
+    ),
+    fill.legend = tm_legend_hide()
   ) +
   tm_text("cntry") +
-  tm_graticules()
+  tm_graticules() +
+  tm_layout(
+    bg.color = brand_pluck(brand, "color", "palette", "lightteal"),
+    outer.bg.color = brand_pluck(brand, "color", "palette", "lightteal"),
+    frame = FALSE
+  )
 ```
 
-## Accessing ESS data
+## Accessing ESS data - full data
 
 1. Create a ESS account and get your [user ID](https://ess.sikt.no/en/api){target="_blank"}
+
+. . .
 
 2. Open R environ file
 
@@ -53,13 +94,20 @@ country_shape_col |>
 usethis::edit_r_environ()
 ```
 
+. . .
+
+
 3. Add your user ID to R environ
 
 ```r
 ESS_USERID="12345678-1234-1234-1234-12345678900"
 ```
 
+. . .
+
 4. Restart your R session
+
+. . .
 
 5. Load the ESS data into R
 
@@ -68,7 +116,7 @@ url <- glue::glue("https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?
 ess_in <- read_parquet(url)
 ```
 
-## Read data subset for this course
+## Read data subset for this course {.bkg-serpent}
 
 - This data is a subset of columns of full data
 - Includes derived variables we created for this course
@@ -80,7 +128,7 @@ ess_in <- read_parquet(url)
 ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
 ```
 
-## Why weight? Why use the design?
+## Why weight? Why use the design? {.bkg-trees}
 
 - Differential selection probabilities and nonresponse are accounted for in analytic weights
 - Weights are post-stratified by gender, age, education, and geographic region
@@ -178,7 +226,7 @@ allests |>
   )
 ```
 
-## ESS Variable Viewer
+## ESS Variable Viewer {.bkg-left}
 
 - Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1){target="_blank"}
 

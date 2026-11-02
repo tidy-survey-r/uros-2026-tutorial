@@ -17,7 +17,7 @@
 ## Recoding Missing Data {.bkg-trees}
 
 ```{r}
-#| label: derived-rename-noshow
+#| label: 04-derived-rename-noshow
 #| echo: FALSE
 ess_raw <- ess_der |> 
   select(cntry:wt1)
@@ -26,7 +26,7 @@ ess_der_update <- ess_der
 ```
 
 ```{r}
-#| label: derived-recodes
+#| label: 04-derived-recodes
 #| code-line-numbers: "|4,5|6-11|11|12-22|22"
 #| eval: FALSE
 ess_der_update <-
@@ -59,7 +59,7 @@ ess_der_update <-
 ## Viewing Recodes on Raw Data {.smaller .bkg-serpent}
 
 ```{r}
-#| label: derived-raw-count
+#| label: 04-derived-raw-count
 #| code-line-numbers: "|1|2"
 ess_der_update |> 
   count(happy,Happy)
@@ -73,7 +73,7 @@ ess_der_update |>
 ### survey_count
 
 ```{r}
-#| label: derived-desobj-svyct
+#| label: 04-derived-desobj-svyct
 #| code-line-numbers: "|2"
 ess_des |> 
   survey_count(happy,Happy)
@@ -81,7 +81,7 @@ ess_des |>
 
 ### $variables
 ```{r}
-#| label: derived-desobj-svyct-vars
+#| label: 04-derived-desobj-svyct-vars
 #| code-line-numbers: "|1|2"
 ess_des$variables |> 
   count(happy,Happy)
