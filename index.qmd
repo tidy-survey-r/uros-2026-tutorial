@@ -27,3 +27,4 @@ bibliography: references.bib
 {{< include _05-descriptive.qmd >}}
 {{< include _06-happy-exercises.qmd >}}
 {{< include _07-closing.qmd >}}
+{{< include _08-supplemental.qmd >}}
