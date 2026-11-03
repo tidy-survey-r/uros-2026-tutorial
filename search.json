@@ -543,7 +543,14 @@
     "href": "index.html#references",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "References",
-    "text": "References\n\n\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nFreedman Ellis, Greg, and Ben Schneider. 2026. srvyr: ’dplyr’-Like Syntax for Summary Statistics of Survey Data. https://doi.org/10.32614/CRAN.package.srvyr.\n\n\nLumley, Thomas. 2026. survey: Analysis of Complex Survey Samples. https://doi.org/10.32614/CRAN.package.survey.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
+    "text": "References\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nFreedman Ellis, Greg, and Ben Schneider. 2026. srvyr: ’dplyr’-Like Syntax for Summary Statistics of Survey Data. https://doi.org/10.32614/CRAN.package.srvyr.\n\n\nLumley, Thomas. 2026. survey: Analysis of Complex Survey Samples. https://doi.org/10.32614/CRAN.package.survey.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
+  },
+  {
+    "objectID": "index.html#an-extra-slide",
+    "href": "index.html#an-extra-slide",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "An extra slide",
+    "text": "An extra slide\n\nSome content here"
   },
   {
     "objectID": "DataCleaning.html",
