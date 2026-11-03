@@ -4,6 +4,9 @@
 
 ## References
 
+::: {#refs}
+:::
+
 ---
 nocite: |
   @*
