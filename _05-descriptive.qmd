@@ -118,7 +118,7 @@ ess_des |>
 :::
 
 
-## Proportion example: motivation {.bkg-mountains}
+## Proportions: motivation {.bkg-mountains}
 
 And still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (`volunfp`)
 
@@ -128,23 +128,7 @@ And still thinking about different ways of trying to improve things in [country]
 - 8: Don't know*
 - 9: No answer*
 
-## Proportion example: variable coding {.bkg-mountains}
-
-Derived variable coding options (unweighted raw data):
-
-```{r}
-#| label: 05-volunfp-code
-
-ess_der |>
-  count(
-    volunfp,
-    Volunteer_12,
-    Volunteer_01,
-    Volunteer_Factor
-  )
-```
-
-## Proportion example: 2 ways {.bkg-mountains}
+## Proportions: 2 functions {.bkg-mountains .smaller}
 
 Two methods for proportions
 
@@ -160,7 +144,7 @@ Two methods for proportions
 See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/tidy-survey-book/c05-descriptive-analysis.html#calculating-estimates-for-many-outcomes) for extending to multiple outcomes
 :::
 
-## Proportion example: 2 ways {.bkg-mountains}
+## Proportion example: 2 functions {.bkg-mountains}
 
 ::: {.panel-tabset}
 
@@ -171,9 +155,10 @@ See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/ti
 
 ess_des |>
   filter(cntry == "SE") |>
+  mutate(Volunteer_lgl = as.logical(Volunteer_01)) |>
   summarize(
     across(
-      c(Volunteer_12, Volunteer_01),
+      c(Volunteer_lgl, Volunteer_01),
       ~ survey_mean(.x, na.rm = TRUE)
     )
   )
@@ -197,7 +182,7 @@ ess_des |>
 - survey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels
 :::
 
-## Proportion example: arguments {.bkg-trees}
+## Proportions: arguments {.bkg-trees}
 
 `proportion` argument in `survey_mean()`
 
@@ -206,12 +191,15 @@ ess_des |>
 #| output-location: slide
 
 ess_des |>
-  filter(cntry == "SE") |>
+  filter(cntry == "SE", !is.na(Volunteer_01)) |>
   summarize(
-    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = "ci"),
+    p1 = survey_mean(
+      Volunteer_01,
+      vartype = "ci",
+      proportion = FALSE
+    ),
     p2 = survey_mean(
       Volunteer_01,
-      na.rm = TRUE,
       vartype = "ci",
       proportion = TRUE
     )
@@ -223,13 +211,13 @@ ess_des |>
 - proportion = TRUE argument only impacts confidence intervals
 :::
 
-## Proportion example: arguments {.bkg-trees}
+## Proportions: arguments {.bkg-trees}
 
 `prop_method` argument in `survey_mean()/survey_prop()`
 
 ```{r}
 #| label: 05-np-prop-method-arg
-#| output-location: slide
+#| eval: false
 
 ess_des |>
   filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
@@ -238,8 +226,7 @@ ess_des |>
     p1 = survey_prop(vartype = "ci", prop_method = "logit"),
     p2 = survey_prop(vartype = "ci", prop_method = "mean"),
     p3 = survey_prop(vartype = "ci", prop_method = "xlogit")
-  ) |>
-  print(width = Inf)
+  )
 ```
 
 ::: aside
@@ -272,7 +259,7 @@ ess_des |>
   opt_interactive()
 ```
 
-## Subgroup analysis: prop., marginal {.smaller}
+## Crosstabs: marginal {.smaller}
 
 - `NetFreq` is how often people use the internet (categorical)
 - `AgeGroup` is a categorical age variable
@@ -292,7 +279,7 @@ ess_des |>
 ```
 
 
-## Subgroup analysis: prop., joint {.smaller}
+## Crosstabs: joint {.smaller}
 
 ```{r}
 #| label: 05-net-freq-age-joint
@@ -307,4 +294,3 @@ ess_des |>
   ) |>
   print(n = Inf)
 ```
-
