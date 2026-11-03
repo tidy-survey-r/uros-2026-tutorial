@@ -63,7 +63,7 @@ At the end of this tutorial, you should be able to:
       - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
 
 
-## Libraries Needed for Today {.bkg-right}
+## Libraries needed for today {.bkg-right}
 
 _Note: These are already installed in Posit Cloud_
 ```{r}
@@ -92,7 +92,7 @@ showtext_auto()
 options(width=65)
 ```
 
-## R Packages for Survey Analysis {.bkg-ship}
+## R packages for survey analysis {.bkg-ship}
 
 ::::: {.columns}
 
@@ -181,7 +181,7 @@ design_object |>
 Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
 :::
 
-# Comparison of {dplyr} and {srvyr} Functions {background-color='{{< brand color blue >}}' .bkg-buildings}
+# Comparison of {dplyr} and {srvyr} functions {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Apply {dplyr} functions to survey objects {.bkg-trees}
 

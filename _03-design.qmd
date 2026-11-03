@@ -182,7 +182,7 @@ Replicate weights are another method to estimate variability. In general, they a
 - Jackknife
 - Bootstrap
 
-## `as_survey_rep()`: Syntax {.smaller .bkg-ship}
+## `as_survey_rep()`: syntax {.smaller .bkg-ship}
 
 - `as_survey_rep()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
 

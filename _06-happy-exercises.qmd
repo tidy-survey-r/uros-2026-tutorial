@@ -55,7 +55,7 @@ A Likert-style stacked bar shows the full weighted distribution of raw 0–10 re
 
 ![](images/likert-example.png){fig-align="center"}
 
-## Exercise 2: Calculate distribution of happiness level by country
+## Exercise 2: calculate distribution of happiness level by country
 
 ```{r}
 #| label: 06-happy-dist-country-exercise
@@ -85,7 +85,7 @@ happy_dist_country |>
 
 {{< countdown "5:30" >}}
 
-## Exercise 2: Calculate distribution of happiness level by country
+## Exercise 2: calculate distribution of happiness level by country
 
 ```{r}
 #| label: 06-happy-dist-country-exercise
