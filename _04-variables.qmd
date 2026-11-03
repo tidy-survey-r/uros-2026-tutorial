@@ -1,7 +1,7 @@
 
-# Derived Variables {background-color='{{< brand color blue >}}' .bkg-buildings}
+# Derived variables {background-color='{{< brand color blue >}}' .bkg-buildings}
 
-## Handling Missing Data Codes {.bkg-trees}
+## Handling missing data codes {.bkg-trees}
 
 :::{.incremental}
 - Often multiple types of missing data in surveys
@@ -14,7 +14,7 @@
 
 :::
 
-## Recoding Missing Data {.bkg-trees}
+## Recoding missing data {.bkg-trees}
 
 ```{r}
 #| label: 04-derived-rename-noshow
@@ -56,7 +56,7 @@ ess_der_update <-
 ```
 
 
-## Viewing Recodes on Raw Data {.smaller .bkg-serpent}
+## Viewing recodes on raw data {.smaller .bkg-serpent}
 
 ```{r}
 #| label: 04-derived-raw-count
@@ -66,7 +66,7 @@ ess_der_update |>
 
 ```
 
-## Viewing Recodes on Design Object {.smaller .bkg-serpent}
+## Viewing recodes on design object {.smaller .bkg-serpent}
 
 :::{.panel-tabset}
 
