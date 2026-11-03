@@ -295,7 +295,7 @@ Posit
 </ul>
 </section>
 <section id="libraries-needed-for-today" class="slide level2 bkg-right">
-<h2>Libraries Needed for Today</h2>
+<h2>Libraries needed for today</h2>
 <p><em>Note: These are already installed in Posit Cloud</em></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -307,7 +307,7 @@ Posit
 </div>
 </section>
 <section id="r-packages-for-survey-analysis" class="slide level2 bkg-ship">
-<h2>R Packages for Survey Analysis</h2>
+<h2>R packages for survey analysis</h2>
 <div class="columns">
 <div class="column" style="width:49%;">
 <div class="fragment">
@@ -384,7 +384,7 @@ Posit
 </div></aside></section></section>
 <section>
 <section id="comparison-of-dplyr-and-srvyr-functions" class="title-slide slide level1 bkg-buildings center" data-background-color="#0b3954">
-<h1>Comparison of {dplyr} and {srvyr} Functions</h1>
+<h1>Comparison of {dplyr} and {srvyr} functions</h1>
 
 </section>
 <section id="apply-dplyr-functions-to-survey-objects" class="slide level2 bkg-trees">
@@ -721,7 +721,7 @@ Data variables:
 </ul>
 </section>
 <section id="as_survey_rep-syntax" class="slide level2 smaller bkg-ship">
-<h2><code>as_survey_rep()</code>: Syntax</h2>
+<h2><code>as_survey_rep()</code>: syntax</h2>
 <ul>
 <li><code>as_survey_rep()</code> creates a <code>tbl_svy</code> object that then correctly calculates weighted estimates and SEs</li>
 </ul>
@@ -911,11 +911,11 @@ Data variables:
 </div></section></section>
 <section>
 <section id="derived-variables" class="title-slide slide level1 bkg-buildings center" data-background-color="#0b3954">
-<h1>Derived Variables</h1>
+<h1>Derived variables</h1>
 
 </section>
 <section id="handling-missing-data-codes" class="slide level2 bkg-trees">
-<h2>Handling Missing Data Codes</h2>
+<h2>Handling missing data codes</h2>
 <ul>
 <li class="fragment">Often multiple types of missing data in surveys
 <ul>
@@ -931,7 +931,7 @@ Data variables:
 </ul>
 </section>
 <section id="recoding-missing-data" class="slide level2 bkg-trees">
-<h2>Recoding Missing Data</h2>
+<h2>Recoding missing data</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37" data-code-line-numbers="|4,5|6-11|11|12-22|22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>ess_der_update <span class="ot">&lt;-</span></span>
 <span id="cb37-2"><a aria-label="2"></a>  ess_raw <span class="sc">|&gt;</span></span>
@@ -959,7 +959,7 @@ Data variables:
 </div>
 </section>
 <section id="viewing-recodes-on-raw-data" class="slide level2 smaller bkg-serpent">
-<h2>Viewing Recodes on Raw Data</h2>
+<h2>Viewing recodes on raw data</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a>ess_der_update <span class="sc">|&gt;</span> </span>
 <span id="cb38-2"><a aria-label="2"></a>  <span class="fu">count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -985,7 +985,7 @@ Data variables:
 </div>
 </section>
 <section id="viewing-recodes-on-design-object" class="slide level2 smaller bkg-serpent">
-<h2>Viewing Recodes on Design Object</h2>
+<h2>Viewing recodes on design object</h2>
 <div class="panel-tabset">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">survey_count</a></li><li><a href="#tabset-3-2">$variables</a></li></ul>
 <div class="tab-content">
@@ -1397,23 +1397,23 @@ Data variables:
 </section>
 <section id="subgroup-analysis-mean-median-output" class="slide level2 output-location-slide"><h2>Subgroup analysis: mean &amp; median</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<div id="lkjpxjefmv" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lkjpxjefmv table {
+<div id="mlyaknxxph" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mlyaknxxph table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lkjpxjefmv thead, #lkjpxjefmv tbody, #lkjpxjefmv tfoot, #lkjpxjefmv tr, #lkjpxjefmv td, #lkjpxjefmv th {
+#mlyaknxxph thead, #mlyaknxxph tbody, #mlyaknxxph tfoot, #mlyaknxxph tr, #mlyaknxxph td, #mlyaknxxph th {
   border-style: none;
 }
 
-#lkjpxjefmv p {
+#mlyaknxxph p {
   margin: 0;
   padding: 0;
 }
 
-#lkjpxjefmv .gt_table {
+#mlyaknxxph .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1439,12 +1439,12 @@ Data variables:
   border-left-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_caption {
+#mlyaknxxph .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lkjpxjefmv .gt_title {
+#mlyaknxxph .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1456,7 +1456,7 @@ Data variables:
   border-bottom-width: 0;
 }
 
-#lkjpxjefmv .gt_subtitle {
+#mlyaknxxph .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1468,7 +1468,7 @@ Data variables:
   border-top-width: 0;
 }
 
-#lkjpxjefmv .gt_heading {
+#mlyaknxxph .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1480,13 +1480,13 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_bottom_border {
+#mlyaknxxph .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_col_headings {
+#mlyaknxxph .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1501,7 +1501,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_col_heading {
+#mlyaknxxph .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1521,7 +1521,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#lkjpxjefmv .gt_column_spanner_outer {
+#mlyaknxxph .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1533,15 +1533,15 @@ Data variables:
   padding-right: 4px;
 }
 
-#lkjpxjefmv .gt_column_spanner_outer:first-child {
+#mlyaknxxph .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lkjpxjefmv .gt_column_spanner_outer:last-child {
+#mlyaknxxph .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lkjpxjefmv .gt_column_spanner {
+#mlyaknxxph .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1553,11 +1553,11 @@ Data variables:
   width: 100%;
 }
 
-#lkjpxjefmv .gt_spanner_row {
+#mlyaknxxph .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lkjpxjefmv .gt_group_heading {
+#mlyaknxxph .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1583,7 +1583,7 @@ Data variables:
   text-align: left;
 }
 
-#lkjpxjefmv .gt_empty_group_heading {
+#mlyaknxxph .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1598,15 +1598,15 @@ Data variables:
   vertical-align: middle;
 }
 
-#lkjpxjefmv .gt_from_md > :first-child {
+#mlyaknxxph .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lkjpxjefmv .gt_from_md > :last-child {
+#mlyaknxxph .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lkjpxjefmv .gt_row {
+#mlyaknxxph .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1625,7 +1625,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#lkjpxjefmv .gt_stub {
+#mlyaknxxph .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1638,7 +1638,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#lkjpxjefmv .gt_stub_row_group {
+#mlyaknxxph .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1652,15 +1652,15 @@ Data variables:
   vertical-align: top;
 }
 
-#lkjpxjefmv .gt_row_group_first td {
+#mlyaknxxph .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lkjpxjefmv .gt_row_group_first th {
+#mlyaknxxph .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lkjpxjefmv .gt_summary_row {
+#mlyaknxxph .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1670,16 +1670,16 @@ Data variables:
   padding-right: 5px;
 }
 
-#lkjpxjefmv .gt_first_summary_row {
+#mlyaknxxph .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_first_summary_row.thick {
+#mlyaknxxph .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lkjpxjefmv .gt_last_summary_row {
+#mlyaknxxph .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1689,7 +1689,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_grand_summary_row {
+#mlyaknxxph .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1699,7 +1699,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#lkjpxjefmv .gt_first_grand_summary_row {
+#mlyaknxxph .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1709,7 +1709,7 @@ Data variables:
   border-top-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_last_grand_summary_row_top {
+#mlyaknxxph .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1719,11 +1719,11 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_striped {
+#mlyaknxxph .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lkjpxjefmv .gt_table_body {
+#mlyaknxxph .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1732,7 +1732,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_footnotes {
+#mlyaknxxph .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1746,7 +1746,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_footnote {
+#mlyaknxxph .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1755,7 +1755,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#lkjpxjefmv .gt_sourcenotes {
+#mlyaknxxph .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1769,7 +1769,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#lkjpxjefmv .gt_sourcenote {
+#mlyaknxxph .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1777,77 +1777,77 @@ Data variables:
   padding-right: 5px;
 }
 
-#lkjpxjefmv .gt_left {
+#mlyaknxxph .gt_left {
   text-align: left;
 }
 
-#lkjpxjefmv .gt_center {
+#mlyaknxxph .gt_center {
   text-align: center;
 }
 
-#lkjpxjefmv .gt_right {
+#mlyaknxxph .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lkjpxjefmv .gt_font_normal {
+#mlyaknxxph .gt_font_normal {
   font-weight: normal;
 }
 
-#lkjpxjefmv .gt_font_bold {
+#mlyaknxxph .gt_font_bold {
   font-weight: bold;
 }
 
-#lkjpxjefmv .gt_font_italic {
+#mlyaknxxph .gt_font_italic {
   font-style: italic;
 }
 
-#lkjpxjefmv .gt_super {
+#mlyaknxxph .gt_super {
   font-size: 65%;
 }
 
-#lkjpxjefmv .gt_footnote_marks {
+#mlyaknxxph .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lkjpxjefmv .gt_asterisk {
+#mlyaknxxph .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lkjpxjefmv .gt_indent_1 {
+#mlyaknxxph .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lkjpxjefmv .gt_indent_2 {
+#mlyaknxxph .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lkjpxjefmv .gt_indent_3 {
+#mlyaknxxph .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lkjpxjefmv .gt_indent_4 {
+#mlyaknxxph .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lkjpxjefmv .gt_indent_5 {
+#mlyaknxxph .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lkjpxjefmv .katex-display {
+#mlyaknxxph .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lkjpxjefmv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mlyaknxxph div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="lkjpxjefmv" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="lkjpxjefmv">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589825,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.6424058876742,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"lkjpxjefmv","dataKey":"8a9b60825ee9cb8c3007eb363b7c89ee"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
+<div id="mlyaknxxph" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="mlyaknxxph">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589825,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.6424058876742,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"mlyaknxxph","dataKey":"8a9b60825ee9cb8c3007eb363b7c89ee"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div></section><section id="subgroup-analysis-prop.-marginal" class="slide level2 smaller">
@@ -1999,7 +1999,7 @@ Data variables:
 # ℹ 20 more rows</code></pre>
 </div>
 </div>
-<countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-1-estimate-weighted-mean-happiness-by-country-1" class="slide level2 smaller">
@@ -2013,7 +2013,7 @@ Data variables:
 <span id="cb68-6"><a aria-label="6"></a></span>
 <span id="cb68-7"><a aria-label="7"></a>happy_by_country</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="likert-chart-weighted-response-distribution-by-country" class="slide level2">
@@ -2022,7 +2022,7 @@ Data variables:
 
 <img data-src="images/likert-example.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="exercise-2-calculate-distribution-of-happiness-level-by-country" class="slide level2">
-<h2>Exercise 2: Calculate distribution of happiness level by country</h2>
+<h2>Exercise 2: calculate distribution of happiness level by country</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 327 × 5
@@ -2357,11 +2357,11 @@ Data variables:
 327 UA    Ukraine        10 - Extremely happy   472.     0.139   </code></pre>
 </div>
 </div>
-<countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-2-calculate-distribution-of-happiness-level-by-country-1" class="slide level2">
-<h2>Exercise 2: Calculate distribution of happiness level by country</h2>
+<h2>Exercise 2: calculate distribution of happiness level by country</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a>happy_dist_country <span class="ot">&lt;-</span></span>
 <span id="cb70-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
@@ -2395,7 +2395,7 @@ Data variables:
 [5] "Bulgaria"    "Ukraine"     "Montenegro"  "Slovakia"   </code></pre>
 </div>
 </div>
-<countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-3-identify-the-happiest-and-least-happy-countries-1" class="slide level2">
@@ -2478,7 +2478,7 @@ Data variables:
 <span id="cb74-3"><a aria-label="3"></a>    <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ymin =</span> <span class="dv">32</span>, <span class="at">xmax =</span> <span class="dv">36</span>, <span class="at">ymax =</span> <span class="dv">70</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
 <span id="cb74-4"><a aria-label="4"></a>      <span class="fu">st_transform</span>(<span class="dv">3035</span>)</span>
 <span id="cb74-5"><a aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="05" seconds="30" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-5-join-country-shapes-to-mean-estimates-1" class="slide level2">
@@ -2497,7 +2497,7 @@ Data variables:
 <section id="exercise-6-map-colored-by-happy" class="slide level2">
 <h2>Exercise 6: map colored by <code>Happy</code></h2>
 
-<img data-src="index_files/figure-revealjs/06-happy-map-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_f4bf56fe398a2809cfa0cb4cc1714202eb4d1cef" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<img data-src="index_files/figure-revealjs/06-happy-map-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_061f28d033b93eaf46c41d7d0fdaa2c0366d2f11" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 <aside class="notes">
 <ul>
