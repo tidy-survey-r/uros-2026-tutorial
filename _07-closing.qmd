@@ -5,19 +5,19 @@
 :::: {.columns}
 
 ::: {.column width=50%}
-[Our website](https://tidy-survey-r.github.io/site/){target="_blank"} 
+::: {.qr-center}
+[Our website](https://tidy-survey-r.github.io/site/){target="_blank"}
 
 - How to get our book
-- R package with data examples
+- R package with data
 - More tutorials
 
-::: {.qr-center}
 {{< qrcode https://tidy-survey-r.github.io/site/ >}}
 :::
-
 :::
 
 ::: {.column width=50%}
+::: {.qr-center}
 [Our book](https://tidy-survey-r.github.io/tidy-survey-book/){target="_blank"}
 
 - Descriptive analysis
@@ -25,10 +25,8 @@
 - Modeling
 - Complete vignettes
 
-::: {.qr-center}
 {{< qrcode https://tidy-survey-r.github.io/tidy-survey-book/ >}}
 :::
-
 :::
 
 ::::
