@@ -164,3 +164,8 @@ div.sourceCode {
 #ship-gif.running .countdown-digits {
   color: $brand-purple;
 }
+.qr-center .qrcode img,
+.qr-center .qrcode canvas {
+  margin-left: auto;
+  margin-right: auto;
+}

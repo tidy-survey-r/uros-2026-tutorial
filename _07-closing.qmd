@@ -11,8 +11,9 @@
 - R package with data examples
 - More tutorials
 
+::: {.qr-center}
 {{< qrcode https://tidy-survey-r.github.io/site/ >}}
-
+:::
 
 :::
 
@@ -24,7 +25,9 @@
 - Modeling
 - Complete vignettes
 
+::: {.qr-center}
 {{< qrcode https://tidy-survey-r.github.io/tidy-survey-book/ >}}
+:::
 
 :::
 
