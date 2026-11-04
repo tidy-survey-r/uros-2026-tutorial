@@ -164,3 +164,30 @@ div.sourceCode {
 #ship-gif.running .countdown-digits {
   color: $brand-purple;
 }
+/* QR codes: centered under their text block and bottom-aligned across columns */
+.reveal .columns:has(.qr-center) {
+  display: flex;
+  align-items: stretch;
+}
+
+.reveal .column:has(> .qr-center) {
+  display: flex;
+  flex-direction: column;
+}
+
+.qr-center {
+  width: fit-content;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.qr-center .qrcode {
+  margin-top: auto;
+}
+
+.qr-center .qrcode img,
+.qr-center .qrcode canvas {
+  margin-left: auto;
+  margin-right: auto;
+}

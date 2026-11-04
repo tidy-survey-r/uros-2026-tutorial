@@ -1,5 +1,37 @@
 # Closing {background-color='{{< brand color blue >}}' .bkg-mountains}
 
+## Additional resources
+
+:::: {.columns}
+
+::: {.column width=50%}
+::: {.qr-center}
+[Our website](https://tidy-survey-r.github.io/site/){target="_blank"}
+
+- How to get our book
+- R package with data
+- More tutorials
+
+{{< qrcode https://tidy-survey-r.github.io/site/ >}}
+:::
+:::
+
+::: {.column width=50%}
+::: {.qr-center}
+[Our book](https://tidy-survey-r.github.io/tidy-survey-book/){target="_blank"}
+
+- Descriptive analysis
+- Statistical testing
+- Modeling
+- Complete vignettes
+
+{{< qrcode https://tidy-survey-r.github.io/tidy-survey-book/ >}}
+:::
+:::
+
+::::
+
+
 ## Q & A
 
 ## References
