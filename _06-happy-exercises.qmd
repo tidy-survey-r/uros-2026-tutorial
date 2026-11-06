@@ -1,4 +1,4 @@
-# Visualizing survey estimates   {background-color='{{< brand color blue >}}' .bkg-buildings}
+# Your turn   {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Our goal
 
@@ -18,12 +18,53 @@
 
 ::::
 
+## Exercise 0: create the design object {.smaller}
+
+Follow along: [Exercises template](Exercises/Exercises.qmd){target="_blank"} | [Solutions](Exercises/Solutions.qmd){target="_blank"}.
+
+Use `ess_der` and {srvyr} to create a survey design object called `ess_des`. The ESS design variables are:
+
+- `psu`: primary sampling unit (cluster)
+- `stratum`: stratum
+- `anweight`: analysis weight
+
+Remember that some `psu` codes repeat across different `stratum` values.
+
+```{r}
+#| label: 06-design-object-exercise
+#| echo: false
+#| class-output: scroll-output
+ess_des <- ess_der |>
+  as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+
+ess_des
+```
+
+{{< countdown "3:00" >}}
+
+## Exercise 0: create the design object {.smaller}
+
+```{r}
+#| label: 06-design-object-exercise
+#| echo: true
+#| eval: false
+```
+
+::: {.notes}
+- `nest = TRUE` tells {srvyr} that `psu` codes are only unique within `stratum`, so the same code in two strata is treated as two different clusters
+:::
+
 ## Exercise 1: estimate weighted mean happiness by country {.smaller}
 
 - `Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy)
 - Refusal/don't know/no answer codes already recoded to `NA`
 
-Reuse `ess_des`, the design object built from `ess_der` in the ESS intro, to estimate weighted mean happiness by country.
+Use `ess_des` from Exercise 0 to estimate weighted mean happiness by country.
 
 ```{r}
 #| label: 06-happy-by-country-exercise
@@ -56,6 +97,8 @@ A Likert-style stacked bar shows the full weighted distribution of raw 0–10 re
 ![](images/likert-example.png){fig-align="center"}
 
 ## Exercise 2: calculate distribution of happiness level by country
+
+Hint: use `interact(cntry, Country)` in `group_by()` so proportions are calculated within each country.
 
 ```{r}
 #| label: 06-happy-dist-country-exercise
@@ -157,7 +200,6 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 
 ::: {.notes}
 - `survey_total(vartype = NULL)` gives a weighted count per `Country` x `Happy_factor` cell without standard errors, which is all that's needed here since the plot shows a descriptive distribution, not an inferential estimate
-- Dividing by `sum(n)` within each country (via `group_by(cntry, Country, Happy_factor)` peeling the last group in `summarize()`) turns weighted counts into within-country proportions
 - `slice_max()`/`slice_min()` on `happy_by_country` pick the `n_countries` happiest and least happy countries; adjust `n_countries` to show more or fewer
 - `fct_reorder()` sorts the remaining countries by `Happy_mean` so the happiest lands at the top of the plot, matching the ordering convention from the reference chart
 - `scale_fill_brewer(palette = "RdBu", direction = -1)` gives a diverging blue-to-red palette across the 11 response categories
