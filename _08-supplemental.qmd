@@ -1,5 +1,43 @@
 # Supplementary material {background-color='{{< brand color blue >}}' .bkg-ship visibility="uncounted"}
 
-## An extra slide {visibility="uncounted"}
+## Working with pipes in {survey} {.bkg-mountains visibility="uncounted"}
 
-- Some content here
+:::::{.columns}
+::::{.column width=42%}
+
+Magrittr pipe (`%>%`)
+
+- dot notation
+
+```r
+design_object %>% 
+  svyglm(design = ., y ~ x)
+```
+
+::::
+
+::::{.column}
+Base R pipe (`|>`)
+
+- placeholder
+    
+```r
+design_object |> 
+  svyglm(design = _, y ~ x)
+```
+- anonymous (lambda) functions
+
+```r
+design_object |> 
+  (\(.) 
+   svyglm(design = ., y ~ x)
+  )()
+```
+
+::::
+:::::
+
+::: aside
+Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
+:::
+

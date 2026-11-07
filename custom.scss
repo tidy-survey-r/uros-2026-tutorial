@@ -53,9 +53,12 @@ div.sourceCode {
     background-image: url('../../../../images/bkg-left.png');
     @include background-full;
   }
-  h1, h2, h3, h4, h5, p, li {
+  h1, h2, h3, h4, h5, p {
     margin-left: 25%;
     width: 85%;
+  }
+  li, ul {
+    margin-left: 15%;
   }
 
   // Code boxes don't wrap, so keep margin + width within the slide

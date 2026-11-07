@@ -57,10 +57,13 @@ At the end of this tutorial, you should be able to:
 
 ## Logistics {.bkg-left}
 
-  - We will be using Posit Cloud for exercises
-  - All materials are found at:
-      - <https://tidy-survey-r.github.io/uros-2026-tutorial/> (Slides)
-      - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
+- We will be using Posit Cloud for exercises
+    - LINK
+
+
+- All materials are found at:
+    - <https://tidy-survey-r.github.io/uros-2026-tutorial/> (Slides)
+    - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
 
 
 ## Libraries needed for today {.bkg-right}
@@ -129,57 +132,6 @@ options(width=65)
 - Functions follow `snake_case` convention
 :::
 
-## Brief note on pipes with {survey} {.bkg-mountains}
-
-:::::{.columns}
-::::{.column width=42%}
-:::{.fragment}
-Magrittr pipe (`%>%`)
-
-:::
-:::{.fragment}
-- dot notation
-
-```r
-design_object %>% 
-  svyglm(design = ., y ~ x)
-```
-
-:::
-::::
-
-::::{.column}
-:::{.fragment}
-Base R pipe (`|>`)
-
-:::
-
-:::{.fragment}
-- placeholder
-    
-```r
-design_object |> 
-  svyglm(design = _, y ~ x)
-```
-
-:::
-:::{.fragment}
-- anonymous (lambda) functions
-
-```r
-design_object |> 
-  (\(.) 
-   svyglm(design = ., y ~ x)
-  )()
-```
-
-:::
-::::
-:::::
-
-::: aside
-Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
-:::
 
 # Comparison of {dplyr} and {srvyr} functions {background-color='{{< brand color blue >}}' .bkg-buildings}
 
