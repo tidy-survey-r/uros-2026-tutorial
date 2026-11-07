@@ -1,4 +1,4 @@
-# Visualizing survey estimates   {background-color='{{< brand color blue >}}' .bkg-buildings}
+# Hands-on exercise {background-color='{{< brand color blue >}}' .bkg-buildings}
 
 ## Our goal
 
@@ -18,7 +18,7 @@
 
 ::::
 
-## Exercise 1: estimate weighted mean happiness by country {.smaller}
+## Exercise 2: estimate weighted mean happiness by country {.smaller}
 
 - `Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy)
 - Refusal/don't know/no answer codes already recoded to `NA`
@@ -39,7 +39,7 @@ happy_by_country
 
 {{< countdown "5:30" >}}
 
-## Exercise 1: estimate weighted mean happiness by country {.smaller}
+## Exercise 2: estimate weighted mean happiness by country {.smaller}
 
 ```{r}
 #| label: 06-happy-by-country-exercise
@@ -47,15 +47,13 @@ happy_by_country
 #| eval: false
 ```
 
-{{< countdown "5:30" >}}
-
 ## Likert chart: weighted response distribution by country
 
 A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country.
 
 ![](images/likert-example.png){fig-align="center"}
 
-## Exercise 2: calculate distribution of happiness level by country
+## Exercise 3: calculate distribution of happiness level by country
 
 ```{r}
 #| label: 06-happy-dist-country-exercise
@@ -85,7 +83,7 @@ happy_dist_country |>
 
 {{< countdown "5:30" >}}
 
-## Exercise 2: calculate distribution of happiness level by country
+## Exercise 3: calculate distribution of happiness level by country
 
 ```{r}
 #| label: 06-happy-dist-country-exercise
@@ -93,7 +91,7 @@ happy_dist_country |>
 #| eval: false
 ```
 
-## Exercise 3: identify the happiest and least happy countries
+## Exercise 4: identify the happiest and least happy countries
 
 ```{r}
 #| label: 06-happy-top-bottom-exercise
@@ -120,7 +118,7 @@ print(top_bottom_countries)
 
 {{< countdown "3:00" >}}
 
-## Exercise 3: identify the happiest and least happy countries
+## Exercise 4: identify the happiest and least happy countries
 
 ```{r}
 #| label: 06-happy-top-bottom-exercise
@@ -128,7 +126,7 @@ print(top_bottom_countries)
 #| eval: false
 ```
 
-## Exercise 4: make bar chart with country subset ordered by mean
+## Exercise 5: make bar chart with country subset ordered by mean
 
 ```{r}
 #| label: 06-happy-likert-plot-exercise
@@ -155,6 +153,8 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
   theme(legend.position = "bottom")
 ```
 
+{{< countdown "3:00" >}}
+
 ::: {.notes}
 - `survey_total(vartype = NULL)` gives a weighted count per `Country` x `Happy_factor` cell without standard errors, which is all that's needed here since the plot shows a descriptive distribution, not an inferential estimate
 - Dividing by `sum(n)` within each country (via `group_by(cntry, Country, Happy_factor)` peeling the last group in `summarize()`) turns weighted counts into within-country proportions
@@ -164,7 +164,7 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 - `position_fill(reverse = TRUE)` is needed because `geom_col()`'s default stacking order would otherwise put "0 - Extremely unhappy" on the right
 :::
 
-## Exercise 4: make bar chart with country subset ordered by mean
+## Exercise 5: make bar chart with country subset ordered by mean
 
 ```{r}
 #| label: 06-happy-likert-plot-exercise
@@ -180,7 +180,7 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 
 ![](images/map-example.png){fig-align="center"}
 
-## Exercise 5: join country shapes to mean estimates
+## Exercise 6: join country shapes to mean estimates
 
 Get a base map from {tmap} using the object `World` and join the mean estimates on. Crop the map to the extent of ESS using this code:
 
@@ -207,7 +207,7 @@ happy_shape <-
 
 {{< countdown "5:30" >}}
 
-## Exercise 5: join country shapes to mean estimates
+## Exercise 6: join country shapes to mean estimates
 
 ```{r}
 #| label: 06-happy-map-join-exercise
@@ -215,7 +215,7 @@ happy_shape <-
 #| eval: false
 ```
 
-## Exercise 6: map colored by `Happy`
+## Exercise 7: map colored by `Happy`
 
 ```{r}
 #| label: 06-happy-map-plot-exercise
@@ -248,7 +248,7 @@ happy_shape |>
 - Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
 :::
 
-## Exercise 6: map colored by `Happy`
+## Exercise 7: map colored by `Happy`
 
 ```{r}
 #| label: 06-happy-map-plot-exercise
