@@ -40,7 +40,7 @@ By the end of these exercises, you will create two charts: a Likert-style stacke
 
 ::::
 
-## Exercise 0: create the design object
+## Exercise 1: create the design object
 
 Use `ess_der` and {srvyr} to create a survey design object called `ess_des`. The ESS design variables are:
 
@@ -50,12 +50,14 @@ Use `ess_der` and {srvyr} to create a survey design object called `ess_des`. The
 
 Remember that some `psu` codes repeat across different `stratum` values.
 
+See the full methodology report: <https://www.europeansocialsurvey.org/methodology/sampling>
+
 ```{r}
-#| label: ex0-design-object
+#| label: ex1-design-object
 
 ```
 
-## Exercise 1: estimate weighted mean happiness by country
+## Exercise 2: estimate weighted mean happiness by country
 
 - `Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy)
 - Refusal/don't know/no answer codes already recoded to `NA`
@@ -63,42 +65,42 @@ Remember that some `psu` codes repeat across different `stratum` values.
 Use `ess_des` to estimate weighted mean happiness by country. Save the result as `happy_by_country`.
 
 ```{r}
-#| label: ex1-happy-by-country
+#| label: ex2-happy-by-country
 
 ```
 
-## Exercise 2: calculate distribution of happiness level by country
+## Exercise 3: calculate distribution of happiness level by country
 
 Calculate the weighted count (`n`) and proportion (`p`) of each happiness level (0-10) within each country. Convert `Happy` to a factor with levels `0:10`, labeling 0 as "0 - Extremely unhappy" and 10 as "10 - Extremely happy". Keep both `cntry` and `Country` as grouping variables. Save the result as `happy_dist_country`.
 
 Hint: use `interact(cntry, Country)` in `group_by()` so proportions are calculated within each country.
 
 ```{r}
-#| label: ex2-happy-dist-country
+#| label: ex3-happy-dist-country
 
 ```
 
-## Exercise 3: identify the happiest and least happy countries
+## Exercise 4: identify the happiest and least happy countries
 
 To keep the chart readable, identify the top and bottom 4 countries based on mean happiness (8 total, as in the reference chart). Save the country names as a character vector called `top_bottom_countries`.
 
 ```{r}
-#| label: ex3-happy-top-bottom
+#| label: ex4-happy-top-bottom
 
 ```
 
-## Exercise 4: make bar chart with country subset ordered by mean
+## Exercise 5: make bar chart with country subset ordered by mean
 
 A Likert-style stacked bar shows the full weighted distribution of raw 0-10 responses within each country. Using `happy_dist_country`, `happy_by_country`, and `top_bottom_countries`, create a stacked bar chart of the response distribution for the selected countries, ordered by mean happiness.
 
 ![](../images/likert-example.png){fig-align="center"}
 
 ```{r}
-#| label: ex4-happy-likert-plot
+#| label: ex5-happy-likert-plot
 
 ```
 
-## Exercise 5: join country shapes to mean estimates
+## Exercise 6: join country shapes to mean estimates
 
 - Country is a natural domain for ESS analysis
 - Choropleth maps make cross-country patterns easier to spot than a table
@@ -116,17 +118,17 @@ dat_sf |>
 Save the result as `happy_shape`.
 
 ```{r}
-#| label: ex5-happy-map-join
+#| label: ex6-happy-map-join
 
 ```
 
-## Exercise 6: map colored by `Happy`
+## Exercise 7: map colored by `Happy`
 
 Using `happy_shape`, create a map with each country filled by its weighted mean happiness.
 
 ![](../images/map-example.png){fig-align="center"}
 
 ```{r}
-#| label: ex6-happy-map-plot
+#| label: ex7-happy-map-plot
 
 ```
