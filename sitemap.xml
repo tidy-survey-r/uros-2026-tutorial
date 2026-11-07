@@ -2,10 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tidy-survey-r.github.io/uros-2026-tutorial/index.html</loc>
-    <lastmod>2026-11-03T01:13:02.557Z</lastmod>
+    <lastmod>2026-11-07T22:43:23.764Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tidy-survey-r.github.io/uros-2026-tutorial/Exercises/Exercises.html</loc>
+    <lastmod>2026-11-07T22:43:23.696Z</lastmod>
   </url>
   <url>
     <loc>https://tidy-survey-r.github.io/uros-2026-tutorial/DataCleaning.html</loc>
-    <lastmod>2026-11-03T01:13:02.463Z</lastmod>
+    <lastmod>2026-11-07T22:43:23.693Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tidy-survey-r.github.io/uros-2026-tutorial/Exercises/Solutions.html</loc>
+    <lastmod>2026-11-07T22:43:23.697Z</lastmod>
   </url>
 </urlset>
