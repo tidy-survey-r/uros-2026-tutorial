@@ -189,3 +189,10 @@ div.sourceCode {
     word-break: break-word;
   }
 }
+
+// Scrollable code output: add `#| class-output: scroll-output` to a chunk
+.reveal pre:has(> code.scroll-output),
+.reveal pre.scroll-output {
+  max-height: 250px;
+  overflow-y: auto;
+}
