@@ -18,6 +18,38 @@
 
 ::::
 
+## Exercise 1: make the design object {.smaller}
+
+Use `ess_der` and {srvyr} to create a survey design object called `ess_des`.
+
+```{r}
+#| label: 06-happy-design-obj-exercise
+#| echo: false
+ess_des <- ess_der |>
+  as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+
+ess_des
+```
+
+{{< countdown "5:00" >}}
+
+::: footer
+[europeansocialsurvey.org/methodology/sampling](http://europeansocialsurvey.org/methodology/sampling)
+:::
+
+## Exercise 1: make the design object
+
+```{r}
+#| label: 06-happy-design-obj-exercise
+#| echo: true
+#| eval: false
+```
+
 ## Exercise 2: estimate weighted mean happiness by country {.smaller}
 
 - `Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy)
@@ -37,9 +69,9 @@ happy_by_country <-
 happy_by_country
 ```
 
-{{< countdown "5:30" >}}
+{{< countdown "5:00" >}}
 
-## Exercise 2: estimate weighted mean happiness by country {.smaller}
+## Exercise 2: estimate weighted mean happiness by country
 
 ```{r}
 #| label: 06-happy-by-country-exercise
@@ -81,7 +113,7 @@ happy_dist_country |>
   print(n = Inf)
 ```
 
-{{< countdown "5:30" >}}
+{{< countdown "5:00" >}}
 
 ## Exercise 3: calculate distribution of happiness level by country
 
@@ -164,6 +196,14 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 - `position_fill(reverse = TRUE)` is needed because `geom_col()`'s default stacking order would otherwise put "0 - Extremely unhappy" on the right
 :::
 
+::: {.hint-box .fragment}
+Hint: use this fill scale for the diverging 11-point Likert palette
+
+```r
+scale_fill_brewer(palette = "RdBu", direction = -1, name = NULL)
+```
+:::
+
 ## Exercise 5: make bar chart with country subset ordered by mean
 
 ```{r}
@@ -172,7 +212,7 @@ ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
 #| eval: false
 ```
 
-## Map survey estimates
+## Map survey estimates {.smaller}
 
 - Country is a natural domain for ESS analysis
 - Choropleth maps make cross-country patterns easier to spot than a table
@@ -205,7 +245,7 @@ happy_shape <-
   )
 ```
 
-{{< countdown "5:30" >}}
+{{< countdown "5:00" >}}
 
 ## Exercise 6: join country shapes to mean estimates
 
