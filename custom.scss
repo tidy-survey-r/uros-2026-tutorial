@@ -191,3 +191,35 @@ div.sourceCode {
   margin-left: auto;
   margin-right: auto;
 }
+
+.hint-box {
+  position: absolute;
+  top: 10%;
+  right: 2%;
+  z-index: 5;
+  max-width: 60%;
+  padding: 0.6em 1em;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid $brand-blue;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.55em;
+
+  pre {
+    overflow-x: visible;
+    white-space: pre-wrap;
+    width: auto;
+  }
+
+  code {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+// Scrollable code output: add `#| class-output: scroll-output` to a chunk
+.reveal pre:has(> code.scroll-output),
+.reveal pre.scroll-output {
+  max-height: 250px;
+  overflow-y: auto;
+}
