@@ -1,0 +1,1584 @@
+---
+title: "Working with Weights and Sampling Designs for Official Statistics"
+subtitle: "Tidy Survey Analysis in R <br>uRos 2026 Tutorial - Paris"
+title-slide-attributes: 
+  data-background-image: images/title-fullpic-light.png
+  data-background-size: cover
+  data-background-position: center
+  data-background-repeat: no-repeat
+format: 
+  revealjs: 
+    theme: 
+      - brand
+      - custom.scss
+    resources:
+      - images/
+    slide-number: true
+    show-slide-number: speaker
+    footer: "bit.ly/uRos26-survey-slides"
+revealjs-plugins:
+  - tabset
+bibliography: references.bib
+---
+
+
+# Introduction {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+
+## Instructors {.bkg-serpent}
+
+:::: {.columns}
+
+::: {.column width=33%}
+
+![](images/StephanieZimmer_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Stephanie<br>Zimmer**
+
+RTI
+</center>
+
+:::
+
+::: {.column width=33%}
+
+![](images/RebeccaPowell_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Rebecca<br>Powell**
+
+Fors Marsh
+</center>
+
+:::
+
+::: {.column width=33%}
+
+![](images/IsabellaVelasquez_Headshot.jpeg){fig-align="center" width=200px}
+
+<center>
+**Isabella<br>Velásquez**
+
+Posit
+</center>
+
+:::
+
+::::
+
+## Overview of tutorial {.bkg-trees}
+
+At the end of this tutorial, you should be able to:
+
+::: {.incremental}
+   - Specify a survey design in R to create a survey object
+   - Calculate point estimates and their standard errors with survey data 
+   - Create tables and graphs incorporating survey data and standard errors
+   
+:::
+
+## Logistics {.bkg-left}
+
+- We will be using Posit Cloud for exercises
+  - [bit.ly/uRos26-survey-tutorial](https://bit.ly/uRos26-survey-tutorial)
+
+- All materials are located on GitHub:
+  - [github.com/tidy-survey-r/uros-2026-tutorial](https://github.com/tidy-survey-r/uros-2026-tutorial)
+  - Slides: [bit.ly/uRos26-survey-slides](https://bit.ly/uRos26-survey-slides)
+  - Exercises: [bit.ly/uRos26-survey-exercises](https://bit.ly/uRos26-survey-exercises)
+
+## Libraries needed for today {.bkg-right}
+
+_Note: These are already installed in Posit Cloud_
+```{r}
+#| label: 01-neccessary-packages
+
+library(tidyverse)
+library(survey)
+library(srvyr)
+library(gt)
+library(sf)
+library(tmap)
+```
+
+```{r}
+#| label: 01-brand-setup-r
+#| echo: false
+
+library(brand.yml)
+library(showtext)
+brand <- read_brand_yml()
+
+heading_family <- brand$typography$headings$family
+
+font_add_google(heading_family)
+showtext_auto()
+options(width=65)
+```
+
+## R packages for survey analysis {.bkg-ship}
+
+::::: {.columns}
+
+:::: {.column width=49%}
+::: {.fragment}
+- {survey} package first on CRAN in 2003
+  - descriptive analysis
+  - statistical testing
+  - modeling
+  - weighting
+  
+:::
+::::
+
+::: {.column width=2%}
+:::
+
+::: {.column width=49%}
+::: {.fragment}
+- {srvyr} package first on CRAN in 2016
+  - “wrapper” for {survey} with {tidyverse}-style syntax
+  - only descriptive analysis
+  
+:::
+::::
+:::::
+
+## Why use {srvyr} over {survey}? {.bkg-ship}
+
+::: {.incremental}
+
+- Use the pipe function `%>%` or `|>`
+- Ability to use tidy selection
+- Functions follow `snake_case` convention
+:::
+
+
+# Comparison of {dplyr} and {srvyr} functions {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Apply {dplyr} functions to survey objects {.bkg-trees}
+
+::: {.incremental}
+- A few functions in {srvyr} have counterparts in {dplyr}
+  - `dplyr::summarize()` and `srvyr::summarize()`
+  - `dplyr::group_by()` and `srvyr::group_by()`
+- Based on the object class, R will recognize which package to use
+
+:::
+
+## Using `summarize()` to calculate mean and median {.bkg-serpent}
+
+```{r}
+#| label: 01-api-des-setup
+#| echo: FALSE
+data(api)
+api_des <- apistrat |> as_survey_design(strata = stype, weights = pw)
+```
+
+
+::: {.panel-tabset}
+
+### Tibble:
+
+```{r}
+#| label: 01-summarize-tib-ex
+#| code-line-numbers: "|3"
+towny |> 
+  summarize(
+    area_mean = mean(land_area_km2, na.rm=TRUE)
+  )
+```
+
+### Survey object:
+```{r}
+#| label: 01-summarize-sv-ex
+#| code-line-numbers: "|3"
+api_des |> 
+  summarize(
+    score_mean = survey_mean(api99, na.rm=TRUE)
+  )
+```
+:::
+
+
+## Grouping  {.bkg-serpent}
+
+::: {.panel-tabset}
+
+### Tibble:
+
+```{r}
+#| label: 01-group-tib-ex
+#| code-line-numbers: "|2"
+towny |> 
+  group_by(csd_type) |> 
+  summarize(area_mean = mean(land_area_km2))
+```
+
+### Survey object:
+
+```{r}
+#| label: 01-group-sv-ex
+#| code-line-numbers: "|2"
+api_des |>
+  group_by(stype) |>
+  summarize(score_mean = survey_mean(api99, na.rm=TRUE))
+```
+:::
+
+## Using {srvyr} functions on non-survey objects {.bkg-trees}
+
+```{r}
+#| label: 01-sv-non-svobj
+#| output-location: fragment
+#| error: true
+towny |>
+  summarize(area_mean = survey_mean(land_area_km2))
+```
+
+# European Social Survey (ESS) {background-color='{{< brand color blue >}}' .bkg-ship}
+
+## Overview {.bkg-mountains}
+
+- Conducted across Europe every 2 years since 2001
+- Cross-sectional sample (new samples each round)
+- Topics include living conditions, social structure, public opinion and attitudes
+- Sampling designs vary by country but have oversight for rigor
+- Most recent data available for round 11 (2023 - 2024)
+
+## Countries for round 11
+
+```{r}
+#| label: 02-round-11-map
+#| echo: false
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+
+ess_11_countries <-
+  ess_der |>
+  distinct(Country, cntry)
+
+country_shape_col <-
+  World |>
+  full_join(ess_11_countries, by = c("name" = "Country")) |>
+  st_transform(3035) |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 40, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  ) |>
+  mutate(ESS11 = !is.na(cntry))
+
+assign_map_colors <- function(dat_sf, idvar) {
+  ids <- dat_sf[[idvar]]
+
+  touching_polys <- tibble(
+    from = ids,
+    to = map(st_intersects(dat_sf), \(index) ids[index])
+  ) |>
+    unnest(to) |>
+    filter(from < to)
+
+  poly_graph <- igraph::graph_from_data_frame(
+    touching_polys,
+    directed = FALSE,
+    vertices = tibble(name = ids)
+  )
+
+  colors <- igraph::greedy_vertex_coloring(
+    poly_graph,
+    heuristic = "colored_neighbors"
+  )
+
+  tibble(id = names(colors), ColorCat = letters[colors]) |>
+    set_names(c(idvar, "ColorCat"))
+}
+
+country_shape_color <-
+  country_shape_col |>
+  left_join(
+    assign_map_colors(country_shape_col |> filter(ESS11), "cntry"),
+    by = "cntry"
+  )
+
+country_shape_col |>
+  tm_shape() +
+  tm_polygons(fill = "lightgrey", col = "darkgrey") +
+  tm_shape(country_shape_color |> filter(ESS11)) +
+  tm_polygons(
+    fill = "ColorCat",
+    fill.scale = tm_scale_categorical(
+      values = unname(unlist(brand$color$palette))[c(5, 2, 4, 1)]
+    ),
+    fill.legend = tm_legend_hide()
+  ) +
+  tm_text("cntry") +
+  tm_graticules() +
+  tm_layout(
+    bg.color = brand_pluck(brand, "color", "palette", "lightteal"),
+    outer.bg.color = brand_pluck(brand, "color", "palette", "lightteal"),
+    frame = FALSE
+  )
+```
+
+## Accessing ESS data - full data
+
+1. Create a ESS account and get your [user ID](https://ess.sikt.no/en/api){target="_blank"}
+
+. . .
+
+2. Open R environ file
+
+```r
+usethis::edit_r_environ()
+```
+
+. . .
+
+
+3. Add your user ID to R environ
+
+```r
+ESS_USERID="12345678-1234-1234-1234-12345678900"
+```
+
+. . .
+
+4. Restart your R session
+
+. . .
+
+5. Load the ESS data into R
+
+```r
+url <- glue::glue("https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}")
+ess_in <- read_parquet(url)
+```
+
+## Read data subset for this course {.bkg-serpent}
+
+- This data is a subset of columns of full data
+- Includes derived variables we created for this course
+- See [data cleaning code](DataCleaning.qmd){target="_blank"}
+
+```{r}
+#| label: 02-course-dat
+
+ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+```
+
+## Why weight? Why use the design? {.bkg-trees}
+
+- Differential selection probabilities and nonresponse are accounted for in analytic weights
+- Weights are post-stratified by gender, age, education, and geographic region
+- Not using weights leads to bias
+- Not using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering
+
+## Estimates changing with weights
+
+```{r}
+#| label: 02-why-weight
+#| echo: false
+
+ess_des <- ess_des_true <- ess_der |>
+  as_survey_design(ids = psu, strata = stratum, weights = anweight, nest = TRUE)
+ess_des_1 <- ess_der |>
+  as_survey_design(ids = psu, strata = stratum, weights = wt1, nest = TRUE)
+ess_des_wt <- ess_der |>
+  as_survey_design(weights = anweight)
+ess_des_srs <- ess_der |>
+  as_survey_design(weights = wt1)
+
+calc_ests <- function(des) {
+  des |>
+    summarize(
+      .by = Country,
+      p = survey_mean(
+        Retired,
+        proportion = TRUE,
+        prop_method = "logit",
+        vartype = "ci",
+        na.rm = TRUE
+      )
+    ) |>
+    rename(p_est = p)
+}
+
+allests <-
+  list(a = ess_des_true, c = ess_des_wt, b = ess_des_1, d = ess_des_srs) |>
+  map(calc_ests) |>
+  bind_rows(.id = "method")
+```
+
+```{r}
+#| label: 02-weight-compare-plot
+#| echo: false
+allests |>
+  mutate(
+    Design = recode_values(
+      method,
+      "a" ~ "Weights, strata, clusters",
+      "b" ~ "Strata and clusters only",
+      "c" ~ "Weights only",
+      "d" ~ "No design"
+    ) |>
+      factor(
+        levels = c(
+          "Weights, strata, clusters",
+          "Weights only",
+          "Strata and clusters only",
+          "No design"
+        )
+      )
+  ) |>
+  ggplot(aes(color = Design)) +
+  geom_point(aes(x = Design, y = p_est)) +
+  geom_errorbar(aes(x = Design, ymin = p_low, ymax = p_upp)) +
+  theme_light(
+    paper = brand_pluck(brand, "color", "palette", "lightteal"),
+    base_family = heading_family,
+    base_size = 20
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.line.y = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.spacing = unit(0, "in")
+  ) +
+  facet_wrap(~Country) +
+  labs(
+    title = "Retirement is main activity in last 7 days, ESS 11",
+    y = "Estimated proportion with 95% CI"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_color_manual(
+    values = unname(unlist(brand$color$palette[c(
+      "blue",
+      "teal",
+      "pink",
+      "purple"
+    )]))
+  )
+```
+
+## ESS Variable Viewer {.bkg-left}
+
+- Explore ESS variables at the [Variable Viewer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1){target="_blank"}
+
+
+# Sampling designs {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Sampling methods {.bkg-mountains}
+
+Units can be selected in various ways such as:
+
+::: {.columns}
+
+::: {.column width="33%"}
+**Simple random sampling**
+
+(with or without replacement)
+
+Every unit has the same chance of being selected
+:::
+
+::: {.column width="33%"}
+**Systematic sampling**
+
+Sample from an ordered list, selecting individuals at an interval with a random starting point
+:::
+
+::: {.column width="33%"}
+**Probability proportional to size**
+
+Probability of selection is proportional to "size"
+:::
+
+:::
+
+## Complex designs {.bkg-mountains}
+
+Designs can also incorporate stratification and/or clustering:
+
+::: {.columns}
+
+::: {.column width="50%"}
+**Stratified sampling**
+
+Divide population into mutually exclusive subgroups (strata). Randomly sample within each stratum
+:::
+
+::: {.column width="50%"}
+**Clustered sampling**
+
+Divide population into mutually exclusive subgroups (clusters). Randomly sample clusters, then individuals within clusters
+:::
+
+:::
+
+## Why does design matter? {.bkg-serpent}
+
+::: {.incremental}
+- The design type impacts the variability of the estimates
+
+- Weights impact the point estimate and the variability estimates
+
+- Specifying the components of the design (strata and/or clusters) and weights in R is necessary to get correct estimates
+
+:::
+
+## Determining the design {.smaller .bkg-serpent}
+
+::: {.incremental}
+
+- Check the documentation such as methodology, design, analysis guide, or technical documentation
+
+- Documentation will indicate the variables needed to specify the design. Look for:
+   - **Weight** (almost always)
+   - **Strata and/or clusters/PSUs** (sometimes labeled pseudo-strata/pseudo-clusters) — *or*, instead, **replicate weights**
+   - **Finite population correction** or population sizes (uncommon)
+
+- Documentation may include SAS, SUDAAN, Stata and/or R syntax
+
+:::
+
+## Design-based vs. replicate weights {.smaller .bkg-serpent}
+
+Two ways to tell R about a sampling design, depending on what the documentation provides:
+
+::: {.columns}
+
+::: {.column width="50%"}
+**Strata / clusters / weights are available**
+
+Use `as_survey_design()`
+:::
+
+::: {.column width="50%"}
+**Only replicate weights are available**
+
+Use `as_survey_rep()`
+:::
+
+:::
+
+- Some surveys provide both; others release only replicate weights to protect respondent confidentiality
+- Either path produces a `tbl_svy` object that works the same way downstream
+
+# Specifying sampling designs in {srvyr} **without** replicate weights  {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Syntax for common designs: no stratification/clustering {.smaller .bkg-trees}
+
+Simple Random Sample (SRS)
+
+```r
+apisrs %>% as_survey_design(fpc = fpc)
+```
+
+One-stage cluster sample with a FPC variable
+
+```r
+apiclus1 %>% as_survey_design(ids = dnum, weights = pw, fpc = fpc)
+```
+
+Two-stage cluster sample, weights computed from population size
+
+```r
+apiclus2 %>% as_survey_design(ids = c(dnum, snum), fpc = c(fpc1, fpc2))
+```
+
+Stratified SRS
+
+```r
+apistrat %>% as_survey_design(strata = stype, weights = pw)
+```
+
+Stratified, cluster design
+
+```r
+apistrat %>% as_survey_design(ids = dnum, strata = stype, weights = pw, nest = TRUE)
+```
+
+::: footer
+Examples from `srvyr` help documentation
+:::
+
+## What does the design object look like? {.smaller .bkg-trees}
+
+```{r}
+#| label: 03-apistrat-design-demo
+data(api, package = "survey")
+
+apistrat_des <- apistrat |>
+  select(cds, stype, api00, pw, fpc) |>
+  as_survey_design(strata = stype, weights = pw)
+
+apistrat_des
+```
+
+::: footer
+Data: `apistrat` from the `{survey}` package
+:::
+
+# Specifying sampling designs in {srvyr} **with** replicate weights {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## `as_survey_rep()`: syntax {.smaller .bkg-ship}
+
+- `as_survey_rep()` creates a `tbl_svy` object that then correctly calculates weighted estimates and SEs
+
+
+```{r}
+#| label: 03-scd-setup
+#| echo: false
+
+data(scd, package = "survey")
+
+scd <- scd |>
+  mutate(
+    rep1 = 2 * c(1, 0, 1, 0, 1, 0),
+    rep2 = 2 * c(1, 0, 0, 1, 0, 1),
+    rep3 = 2 * c(0, 1, 1, 0, 0, 1),
+    rep4 = 2 * c(0, 1, 0, 1, 1, 0)
+  )
+```
+
+```{r}
+#| label: 03-scd-design-demo
+scd_rep <- scd |>
+  as_survey_rep(
+    type = "BRR",
+    repweights = starts_with("rep"),
+    combined_weights = FALSE
+  )
+
+scd_rep
+```
+
+::: footer
+Data: `scd` from the `{survey}` package (Levy and Lemeshow BRR example)
+:::
+
+## Recap {.bkg-left .smaller}
+
+- Design type (SRS, stratified, clustered) shapes the variability of estimates
+- Weights shape both point estimates and variance
+- Two paths to a `tbl_svy` object:
+  - `as_survey_design()`: strata, clusters/PSUs, weights
+  - `as_survey_rep()`: replicate weights (BRR, Fay's, jackknife, bootstrap)
+- Once built, the design object is ready for weighted summaries in later sections
+
+# ESS sampling and weighting  {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Methodology {.bkg-buildings}
+
+Recall, we said: "Check the documentation such as methodology, design, analysis guide, or technical documentation"
+
+Head to the ESS website and click "Methodology": [europeansocialsurvey.org/methodology/sampling](https://www.europeansocialsurvey.org/methodology/sampling){target="_blank"}
+
+## Sampling {.smaller .bkg-buildings}
+
+Key sampling principles, from the ESS Sampling Guidelines:
+
+::: {.incremental}
+
+- Samples represent all persons aged 15+ living in private households in each country
+- Individuals are selected by **strict random probability methods** at every stage — no quota sampling, no substitution of non-responders
+- Each country targets a minimum "effective achieved sample size" (1,500, or 800 in countries with populations under 2 million)
+- Exact designs (single-stage, stratified, multi-stage/clustered) **vary by country**, but every country's data include `psu` (primary sampling unit) and `stratum` variables
+
+:::
+
+::: footer
+<https://www.europeansocialsurvey.org/methodology/sampling>
+:::
+
+## Weighting {.smaller .bkg-buildings}
+
+> Four weighting variables are available: Analysis weight (anweight - combination of pspwght and pweight), Post-stratification weight (pspwght), Design weight (dweight), and Population weight (pweight).
+
+::: {.columns}
+
+::: {.column width="50%"}
+**dweight** — corrects for unequal selection probabilities *within* a country
+
+**pspwght** — further adjusts `dweight` for nonresponse/noncoverage using age, gender, education, region
+:::
+
+::: {.column width="50%"}
+**pweight** — rescales each country to its population size, for combining countries in one analysis
+
+**anweight** — `dweight` + `pspwght` + `pweight` combined; **recommended for all analyses**
+:::
+
+:::
+
+::: footer
+<https://www.europeansocialsurvey.org/methodology/weighting>
+:::
+
+## Weighting: the provided code {.smaller .bkg-mountains}
+
+Clicking into the "weighting guide," we find example R code using `anweight`, the recommended weight:
+
+```r
+library(survey) # estimation
+
+# Define sample design
+design <- svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,
+data = data1)
+```
+
+## First attempt {.bkg-mountains}
+
+Using exactly the syntax from the weighting guide, we get an error:
+
+```{r}
+#| label: 03-des-error
+#| error: true
+svydesign(
+  ids = ~ psu,
+  strata = ~ stratum,
+  weights = ~ anweight,
+  data = ess_der
+)
+```
+
+## Why the error? {.smaller .bkg-mountains}
+
+A handful of `psu` codes repeat across different `stratum` values in the raw file:
+
+```{r}
+#| label: 03-des-why-error
+ess_der |>
+  distinct(cntry, psu, stratum) |>
+  add_count(psu) |>
+  filter(n > 1)
+```
+
+By default, `svydesign()` assumes cluster (`psu`) IDs are unique across the whole data set. `nest = TRUE` tells it to relabel clusters so they're uniquely identified *within* each stratum instead. This is the same `nest = TRUE` we saw in the stratified, cluster design example earlier.
+
+## Applying weights, fixed {.bkg-mountains}
+
+Including `nest = TRUE`, we get the design object:
+
+```{r}
+#| label: 03-des-survey-true
+ess_des_true <- svydesign(
+  ids = ~ psu,
+  strata = ~ stratum,
+  weights = ~ anweight,
+  data = ess_der,
+  nest = TRUE
+)
+
+ess_des_true
+```
+
+## From `{survey}` to `{srvyr}` {.bkg-mountains}
+
+The same design, specified with tidy syntax:
+
+```{r}
+#| label: 03-ess-design-demo
+#| output-location: slide
+ess_des <- ess_der |>
+  as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+
+ess_des
+```
+
+Same result: a `tbl_svy` object ready for weighted summaries.
+
+
+# Derived variables {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Handling missing data codes {.bkg-trees}
+
+:::{.incremental}
+- Often multiple types of missing data in surveys
+    - Refused
+    - Don't know
+    - Valid skip
+- ESS uses 7s (7,77,7777), 8s, and 9s as missing data codes
+- If we leave them as is, means and statistics will be skewed incorrectly
+    - Need to recode missing data values as missing (`NA`)
+
+:::
+
+## Recoding missing data {.bkg-trees}
+
+```{r}
+#| label: 04-derived-rename-noshow
+#| echo: FALSE
+ess_des_edit <- ess_des
+```
+
+```{r}
+#| label: 04-derived-recodes
+#| code-line-numbers: "|4,5|6-11|11|12-22|22"
+#| eval: FALSE
+ess_des_edit <-
+  ess_des |>
+  mutate(
+    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),
+    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),
+    Volunteer_Factor = case_when(
+      volunfp == 1 ~ "Yes",
+      volunfp == 2 ~ "No",
+      TRUE ~ NA
+    ) |>
+      factor(levels = c("Yes", "No")),
+    AgeGroup = recode_values(
+      agegroup,
+      1 ~ '15-24',
+      2 ~ '25-34',
+      3 ~ '35-44',
+      4 ~ '45-54',
+      5 ~ '55-64',
+      6 ~ '65-74',
+      7 ~ '75+'
+    ) |>
+      fct_reorder(agegroup)
+  )
+
+```
+
+## Viewing recodes on design object {.smaller .bkg-serpent}
+
+:::{.panel-tabset}
+
+### survey_count
+
+```{r}
+#| label: 04-derived-desobj-svyct
+#| code-line-numbers: "|2"
+ess_des_edit |> 
+  survey_count(happy,Happy)
+```
+
+### $variables
+```{r}
+#| label: 04-derived-desobj-svyct-vars
+#| code-line-numbers: "|1|2"
+ess_des_edit$variables |> 
+  count(happy,Happy)
+```
+
+:::
+
+
+# Descriptive analysis {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Common workflow {.bkg-trees}
+
+::: {.incremental}
+
+1. Create a `tbl_svy` object (a survey object) using: `as_survey_design()` or `as_survey_rep()`
+
+2. Subset data (if needed) using `filter()` (to create subpopulations)
+
+3. Specify domains of analysis using `group_by()`
+
+4. Within `summarize()`, specify variables to calculate, including means, totals, proportions, quantiles, and more
+
+:::
+
+## Descriptive functions {.smaller .bkg-trees}
+
+:::: {.columns}
+
+
+::: {.column width="50%"}
+
+Use within `summarize()`
+
+- `survey_mean(x)`
+- `survey_median(x)`
+- `survey_proportion()`
+- `survey_quantile(x)`
+- `survey_ratio(num, den)`
+- `survey_sd(x)`
+- `survey_total(x)`
+- `survey_var(x)`
+
+:::
+
+
+::: {.column width="50%"}
+
+Common arguments
+
+- `na.rm = FALSE`
+- `vartype = c("se", "ci", "var", "cv")`: defaults to just "se"
+- `level = 0.95`: confidence interval level of CIs 
+- `deff = FALSE`: note can specify as logical OR "replace"
+- `df = NULL`: degrees of freedom for CIs (defaults to `degf(design)`)
+
+:::
+
+::::
+
+::: {.notes}
+- survey_median/survey_quantile - no deff
+- survey_sd - no deff, no measures of variation
+- survey_var - no deff, no cv
+:::
+
+## Mean examples {.bkg-mountains}
+
+::: {.panel-tabset}
+
+### `na.rm`
+
+```{r}
+#| label: 05-mean-na
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News),
+    H2 = survey_mean(News, na.rm = TRUE)
+  )
+```
+
+### `vartype`
+
+```{r}
+#| label: 05-mean-vartype
+
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News, na.rm = TRUE, vartype = c("se", "ci", "var", "cv")),
+    H2 = survey_mean(News, na.rm = TRUE, vartype = NULL)
+  )
+```
+
+### `level` and `df`
+
+```{r}
+#| label: 05-mean-ci-options
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(
+    H1 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.95),
+    H2 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.8),
+    H3 = survey_mean(News, na.rm = TRUE, vartype = "ci", level = 0.95, df = 10)
+  )
+```
+
+
+### `deff`
+
+```{r}
+#| label: 05-mean-deff
+
+ess_des |>
+  filter(cntry == "IS") |>
+  summarize(H1 = survey_mean(News, na.rm = TRUE, deff = "replace"))
+```
+
+:::
+
+::: {.notes}
+- na.rm removes NA before calculation, similar to many other functions in R
+- vartype can choose no option OR multiple
+- level and df control confidence intervals
+- deff is a design effect, a ratio of the variance under this design compared to a design which is SRS, >1 means less statistically efficient 
+:::
+
+
+## Proportion example: motivation {.bkg-mountains}
+
+And still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (`volunfp`)
+
+- 1: yes
+- 2: no
+- 7: Refusal*
+- 8: Don't know*
+- 9: No answer*
+
+## Proportion example: variable coding {.bkg-mountains}
+
+Derived variable coding options (unweighted raw data):
+
+```{r}
+#| label: 05-volunfp-code
+
+ess_der |>
+  count(
+    volunfp,
+    Volunteer_12,
+    Volunteer_01,
+    Volunteer_Factor
+  )
+```
+
+## Proportion example: 2 ways {.bkg-mountains}
+
+Two methods for proportions
+
+1. For binary outcomes, use `survey_mean(x)`
+    -  `x` is either 1/0 or TRUE/FALSE
+    - can use with `across()` and several outcomes
+
+2. Group the data by the variable (`x`) and then use `survey_prop()`
+    - `x` can have 2 or more levels
+    - only analyze one outcome at a time
+
+::: aside
+See [Calculating estimates for many outcomes](https://tidy-survey-r.github.io/tidy-survey-book/c05-descriptive-analysis.html#calculating-estimates-for-many-outcomes) for extending to multiple outcomes
+:::
+
+## Proportion example: 2 ways {.bkg-mountains}
+
+::: {.panel-tabset}
+
+### `survey_mean()`
+
+```{r}
+#| label: 05-np-survey-mean
+
+ess_des |>
+  filter(cntry == "SE") |>
+  summarize(
+    across(
+      c(Volunteer_12, Volunteer_01),
+      ~ survey_mean(.x, na.rm = TRUE)
+    )
+  )
+```
+
+### `survey_prop()`
+
+```{r}
+#| label: 05-np-survey-prop
+
+ess_des |>
+  filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
+  group_by(Volunteer_Factor) |>
+  summarize(p = survey_prop())
+```
+
+:::
+
+::: {.notes}
+- survey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once
+- survey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels
+:::
+
+## Proportion example: arguments {.bkg-trees}
+
+`proportion` argument in `survey_mean()`
+
+```{r}
+#| label: 05-np-proportion-arg
+#| output-location: slide
+
+ess_des |>
+  filter(cntry == "SE") |>
+  summarize(
+    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = "ci"),
+    p2 = survey_mean(
+      Volunteer_01,
+      na.rm = TRUE,
+      vartype = "ci",
+      proportion = TRUE
+    )
+  )
+```
+
+
+::: {.notes}
+- proportion = TRUE argument only impacts confidence intervals
+:::
+
+## Proportion example: arguments {.bkg-trees}
+
+`prop_method` argument in `survey_mean()/survey_prop()`
+
+```{r}
+#| label: 05-np-prop-method-arg
+#| output-location: slide
+
+ess_des |>
+  filter(cntry == "SE", !is.na(Volunteer_Factor)) |>
+  group_by(Volunteer_Factor) |>
+  summarize(
+    p1 = survey_prop(vartype = "ci", prop_method = "logit"),
+    p2 = survey_prop(vartype = "ci", prop_method = "mean"),
+    p3 = survey_prop(vartype = "ci", prop_method = "xlogit")
+  ) |>
+  print(width = Inf)
+```
+
+::: aside
+See [`?survey::svyciprop`](https://cran.r-project.org/web/packages/survey/refman/survey.html#svyciprop) for details on implementation
+:::
+
+## Subgroup analysis
+
+- Using `filter()` as above examples subsets data. This is done AFTER creating the design object
+- Use `group_by()` to implement domain analysis
+
+## Subgroup analysis: mean & median
+
+- `NetUsage` is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day
+
+```{r}
+#| label: 05-net-by-country
+#| output-location: slide
+
+ess_des |>
+  group_by(Country) |>
+  summarize(
+    Pop = survey_total(vartype = NULL),
+    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),
+    NetUse_median = survey_median(NetUsage, na.rm = TRUE)
+  ) |>
+  gt() |>
+  fmt_number(columns = starts_with("NetUse"), decimals = 2) |>
+  fmt_number(columns = Pop, decimals = 0) |>
+  opt_interactive()
+```
+
+## Subgroup analysis: prop., marginal {.smaller}
+
+- `NetFreq` is how often people use the internet (categorical)
+- `AgeGroup` is a categorical age variable
+
+```{r}
+#| label: 05-net-freq-age-marg
+#| output-location: slide
+
+ess_des |>
+  filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
+  group_by(AgeGroup, NetFreq) |>
+  summarize(
+    N = survey_total() * 10000,
+    p = survey_prop() * 100
+  ) |>
+  print(n = Inf)
+```
+
+
+## Subgroup analysis: prop., joint {.smaller}
+
+```{r}
+#| label: 05-net-freq-age-joint
+#| output-location: slide
+
+ess_des |>
+  filter(cntry == "FR", !is.na(NetFreq), !is.na(AgeGroup)) |>
+  group_by(interact(AgeGroup, NetFreq)) |>
+  summarize(
+    N = survey_total() * 10000,
+    p = survey_prop() * 100
+  ) |>
+  print(n = Inf)
+```
+
+
+# Hands-on exercise {background-color='{{< brand color blue >}}' .bkg-buildings}
+
+## Our goal
+
+[Variable explorer](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=1&elems=391f8b4f-bda5-46f9-91e6-abf2fe4c2935){target="_blank"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](images/likert-example.png)
+:::
+
+::: {.column width="50%"}
+
+![](images/map-example.png)
+
+:::
+
+::::
+
+## Exercise 1: make the design object {.smaller}
+
+Follow along: [Exercises template](Exercises/Exercises.qmd){target="_blank"} | [Solutions](Exercises/Solutions.qmd){target="_blank"}.
+
+Use `ess_der` and {srvyr} to create a survey design object called `ess_des`. The ESS design variables are:
+
+- `psu`: primary sampling unit (cluster)
+- `stratum`: stratum
+- `anweight`: analysis weight
+
+Remember that some `psu` codes repeat across different `stratum` values.
+
+```{r}
+#| label: 06-happy-design-obj-exercise
+#| echo: false
+#| class-output: scroll-output
+ess_des <- ess_der |>
+  as_survey_design(
+    ids = psu,
+    strata = stratum,
+    weights = anweight,
+    nest = TRUE
+  )
+
+ess_des
+```
+
+{{< countdown "5:00" >}}
+
+::: footer
+[europeansocialsurvey.org/methodology/sampling](http://europeansocialsurvey.org/methodology/sampling)
+:::
+
+## Exercise 1: make the design object
+
+```{r}
+#| label: 06-happy-design-obj-exercise
+#| echo: true
+#| eval: false
+```
+
+::: {.notes}
+- `nest = TRUE` tells {srvyr} that `psu` codes are only unique within `stratum`, so the same code in two strata is treated as two different clusters
+:::
+
+## Exercise 2: estimate weighted mean happiness by country {.smaller}
+
+- `Happy` is the ESS `happy` item (0 = extremely unhappy, 10 = extremely happy)
+- Refusal/don't know/no answer codes already recoded to `NA`
+
+Use `ess_des` from Exercise 1 to estimate weighted mean happiness by country.
+
+```{r}
+#| label: 06-happy-by-country-exercise
+#| echo: false
+happy_by_country <-
+  ess_des |>
+  filter(!is.na(Happy)) |>
+  group_by(Country) |>
+  summarize(Happy_mean = survey_mean(Happy, na.rm = TRUE))
+
+happy_by_country
+```
+
+{{< countdown "5:00" >}}
+
+## Exercise 2: estimate weighted mean happiness by country
+
+```{r}
+#| label: 06-happy-by-country-exercise
+#| echo: true
+#| eval: false
+```
+
+## Likert chart: weighted response distribution by country
+
+A Likert-style stacked bar shows the full weighted distribution of raw 0–10 responses within each country.
+
+![](images/likert-example.png){fig-align="center"}
+
+## Exercise 3: calculate distribution of happiness level by country
+
+Hint: use `interact(cntry, Country)` in `group_by()` so proportions are calculated within each country.
+
+```{r}
+#| label: 06-happy-dist-country-exercise
+#| echo: false
+happy_dist_country <-
+  ess_des |>
+  filter(!is.na(Happy)) |>
+  mutate(
+    Happy_factor = factor(
+      Happy,
+      levels = 0:10,
+      labels = c(
+        "0 - Extremely unhappy", 1:9, "10 - Extremely happy"
+      )
+    )
+  ) |>
+  group_by(interact(cntry, Country), Happy_factor) |>
+  summarize(
+    n = survey_total(vartype = NULL),
+    p = survey_mean(vartype = NULL)
+    ) |>
+  ungroup()
+
+happy_dist_country |>
+  print(n = Inf)
+```
+
+{{< countdown "5:00" >}}
+
+## Exercise 3: calculate distribution of happiness level by country
+
+```{r}
+#| label: 06-happy-dist-country-exercise
+#| echo: true
+#| eval: false
+```
+
+## Exercise 4: identify the happiest and least happy countries
+
+```{r}
+#| label: 06-happy-top-bottom-exercise
+#| echo: false
+n_countries <- 4
+
+top_bottom_countries <-
+  happy_by_country |>
+  slice_max(Happy_mean, n = n_countries) |>
+  bind_rows(
+    happy_by_country |> slice_min(Happy_mean, n = n_countries)
+  ) |>
+  pull(Country)
+```
+
+To keep the chart readable, identify the top and bottom `r n_countries` based on mean happiness (`r 2*n_countries` total, as in the reference chart).
+
+```{r}
+#| label: 06-print-top-countries
+#| echo: false
+
+print(top_bottom_countries)
+```
+
+{{< countdown "3:00" >}}
+
+## Exercise 4: identify the happiest and least happy countries
+
+```{r}
+#| label: 06-happy-top-bottom-exercise
+#| echo: true
+#| eval: false
+```
+
+## Exercise 5: make bar chart with country subset ordered by mean
+
+```{r}
+#| label: 06-happy-likert-plot-exercise
+#| echo: false
+happy_likert <-
+  happy_dist_country |>
+  left_join(happy_by_country, by = "Country") |>
+  filter(Country %in% top_bottom_countries) |>
+  mutate(Label = fct_reorder(paste(cntry, "-", Country), Happy_mean))
+
+ggplot(happy_likert, aes(y = Label, x = p, fill = Happy_factor)) +
+  # reverse = TRUE keeps "0 - Extremely unhappy" on the left and
+  # "10 - Extremely happy" on the right, matching the legend order
+  geom_col(position = position_fill(reverse = TRUE)) +
+  scale_fill_brewer(palette = "RdBu", direction = -1, name = NULL) +
+  scale_x_continuous(labels = scales::percent) +
+  labs(
+    title = "How happy are you?",
+    subtitle = glue::glue("Top and bottom {n_countries} countries by weighted mean"),
+    x = NULL,
+    y = NULL
+  ) +
+  theme_light() +
+  theme(legend.position = "bottom")
+```
+
+{{< countdown "3:00" >}}
+
+::: {.notes}
+- `survey_total(vartype = NULL)` gives a weighted count per `Country` x `Happy_factor` cell without standard errors, which is all that's needed here since the plot shows a descriptive distribution, not an inferential estimate
+- `slice_max()`/`slice_min()` on `happy_by_country` pick the `n_countries` happiest and least happy countries; adjust `n_countries` to show more or fewer
+- `fct_reorder()` sorts the remaining countries by `Happy_mean` so the happiest lands at the top of the plot, matching the ordering convention from the reference chart
+- `scale_fill_brewer(palette = "RdBu", direction = -1)` gives a diverging blue-to-red palette across the 11 response categories
+- `position_fill(reverse = TRUE)` is needed because `geom_col()`'s default stacking order would otherwise put "0 - Extremely unhappy" on the right
+:::
+
+::: {.hint-box .fragment}
+Hint: use this fill scale for the diverging 11-point Likert palette
+
+```r
+scale_fill_brewer(palette = "RdBu", direction = -1, name = NULL)
+```
+:::
+
+## Exercise 5: make bar chart with country subset ordered by mean
+
+```{r}
+#| label: 06-happy-likert-plot-exercise
+#| echo: true
+#| eval: false
+```
+
+## Map survey estimates {.smaller}
+
+- Country is a natural domain for ESS analysis
+- Choropleth maps make cross-country patterns easier to spot than a table
+- Builds on two earlier pieces: survey-weighted estimation (`srvyr`) + country shapes (`sf`) + `ggplot2`
+
+![](images/map-example.png){fig-align="center"}
+
+## Exercise 6: join country shapes to mean estimates
+
+Get a base map from {tmap} using the object `World` and join the mean estimates on. Crop the map to the extent of ESS using this code:
+
+```r
+dat_sf |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  )
+```
+
+```{r}
+#| label: 06-happy-map-join-exercise
+#| echo: false
+happy_shape <-
+  World |>
+  full_join(happy_by_country, by = c("name" = "Country")) |>
+  st_transform(3035) |>
+  st_crop(
+    st_bbox(c(xmin = -10, ymin = 32, xmax = 36, ymax = 70), crs = 4326) |>
+      st_transform(3035)
+  )
+```
+
+{{< countdown "5:00" >}}
+
+## Exercise 6: join country shapes to mean estimates
+
+```{r}
+#| label: 06-happy-map-join-exercise
+#| echo: true
+#| eval: false
+```
+
+## Exercise 7: map colored by `Happy`
+
+```{r}
+#| label: 06-happy-map-plot-exercise
+#| echo: false
+happy_shape |>
+  ggplot() +
+  geom_sf(aes(fill = Happy_mean), color = "darkgrey") +
+  geom_sf_text(
+    data = happy_shape |> filter(!is.na(Happy_mean)),
+    aes(label = iso_a3),
+    size = 3
+  ) +
+  scale_fill_distiller(
+    palette = "Blues",
+    direction = 1,
+    na.value = "lightgrey",
+    name = "Mean happiness\n(0-10 scale)"
+  ) +
+  labs(x = NULL, y = NULL) +
+  theme_light()
+```
+
+{{< countdown "3:00" >}}
+
+::: {.notes}
+- `geom_sf()` draws the polygons in the data's CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically
+- `scale_fill_distiller()` gives a continuous Brewer scale because `Happy_mean` is a continuous estimate, not a category; `direction = 1` makes higher happiness darker
+- Countries without an ESS estimate have `NA` for `Happy_mean` after the `full_join`, so `na.value = "lightgrey"` shades them grey
+- Only countries with an estimate are labelled, via `data = ... filter(!is.na(Happy_mean))` in `geom_sf_text()`
+- Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
+:::
+
+## Exercise 7: map colored by `Happy`
+
+```{r}
+#| label: 06-happy-map-plot-exercise
+#| echo: true
+#| eval: false
+```
+
+::: {.notes}
+- `geom_sf()` draws the polygons in the data's CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically
+- `scale_fill_distiller()` gives a continuous Brewer scale because `Happy_mean` is a continuous estimate, not a category; `direction = 1` makes higher happiness darker
+- Countries without an ESS estimate have `NA` for `Happy_mean` after the `full_join`, so `na.value = "lightgrey"` shades them grey
+- Only countries with an estimate are labelled, via `data = ... filter(!is.na(Happy_mean))` in `geom_sf_text()`
+- Labels use `iso_a3` (from the `World` shapefile) rather than ESS's own 2-letter `cntry` codes, since the two don't share a common code column after the join
+:::
+
+# Closing {background-color='{{< brand color blue >}}' .bkg-mountains}
+
+## Q & A
+
+## References
+
+::: {#refs}
+:::
+
+---
+nocite: |
+  @*
+---
+
+
+# Supplementary material {background-color='{{< brand color blue >}}' .bkg-ship visibility="uncounted"}
+
+## Working with pipes in {survey} {.bkg-mountains visibility="uncounted"}
+
+:::::{.columns}
+::::{.column width=42%}
+
+Magrittr pipe (`%>%`)
+
+- dot notation
+
+```r
+design_object %>% 
+  svyglm(design = ., y ~ x)
+```
+
+::::
+
+::::{.column}
+Base R pipe (`|>`)
+
+- placeholder
+    
+```r
+design_object |> 
+  svyglm(design = _, y ~ x)
+```
+- anonymous (lambda) functions
+
+```r
+design_object |> 
+  (\(.) 
+   svyglm(design = ., y ~ x)
+  )()
+```
+
+::::
+:::::
+
+::: aside
+Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
+:::
+
+## Replicate weights overview {.smaller .bkg-ship visibility="uncounted"}
+
+Replicate weights are another method to estimate variability. In general, they are constructed by:
+
+1. Divide the sample into subsample replicates that mirror the design of the sample
+2. Calculate weights for each replicate using the same procedures for the full-sample weight (i.e., nonresponse and post-stratification)
+3. Calculate estimates for each replicate using the same method as the full-sample estimate
+4. Calculate the estimated variance, which is proportional to the variance of the replicate estimates
+
+## Common replicate weight methods {.bkg-ship visibility="uncounted"}
+
+- Balanced repeated replication (BRR)
+- Fay's BRR
+- Jackknife
+- Bootstrap
+
+
