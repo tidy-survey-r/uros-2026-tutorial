@@ -58,13 +58,12 @@ At the end of this tutorial, you should be able to:
 ## Logistics {.bkg-left}
 
 - We will be using Posit Cloud for exercises
-    - LINK
+  - [bit.ly/uRos26-survey-tutorial](https://bit.ly/uRos26-survey-tutorial)
 
-
-- All materials are found at:
-    - <https://tidy-survey-r.github.io/uros-2026-tutorial/> (Slides)
-    - <https://github.com/tidy-survey-r/uros-2026-tutorial> (Source)
-
+- All materials are located on GitHub:
+  - [github.com/tidy-survey-r/uros-2026-tutorial](https://github.com/tidy-survey-r/uros-2026-tutorial)
+  - Slides: [bit.ly/uRos26-survey-slides](https://bit.ly/uRos26-survey-slides)
+  - Exercises: [bit.ly/uRos26-survey-exercises](https://bit.ly/uRos26-survey-exercises)
 
 ## Libraries needed for today {.bkg-right}
 

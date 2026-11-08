@@ -57,8 +57,15 @@ div.sourceCode {
     margin-left: 25%;
     width: 85%;
   }
-  li, ul {
+  ul, li, ul ul {
     margin-left: 15%;
+    width: 90%;
+    padding-left: 0em;
+  }
+  ul ul {
+    margin-left: -8%;
+    width: 95%;
+    padding-left: 0em;
   }
 
   // Code boxes don't wrap, so keep margin + width within the slide
