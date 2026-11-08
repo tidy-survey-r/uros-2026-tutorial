@@ -15,6 +15,7 @@ format:
       - images/
     slide-number: true
     show-slide-number: speaker
+    footer: "bit.ly/uRos26-survey-slides"
 revealjs-plugins:
   - tabset
 bibliography: references.bib
