@@ -74,7 +74,7 @@
     "href": "index.html#overview",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Overview",
-    "text": "Overview\n\nConducted across Europe every 2 years since 2001\nCross-sectional sample (new samples each round)\nTopics include living conditions, social structure, public opinion and attitudes\nSampling designs vary by country but have oversight for rigor\nMost recent data available for round 11 (2023 - 2024)"
+    "text": "Overview\n\nConducted across Europe every 2 years since 2002\nCross-sectional sample (new samples each round)\nTopics include living conditions, social structure, public opinion and attitudes\nSampling designs vary by country but have oversight for rigor\nThis tutorial uses round 11 (fieldwork 2023–2024)"
   },
   {
     "objectID": "index.html#countries-for-round-11",
@@ -84,25 +84,18 @@
     "text": "Countries for round 11"
   },
   {
-    "objectID": "index.html#accessing-ess-data---full-data",
-    "href": "index.html#accessing-ess-data---full-data",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Accessing ESS data - full data",
-    "text": "Accessing ESS data - full data\n\nCreate a ESS account and get your user ID\n\n\n\nOpen R environ file\n\nusethis::edit_r_environ()\n\n\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\n\n\nRestart your R session\n\n\n\n\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\ness_in &lt;- read_parquet(url)"
-  },
-  {
     "objectID": "index.html#read-data-subset-for-this-course",
     "href": "index.html#read-data-subset-for-this-course",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Read data subset for this course",
-    "text": "Read data subset for this course\n\nThis data is a subset of columns of full data\nIncludes derived variables we created for this course\nSee data cleaning code\n\n\ness_der &lt;- read_rds(here::here(\"DerivedData\", \"ess11_der.rds\"))"
+    "text": "Read data subset for this course\n\nThis dataset is a subset of columns from the full ESS file\nIncludes derived variables we created for this course\nSee data cleaning code\n\n\ness_der &lt;- read_rds(here::here(\"DerivedData\", \"ess11_der.rds\"))"
   },
   {
     "objectID": "index.html#why-weight-why-use-the-design",
     "href": "index.html#why-weight-why-use-the-design",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Why weight? Why use the design?",
-    "text": "Why weight? Why use the design?\n\nDifferential selection probabilities and nonresponse are accounted for in analytic weights\nWeights are post-stratified by gender, age, education, and geographic region\nNot using weights leads to bias\nNot using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering"
+    "text": "Why weight? Why use the design?\n\nDifferential selection probabilities and nonresponse are accounted for in analytic weights\nWeights are post-stratified by gender, age, education, and geographic region (more in the design section)\nNot using weights can lead to bias\nIgnoring strata and clusters usually makes standard errors too small and uses the wrong degrees of freedom, so CIs are too narrow and tests too liberal"
   },
   {
     "objectID": "index.html#estimates-changing-with-weights",
@@ -270,126 +263,112 @@
     "href": "index.html#common-workflow",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Common workflow",
-    "text": "Common workflow\n\nCreate a tbl_svy object (a survey object) using: as_survey_design() or as_survey_rep()\nSubset data (if needed) using filter() (to create subpopulations)\nSpecify domains of analysis using group_by()\nWithin summarize(), specify variables to calculate, including means, totals, proportions, quantiles, and more"
+    "text": "Common workflow\n\nCreate a tbl_svy object (a survey object) using as_survey_design() or as_survey_rep()\nSubset data (if needed) using filter() (to create subpopulations)\nSpecify domains of analysis using group_by()\nWithin summarize(), specify variables to calculate, including means, totals, proportions, quantiles, and more"
   },
   {
     "objectID": "index.html#descriptive-functions",
     "href": "index.html#descriptive-functions",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Descriptive functions",
-    "text": "Descriptive functions\n\n\nUse within summarize()\n\nsurvey_mean(x)\nsurvey_median(x)\nsurvey_proportion()\nsurvey_quantile(x)\nsurvey_ratio(num, den)\nsurvey_sd(x)\nsurvey_total(x)\nsurvey_var(x)\n\n\nCommon arguments\n\nna.rm = FALSE\nvartype = c(\"se\", \"ci\", \"var\", \"cv\"): defaults to just “se”\nlevel = 0.95: confidence interval level of CIs\ndeff = FALSE: note can specify as logical OR “replace”\ndf = NULL: degrees of freedom for CIs (defaults to degf(design))\n\n\n\n\nsurvey_median/survey_quantile - no deff\nsurvey_sd - no deff, no measures of variation\nsurvey_var - no deff, no cv"
+    "text": "Descriptive functions\n\n\nUse within summarize()\n\nsurvey_mean(x)\nsurvey_median(x)\nsurvey_prop()\nsurvey_quantile(x)\nsurvey_ratio(num, den)\nsurvey_sd(x)\nsurvey_total(x)\nsurvey_var(x)\n\n\nCommon arguments\n\nna.rm = FALSE\nvartype = c(\"se\", \"ci\", \"var\", \"cv\"): defaults to just “se”\nlevel = 0.95: confidence level of CIs\ndeff = FALSE: note can specify as logical OR “replace”\ndf = NULL: degrees of freedom for CIs (defaults to degf(design))\n\n\n\n\nsurvey_median/survey_quantile - no deff\nsurvey_sd - no deff, no measures of variation\nsurvey_var - no deff, no cv"
   },
   {
     "objectID": "index.html#mean-examples",
     "href": "index.html#mean-examples",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Mean examples",
-    "text": "Mean examples\n\nna.rmvartypelevel and dfdeff\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News),\n    H2 = survey_mean(News, na.rm = TRUE)\n  )\n\n# A tibble: 1 × 4\n     H1 H1_se    H2 H2_se\n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1    NA   NaN  56.9  3.27\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = c(\"se\", \"ci\", \"var\", \"cv\")),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = NULL)\n  )\n\n# A tibble: 1 × 7\n     H1 H1_se H1_low H1_upp H1_var  H1_cv    H2\n  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1  56.9  3.27   50.4   63.3   10.7 0.0575  56.9\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    H1 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95),\n    H2 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.8),\n    H3 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95, df = 10)\n  )\n\n# A tibble: 1 × 9\n     H1 H1_low H1_upp    H2 H2_low H2_upp    H3 H3_low H3_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1  56.9   50.4   63.3  56.9   52.7   61.1  56.9   49.6   64.1\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(H1 = survey_mean(News, na.rm = TRUE, deff = \"replace\"))\n\n# A tibble: 1 × 3\n     H1 H1_se H1_deff\n  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1  56.9  3.27    1.39\n\n\n\n\n\n\n\nna.rm removes NA before calculation, similar to many other functions in R\nvartype can choose no option OR multiple\nlevel and df control confidence intervals\ndeff is a design effect, a ratio of the variance under this design compared to a design which is SRS, &gt;1 means less statistically efficient"
+    "text": "Mean examples\nNews: minutes per day spent on news about politics and current affairs (nwspol)\n\nna.rmvartypelevel and dfdeff\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    default = survey_mean(News),\n    narm = survey_mean(News, na.rm = TRUE)\n  )\n\n# A tibble: 1 × 4\n  default default_se  narm narm_se\n    &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1      NA        NaN  56.9    3.27\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    all = survey_mean(News, na.rm = TRUE, vartype = c(\"se\", \"ci\", \"var\", \"cv\")),\n    none = survey_mean(News, na.rm = TRUE, vartype = NULL)\n  )\n\n# A tibble: 1 × 7\n    all all_se all_low all_upp all_var all_cv  none\n  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1  56.9   3.27    50.4    63.3    10.7 0.0575  56.9\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(\n    ci95 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95),\n    ci80 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.8),\n    ci95_df10 = survey_mean(News, na.rm = TRUE, vartype = \"ci\", level = 0.95, df = 10)\n  )\n\n# A tibble: 1 × 9\n   ci95 ci95_low ci95_upp  ci80 ci80_low ci80_upp ci95_df10\n  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1  56.9     50.4     63.3  56.9     52.7     61.1      56.9\n# ℹ 2 more variables: ci95_df10_low &lt;dbl&gt;, ci95_df10_upp &lt;dbl&gt;\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"IS\") |&gt;\n  summarize(News_mean = survey_mean(News, na.rm = TRUE, deff = \"replace\"))\n\n# A tibble: 1 × 3\n  News_mean News_mean_se News_mean_deff\n      &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;\n1      56.9         3.27           1.39\n\n\n\n\n\n\n\nna.rm removes NA before calculation, similar to many other functions in R\nvartype can choose no option OR multiple\nlevel and df control confidence intervals\ndeff is a design effect, a ratio of the variance under this design compared to a design which is SRS, &gt;1 means less statistically efficient"
   },
   {
-    "objectID": "index.html#proportion-example-motivation",
-    "href": "index.html#proportion-example-motivation",
+    "objectID": "index.html#proportions-motivation",
+    "href": "index.html#proportions-motivation",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: motivation",
-    "text": "Proportion example: motivation\nAnd still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (volunfp)\n\n1: yes\n2: no\n7: Refusal*\n8: Don’t know*\n9: No answer*"
+    "section": "Proportions: motivation",
+    "text": "Proportions: motivation\nAnd still thinking about different ways of trying to improve things in [country] or help prevent things from going wrong, during the last 12 months, have you done any of the following? Have you volunteered for a not-for-profit or charitable organisation? (volunfp)\n\n1: Yes\n2: No\n7: Refusal*\n8: Don’t know*\n9: No answer*\n\nDerived variables: Volunteer_01 (1 = Yes, 0 = No) and Volunteer_Factor (factor with levels Yes, No)\n\n\n*Set to missing (NA) in the derived variables"
   },
   {
-    "objectID": "index.html#proportion-example-variable-coding",
-    "href": "index.html#proportion-example-variable-coding",
+    "objectID": "index.html#proportions-two-methods",
+    "href": "index.html#proportions-two-methods",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: variable coding",
-    "text": "Proportion example: variable coding\nDerived variable coding options (unweighted raw data):\n\ness_der |&gt;\n  count(\n    volunfp,\n    Volunteer_12,\n    Volunteer_01,\n    Volunteer_Factor\n  )\n\n# A tibble: 5 × 5\n  volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n\n    &lt;int&gt;        &lt;int&gt;        &lt;dbl&gt; &lt;fct&gt;            &lt;int&gt;\n1       1            1            1 Yes               9305\n2       2            2            0 No               40643\n3       7           NA           NA &lt;NA&gt;                92\n4       8           NA           NA &lt;NA&gt;                65\n5       9           NA           NA &lt;NA&gt;                11"
+    "section": "Proportions: two methods",
+    "text": "Proportions: two methods\nTwo methods for proportions\n\nFor binary outcomes, use survey_mean(x)\n\nx is either 1/0 or TRUE/FALSE\ncan use with across() and several outcomes\n\nGroup the data by the variable (x) and then use survey_prop()\n\nx can have 2 or more levels\nanalyzes only one outcome at a time\n\n\n\n\nSee Calculating estimates for many outcomes for extending to multiple outcomes"
   },
   {
-    "objectID": "index.html#proportion-example-2-ways",
-    "href": "index.html#proportion-example-2-ways",
+    "objectID": "index.html#proportions-two-methods-examples",
+    "href": "index.html#proportions-two-methods-examples",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: 2 ways",
-    "text": "Proportion example: 2 ways\nTwo methods for proportions\n\nFor binary outcomes, use survey_mean(x)\n\nx is either 1/0 or TRUE/FALSE\ncan use with across() and several outcomes\n\nGroup the data by the variable (x) and then use survey_prop()\n\nx can have 2 or more levels\nonly analyze one outcome at a time\n\n\n\n\nSee Calculating estimates for many outcomes for extending to multiple outcomes"
+    "section": "Proportions: two methods, examples",
+    "text": "Proportions: two methods, examples\n\nsurvey_mean()survey_prop()\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  mutate(Volunteer_lgl = as.logical(Volunteer_01)) |&gt;\n  summarize(\n    across(\n      c(Volunteer_lgl, Volunteer_01),\n      ~ survey_mean(.x, na.rm = TRUE)\n    )\n  )\n\n# A tibble: 1 × 4\n  Volunteer_lgl Volunteer_lgl_se Volunteer_01 Volunteer_01_se\n          &lt;dbl&gt;            &lt;dbl&gt;        &lt;dbl&gt;           &lt;dbl&gt;\n1         0.260           0.0139        0.260          0.0139\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(p = survey_prop())\n\n# A tibble: 2 × 3\n  Volunteer_Factor     p   p_se\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260 0.0139\n2 No               0.740 0.0139\n\n\n\n\n\n\n\nsurvey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once\nsurvey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels"
   },
   {
-    "objectID": "index.html#proportion-example-2-ways-1",
-    "href": "index.html#proportion-example-2-ways-1",
+    "objectID": "index.html#proportions-proportion-argument",
+    "href": "index.html#proportions-proportion-argument",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: 2 ways",
-    "text": "Proportion example: 2 ways\n\nsurvey_mean()survey_prop()\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    across(\n      c(Volunteer_12, Volunteer_01),\n      ~ survey_mean(.x, na.rm = TRUE)\n    )\n  )\n\n# A tibble: 1 × 4\n  Volunteer_12 Volunteer_12_se Volunteer_01 Volunteer_01_se\n         &lt;dbl&gt;           &lt;dbl&gt;        &lt;dbl&gt;           &lt;dbl&gt;\n1         1.74          0.0139        0.260          0.0139\n\n\n\n\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(p = survey_prop())\n\n# A tibble: 2 × 3\n  Volunteer_Factor     p   p_se\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;\n1 Yes              0.260 0.0139\n2 No               0.740 0.0139\n\n\n\n\n\n\n\nsurvey_mean method only works for binary outcomes, bonus of being able to use across to estimate many outcomes at once\nsurvey_prop can be used for only one outcome at a time, can work for variables with more than 2 levels"
+    "section": "Proportions: proportion argument",
+    "text": "Proportions: proportion argument\nproportion argument in survey_mean()\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_01)) |&gt;\n  summarize(\n    p1 = survey_mean(\n      Volunteer_01,\n      vartype = \"ci\",\n      proportion = FALSE\n    ),\n    p2 = survey_mean(\n      Volunteer_01,\n      vartype = \"ci\",\n      proportion = TRUE\n    )\n  )\n\n\n\n\nproportion = TRUE argument only impacts confidence intervals"
   },
   {
-    "objectID": "index.html#proportion-example-arguments",
-    "href": "index.html#proportion-example-arguments",
+    "objectID": "index.html#proportions-proportion-argument-output",
+    "href": "index.html#proportions-proportion-argument-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: arguments",
-    "text": "Proportion example: arguments\nproportion argument in survey_mean()\n\ness_des |&gt;\n  filter(cntry == \"SE\") |&gt;\n  summarize(\n    p1 = survey_mean(Volunteer_01, na.rm = TRUE, vartype = \"ci\"),\n    p2 = survey_mean(\n      Volunteer_01,\n      na.rm = TRUE,\n      vartype = \"ci\",\n      proportion = TRUE\n    )\n  )\n\n\n\n\nproportion = TRUE argument only impacts confidence intervals"
+    "section": "Proportions: proportion argument",
+    "text": "Proportions: proportion argument\n\n# A tibble: 1 × 6\n     p1 p1_low p1_upp    p2 p2_low p2_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 0.260  0.232  0.287 0.260  0.233  0.288"
   },
   {
-    "objectID": "index.html#proportion-example-arguments-output",
-    "href": "index.html#proportion-example-arguments-output",
+    "objectID": "index.html#proportions-prop_method-argument",
+    "href": "index.html#proportions-prop_method-argument",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: arguments",
-    "text": "Proportion example: arguments\n\n# A tibble: 1 × 6\n     p1 p1_low p1_upp    p2 p2_low p2_upp\n  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n1 0.260  0.232  0.287 0.260  0.233  0.288"
-  },
-  {
-    "objectID": "index.html#proportion-example-arguments-1",
-    "href": "index.html#proportion-example-arguments-1",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: arguments",
-    "text": "Proportion example: arguments\nprop_method argument in survey_mean()/survey_prop()\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(\n    p1 = survey_prop(vartype = \"ci\", prop_method = \"logit\"),\n    p2 = survey_prop(vartype = \"ci\", prop_method = \"mean\"),\n    p3 = survey_prop(vartype = \"ci\", prop_method = \"xlogit\")\n  ) |&gt;\n  print(width = Inf)\n\n\n\n\nSee ?survey::svyciprop for details on implementation"
-  },
-  {
-    "objectID": "index.html#proportion-example-arguments-1-output",
-    "href": "index.html#proportion-example-arguments-1-output",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Proportion example: arguments",
-    "text": "Proportion example: arguments\n\n# A tibble: 2 × 10\n  Volunteer_Factor    p1 p1_low p1_upp    p2 p2_low p2_upp    p3\n  &lt;fct&gt;            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n1 Yes              0.260  0.233  0.288 0.260  0.232  0.287 0.260\n2 No               0.740  0.712  0.767 0.740  0.713  0.768 0.740\n  p3_low p3_upp\n   &lt;dbl&gt;  &lt;dbl&gt;\n1  0.233  0.288\n2  0.712  0.767"
+    "section": "Proportions: prop_method argument",
+    "text": "Proportions: prop_method argument\nprop_method sets the CI method when proportion = TRUE (the default in survey_prop())\n\ness_des |&gt;\n  filter(cntry == \"SE\", !is.na(Volunteer_Factor)) |&gt;\n  group_by(Volunteer_Factor) |&gt;\n  summarize(\n    p1 = survey_prop(vartype = \"ci\", prop_method = \"logit\"),\n    p2 = survey_prop(vartype = \"ci\", prop_method = \"mean\"),\n    p3 = survey_prop(vartype = \"ci\", prop_method = \"xlogit\")\n  )\n\n\n\nOther options include \"likelihood\", \"asin\", and \"beta\". See ?survey::svyciprop for details on implementation"
   },
   {
     "objectID": "index.html#subgroup-analysis",
     "href": "index.html#subgroup-analysis",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Subgroup analysis",
-    "text": "Subgroup analysis\n\nUsing filter() as above examples subsets data. This is done AFTER creating the design object\nUse group_by() to implement domain analysis"
+    "text": "Subgroup analysis\n\nfilter() (as in the examples above) subsets the data after the design object is created, so standard errors stay correct\nUse group_by() to implement domain analysis"
   },
   {
-    "objectID": "index.html#subgroup-analysis-mean-median",
-    "href": "index.html#subgroup-analysis-mean-median",
+    "objectID": "index.html#subgroup-analysis-mean-and-median",
+    "href": "index.html#subgroup-analysis-mean-and-median",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: mean & median",
-    "text": "Subgroup analysis: mean & median\n\nNetUsage is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day\n\n\ness_des |&gt;\n  group_by(Country) |&gt;\n  summarize(\n    Pop = survey_total(vartype = NULL),\n    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),\n    NetUse_median = survey_median(NetUsage, na.rm = TRUE)\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(columns = starts_with(\"NetUse\"), decimals = 2) |&gt;\n  fmt_number(columns = Pop, decimals = 0) |&gt;\n  opt_interactive()"
+    "section": "Subgroup analysis: mean and median",
+    "text": "Subgroup analysis: mean and median\n\nNetUsage is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day\n\n\ness_des |&gt;\n  group_by(Country) |&gt;\n  summarize(\n    Pop = survey_total(vartype = NULL) * 10000,\n    NetUse_mean = survey_mean(NetUsage, na.rm = TRUE),\n    NetUse_median = survey_median(NetUsage, na.rm = TRUE)\n  ) |&gt;\n  gt() |&gt;\n  fmt_number(columns = starts_with(\"NetUse\"), decimals = 2) |&gt;\n  fmt_number(columns = Pop, decimals = 0) |&gt;\n  opt_interactive()\n\n\n\n\nESS pweight (part of anweight) is divided by 10,000, so weighted totals are in units of 10,000 people; multiply by 10,000 to get population estimates (persons aged 15+)"
   },
   {
-    "objectID": "index.html#subgroup-analysis-mean-median-output",
-    "href": "index.html#subgroup-analysis-mean-median-output",
+    "objectID": "index.html#subgroup-analysis-mean-and-median-output",
+    "href": "index.html#subgroup-analysis-mean-and-median-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: mean & median",
-    "text": "Subgroup analysis: mean & median"
+    "section": "Subgroup analysis: mean and median",
+    "text": "Subgroup analysis: mean and median"
   },
   {
-    "objectID": "index.html#subgroup-analysis-prop.-marginal",
-    "href": "index.html#subgroup-analysis-prop.-marginal",
+    "objectID": "index.html#crosstabs-marginal",
+    "href": "index.html#crosstabs-marginal",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: prop., marginal",
-    "text": "Subgroup analysis: prop., marginal\n\nNetFreq is how often people use the internet (categorical)\nAgeGroup is a categorical age variable\n\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(AgeGroup, NetFreq) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
+    "section": "Crosstabs: marginal",
+    "text": "Crosstabs: marginal\n\nNetFreq is how often people use the internet (categorical)\nAgeGroup is a categorical age variable\nWith group_by(AgeGroup, NetFreq), proportions sum to 1 within each age group\n\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(AgeGroup, NetFreq) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
   },
   {
-    "objectID": "index.html#subgroup-analysis-prop.-marginal-output",
-    "href": "index.html#subgroup-analysis-prop.-marginal-output",
+    "objectID": "index.html#crosstabs-marginal-output",
+    "href": "index.html#crosstabs-marginal-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: prop., marginal",
-    "text": "Subgroup analysis: prop., marginal\n\n# A tibble: 32 × 6\n# Groups:   AgeGroup [7]\n   AgeGroup NetFreq                   N    N_se      p  p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.436 0.434\n 2 15-24    A few times a week   54941.  54941.  0.595 0.593\n 3 15-24    Most days           985974. 246792. 10.7   2.49 \n 4 15-24    Every day          8159303. 586824. 88.3   2.71 \n 5 25-34    Only occasionally   184533.  92304.  2.71  1.33 \n 6 25-34    Most days           264448. 101815.  3.89  1.46 \n 7 25-34    Every day          6356212. 475560. 93.4   1.88 \n 8 35-44    Never                41591.  41591.  0.486 0.487\n 9 35-44    Only occasionally    97612.  56513.  1.14  0.661\n10 35-44    A few times a week  151262.  76563.  1.77  0.882\n11 35-44    Most days           528423. 152299.  6.18  1.70 \n12 35-44    Every day          7738219. 497974. 90.4   2.07 \n13 45-54    Never               215268. 106143.  2.39  1.16 \n14 45-54    Only occasionally   421050. 133341.  4.67  1.44 \n15 45-54    A few times a week  363809. 126531.  4.03  1.37 \n16 45-54    Most days           799547. 185506.  8.87  1.98 \n17 45-54    Every day          7218228. 480960. 80.0   2.78 \n18 55-64    Never               768230. 168859.  8.34  1.74 \n19 55-64    Only occasionally   967739. 181369. 10.5   1.90 \n20 55-64    A few times a week  663439. 150366.  7.20  1.54 \n21 55-64    Most days          1017673. 166705. 11.0   1.76 \n22 55-64    Every day          5794517. 409369. 62.9   2.86 \n23 65-74    Never              1293236. 229568. 17.5   2.82 \n24 65-74    Only occasionally   583407. 147059.  7.88  1.89 \n25 65-74    A few times a week  673845. 143267.  9.11  1.77 \n26 65-74    Most days           824274. 159904. 11.1   1.98 \n27 65-74    Every day          4025921. 329504. 54.4   3.42 \n28 75+      Never              2899842. 326820. 48.5   3.93 \n29 75+      Only occasionally   658894. 151520. 11.0   2.33 \n30 75+      A few times a week  407123. 132835.  6.80  2.07 \n31 75+      Most days           492333. 125324.  8.23  2.07 \n32 75+      Every day          1525627. 214869. 25.5   3.17"
+    "section": "Crosstabs: marginal",
+    "text": "Crosstabs: marginal\n\n# A tibble: 32 × 6\n# Groups:   AgeGroup [7]\n   AgeGroup NetFreq                   N    N_se      p  p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.436 0.434\n 2 15-24    A few times a week   54941.  54941.  0.595 0.593\n 3 15-24    Most days           985974. 246792. 10.7   2.49 \n 4 15-24    Every day          8159303. 586824. 88.3   2.71 \n 5 25-34    Only occasionally   184533.  92304.  2.71  1.33 \n 6 25-34    Most days           264448. 101815.  3.89  1.46 \n 7 25-34    Every day          6356212. 475560. 93.4   1.88 \n 8 35-44    Never                41591.  41591.  0.486 0.487\n 9 35-44    Only occasionally    97612.  56513.  1.14  0.661\n10 35-44    A few times a week  151262.  76563.  1.77  0.882\n11 35-44    Most days           528423. 152299.  6.18  1.70 \n12 35-44    Every day          7738219. 497974. 90.4   2.07 \n13 45-54    Never               215268. 106143.  2.39  1.16 \n14 45-54    Only occasionally   421050. 133341.  4.67  1.44 \n15 45-54    A few times a week  363809. 126531.  4.03  1.37 \n16 45-54    Most days           799547. 185506.  8.87  1.98 \n17 45-54    Every day          7218228. 480960. 80.0   2.78 \n18 55-64    Never               768230. 168859.  8.34  1.74 \n19 55-64    Only occasionally   967739. 181369. 10.5   1.90 \n20 55-64    A few times a week  663439. 150366.  7.20  1.54 \n21 55-64    Most days          1017673. 166705. 11.0   1.76 \n22 55-64    Every day          5794517. 409369. 62.9   2.86 \n23 65-74    Never              1293236. 229568. 17.5   2.82 \n24 65-74    Only occasionally   583407. 147059.  7.88  1.89 \n25 65-74    A few times a week  673845. 143267.  9.11  1.77 \n26 65-74    Most days           824274. 159904. 11.1   1.98 \n27 65-74    Every day          4025921. 329504. 54.4   3.42 \n28 75+      Never              2899842. 326820. 48.5   3.93 \n29 75+      Only occasionally   658894. 151520. 11.0   2.33 \n30 75+      A few times a week  407123. 132835.  6.80  2.07 \n31 75+      Most days           492333. 125324.  8.23  2.07 \n32 75+      Every day          1525627. 214869. 25.5   3.17"
   },
   {
-    "objectID": "index.html#subgroup-analysis-prop.-joint",
-    "href": "index.html#subgroup-analysis-prop.-joint",
+    "objectID": "index.html#crosstabs-joint",
+    "href": "index.html#crosstabs-joint",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: prop., joint",
-    "text": "Subgroup analysis: prop., joint\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(interact(AgeGroup, NetFreq)) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
+    "section": "Crosstabs: joint",
+    "text": "Crosstabs: joint\n\ninteract() treats each AgeGroup × NetFreq combination as one group\nProportions sum to 1 across all cells, not within each age group\n\n\ness_des |&gt;\n  filter(cntry == \"FR\", !is.na(NetFreq), !is.na(AgeGroup)) |&gt;\n  group_by(interact(AgeGroup, NetFreq)) |&gt;\n  summarize(\n    N = survey_total() * 10000,\n    p = survey_prop() * 100\n  ) |&gt;\n  print(n = Inf)"
   },
   {
-    "objectID": "index.html#subgroup-analysis-prop.-joint-output",
-    "href": "index.html#subgroup-analysis-prop.-joint-output",
+    "objectID": "index.html#crosstabs-joint-output",
+    "href": "index.html#crosstabs-joint-output",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Subgroup analysis: prop., joint",
-    "text": "Subgroup analysis: prop., joint\n\n# A tibble: 32 × 6\n   AgeGroup NetFreq                   N    N_se       p   p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.0716 0.0716\n 2 15-24    A few times a week   54941.  54941.  0.0977 0.0975\n 3 15-24    Most days           985974. 246792.  1.75   0.432 \n 4 15-24    Every day          8159303. 586824. 14.5    0.917 \n 5 25-34    Only occasionally   184533.  92304.  0.328  0.164 \n 6 25-34    Most days           264448. 101815.  0.470  0.181 \n 7 25-34    Every day          6356212. 475560. 11.3    0.762 \n 8 35-44    Never                41591.  41591.  0.0740 0.0740\n 9 35-44    Only occasionally    97612.  56513.  0.174  0.101 \n10 35-44    A few times a week  151262.  76563.  0.269  0.136 \n11 35-44    Most days           528423. 152299.  0.940  0.268 \n12 35-44    Every day          7738219. 497974. 13.8    0.782 \n13 45-54    Never               215268. 106143.  0.383  0.188 \n14 45-54    Only occasionally   421050. 133341.  0.749  0.235 \n15 45-54    A few times a week  363809. 126531.  0.647  0.223 \n16 45-54    Most days           799547. 185506.  1.42   0.325 \n17 45-54    Every day          7218228. 480960. 12.8    0.823 \n18 55-64    Never               768230. 168859.  1.37   0.296 \n19 55-64    Only occasionally   967739. 181369.  1.72   0.315 \n20 55-64    A few times a week  663439. 150366.  1.18   0.264 \n21 55-64    Most days          1017673. 166705.  1.81   0.294 \n22 55-64    Every day          5794517. 409369. 10.3    0.714 \n23 65-74    Never              1293236. 229568.  2.30   0.402 \n24 65-74    Only occasionally   583407. 147059.  1.04   0.259 \n25 65-74    A few times a week  673845. 143267.  1.20   0.252 \n26 65-74    Most days           824274. 159904.  1.47   0.278 \n27 65-74    Every day          4025921. 329504.  7.16   0.591 \n28 75+      Never              2899842. 326820.  5.16   0.558 \n29 75+      Only occasionally   658894. 151520.  1.17   0.269 \n30 75+      A few times a week  407123. 132835.  0.724  0.236 \n31 75+      Most days           492333. 125324.  0.876  0.223 \n32 75+      Every day          1525627. 214869.  2.71   0.381"
+    "section": "Crosstabs: joint",
+    "text": "Crosstabs: joint\n\n# A tibble: 32 × 6\n   AgeGroup NetFreq                   N    N_se       p   p_se\n   &lt;fct&gt;    &lt;fct&gt;                 &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;\n 1 15-24    Only occasionally    40255.  40255.  0.0716 0.0716\n 2 15-24    A few times a week   54941.  54941.  0.0977 0.0975\n 3 15-24    Most days           985974. 246792.  1.75   0.432 \n 4 15-24    Every day          8159303. 586824. 14.5    0.917 \n 5 25-34    Only occasionally   184533.  92304.  0.328  0.164 \n 6 25-34    Most days           264448. 101815.  0.470  0.181 \n 7 25-34    Every day          6356212. 475560. 11.3    0.762 \n 8 35-44    Never                41591.  41591.  0.0740 0.0740\n 9 35-44    Only occasionally    97612.  56513.  0.174  0.101 \n10 35-44    A few times a week  151262.  76563.  0.269  0.136 \n11 35-44    Most days           528423. 152299.  0.940  0.268 \n12 35-44    Every day          7738219. 497974. 13.8    0.782 \n13 45-54    Never               215268. 106143.  0.383  0.188 \n14 45-54    Only occasionally   421050. 133341.  0.749  0.235 \n15 45-54    A few times a week  363809. 126531.  0.647  0.223 \n16 45-54    Most days           799547. 185506.  1.42   0.325 \n17 45-54    Every day          7218228. 480960. 12.8    0.823 \n18 55-64    Never               768230. 168859.  1.37   0.296 \n19 55-64    Only occasionally   967739. 181369.  1.72   0.315 \n20 55-64    A few times a week  663439. 150366.  1.18   0.264 \n21 55-64    Most days          1017673. 166705.  1.81   0.294 \n22 55-64    Every day          5794517. 409369. 10.3    0.714 \n23 65-74    Never              1293236. 229568.  2.30   0.402 \n24 65-74    Only occasionally   583407. 147059.  1.04   0.259 \n25 65-74    A few times a week  673845. 143267.  1.20   0.252 \n26 65-74    Most days           824274. 159904.  1.47   0.278 \n27 65-74    Every day          4025921. 329504.  7.16   0.591 \n28 75+      Never              2899842. 326820.  5.16   0.558 \n29 75+      Only occasionally   658894. 151520.  1.17   0.269 \n30 75+      A few times a week  407123. 132835.  0.724  0.236 \n31 75+      Most days           492333. 125324.  0.876  0.223 \n32 75+      Every day          1525627. 214869.  2.71   0.381"
   },
   {
     "objectID": "index.html#our-goal",
@@ -511,6 +490,13 @@
     "text": "Exercise 7: map colored by Happy\n\nhappy_shape |&gt;\n  ggplot() +\n  geom_sf(aes(fill = Happy_mean), color = \"darkgrey\") +\n  geom_sf_text(\n    data = happy_shape |&gt; filter(!is.na(Happy_mean)),\n    aes(label = iso_a3),\n    size = 3\n  ) +\n  scale_fill_distiller(\n    palette = \"Blues\",\n    direction = 1,\n    na.value = \"lightgrey\",\n    name = \"Mean happiness\\n(0-10 scale)\"\n  ) +\n  labs(x = NULL, y = NULL) +\n  theme_light()\n\n\n\ngeom_sf() draws the polygons in the data’s CRS (EPSG:3035 from Exercise 5) and adds lon/lat graticules automatically\nscale_fill_distiller() gives a continuous Brewer scale because Happy_mean is a continuous estimate, not a category; direction = 1 makes higher happiness darker\nCountries without an ESS estimate have NA for Happy_mean after the full_join, so na.value = \"lightgrey\" shades them grey\nOnly countries with an estimate are labelled, via data = ... filter(!is.na(Happy_mean)) in geom_sf_text()\nLabels use iso_a3 (from the World shapefile) rather than ESS’s own 2-letter cntry codes, since the two don’t share a common code column after the join"
   },
   {
+    "objectID": "index.html#additional-resources",
+    "href": "index.html#additional-resources",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Additional resources",
+    "text": "Additional resources\n\n\n\nOur website\n\nHow to get our book\nR package with data\nMore tutorials\n\n\n\n    \n\n\n\nOur book\n\nDescriptive analysis\nStatistical testing\nModeling\nComplete vignettes"
+  },
+  {
     "objectID": "index.html#q-a",
     "href": "index.html#q-a",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
@@ -536,7 +522,7 @@
     "href": "index.html#accessing-ess-data",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Accessing ESS data",
-    "text": "Accessing ESS data\n\nCreate a ESS account and get your user ID\nOpen R environ file\n\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\n```r url &lt;- glue::glue(“https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv(‘ESS_USERID’)}”)"
+    "text": "Accessing ESS data\n\nCreate a ESS account and get your user ID\nOpen R environ file\n\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\n\n## Accessing ESS data - via API {visibility=\"uncounted\"}\n\n1. Create an ESS account and get your [user ID](https://ess.sikt.no/en/api){target=\"_blank\"}\n\n2. Open R environ file\n\n```r\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\nurl &lt;- glue::glue(\"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}\")\ness_in &lt;- arrow::read_parquet(url)"
   },
   {
     "objectID": "index.html#replicate-weights-overview",
