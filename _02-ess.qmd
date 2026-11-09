@@ -2,19 +2,33 @@
 
 ## Overview {.bkg-mountains}
 
-- Conducted across Europe every 2 years since 2001
+- Conducted across Europe every 2 years since 2002
 - Cross-sectional sample (new samples each round)
 - Topics include living conditions, social structure, public opinion and attitudes
 - Sampling designs vary by country but have oversight for rigor
-- Most recent data available for round 11 (2023 - 2024)
+- This tutorial uses round 11 (fieldwork 2023–2024)
 
 ## Countries for round 11
 
 ```{r}
-#| label: 02-round-11-map
+#| label: 02-course-dat
+#| eval: true
 #| echo: false
 
 ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+```
+```{r}
+#| label: 02-round-11-map
+#| echo: false
+#| fig-alt: >-
+#|   Map of Europe with the 30 countries in ESS round 11 shaded in color and
+#|   labeled with their two-letter codes; non-participating countries are grey.
+#|   Participating countries: Austria, Belgium, Bulgaria, Croatia, Cyprus,
+#|   Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland,
+#|   Israel, Italy, Latvia, Lithuania, Montenegro, Netherlands, Norway, Poland,
+#|   Portugal, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, Ukraine,
+#|   and the United Kingdom.
+#| dev.args: !expr list(bg = brand_pluck(brand, "color", "palette", "lightteal"))
 
 ess_11_countries <-
   ess_der |>
@@ -73,7 +87,17 @@ country_shape_col |>
     ),
     fill.legend = tm_legend_hide()
   ) +
-  tm_text("cntry") +
+  tm_text(
+    "cntry",
+    size = 0.7,
+    col = "ColorCat",
+    col.scale = tm_scale_categorical(
+      # white text on "d" (dark blue fill), black on the lighter fills
+      values = c(a = "black", b = "black", c = "black", d = "white")
+    ),
+    col.legend = tm_legend_hide(),
+    options = opt_tm_text(on_surface = TRUE)
+  ) +
   tm_graticules() +
   tm_layout(
     bg.color = brand_pluck(brand, "color", "palette", "lightteal"),
@@ -82,58 +106,25 @@ country_shape_col |>
   )
 ```
 
-## Accessing ESS data - full data
-
-1. Create a ESS account and get your [user ID](https://ess.sikt.no/en/api){target="_blank"}
-
-. . .
-
-2. Open R environ file
-
-```r
-usethis::edit_r_environ()
-```
-
-. . .
-
-
-3. Add your user ID to R environ
-
-```r
-ESS_USERID="12345678-1234-1234-1234-12345678900"
-```
-
-. . .
-
-4. Restart your R session
-
-. . .
-
-5. Load the ESS data into R
-
-```r
-url <- glue::glue("https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}")
-ess_in <- read_parquet(url)
-```
 
 ## Read data subset for this course {.bkg-serpent}
 
-- This data is a subset of columns of full data
+- This dataset is a subset of columns from the full ESS file
 - Includes derived variables we created for this course
 - See [data cleaning code](DataCleaning.qmd){target="_blank"}
 
 ```{r}
 #| label: 02-course-dat
-
-ess_der <- read_rds(here::here("DerivedData", "ess11_der.rds"))
+#| eval: false
+#| echo: true
 ```
 
-## Why weight? Why use the design? {.bkg-trees}
+## Why weight? Why use the design? {.bkg-trees .smaller}
 
 - Differential selection probabilities and nonresponse are accounted for in analytic weights
-- Weights are post-stratified by gender, age, education, and geographic region
-- Not using weights leads to bias
-- Not using design likely leads to incorrect precision, wrong degrees of freedom and not accounting for clustering
+- Weights are post-stratified by gender, age, education, and geographic region (more in the design section)
+- Not using weights can lead to bias
+- Ignoring strata and clusters usually makes standard errors too small and uses the wrong degrees of freedom, so CIs are too narrow and tests too liberal
 
 ## Estimates changing with weights
 
@@ -174,6 +165,18 @@ allests <-
 ```{r}
 #| label: 02-weight-compare-plot
 #| echo: false
+#| fig-alt: >-
+#|   Small-multiple chart with one panel per ESS round 11 country, showing the
+#|   estimated percentage of people whose main activity in the last 7 days was
+#|   retirement, with 95% confidence intervals, under four analysis approaches:
+#|   weights, strata, and clusters; weights only; strata and clusters only; and
+#|   no design. The two weighted approaches give the same estimate, as do the
+#|   two unweighted approaches, but weighted and unweighted estimates often
+#|   differ. Unweighted estimates are higher in most countries, by up to about
+#|   14 percentage points (Slovakia 22% weighted vs. 37% unweighted; Ireland
+#|   16% vs. 29%; Iceland 7% vs. 21%), and lower in a few (Poland 36% vs. 31%).
+#|   Confidence interval widths are similar across approaches, mostly 2 to 7
+#|   percentage points.
 allests |>
   mutate(
     Design = recode_values(
@@ -193,8 +196,11 @@ allests |>
       )
   ) |>
   ggplot(aes(color = Design)) +
-  geom_point(aes(x = Design, y = p_est)) +
-  geom_errorbar(aes(x = Design, ymin = p_low, ymax = p_upp)) +
+  geom_errorbar(
+    aes(x = Design, ymin = p_low, ymax = p_upp),
+    width = 0.4,
+    linewidth = 0.8
+  ) +
   theme_light(
     paper = brand_pluck(brand, "color", "palette", "lightteal"),
     base_family = heading_family,
@@ -208,14 +214,19 @@ allests |>
     axis.line.y = element_blank(),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
-    panel.spacing = unit(0, "in")
+    panel.spacing = unit(0, "in"),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      color = brand_pluck(brand, "color", "palette", "blue"),
+      margin = margin(t = 2, b = 2)
+    )
   ) +
   facet_wrap(~Country) +
   labs(
     title = "Retirement is main activity in last 7 days, ESS 11",
     y = "Estimated proportion with 95% CI"
   ) +
-  scale_y_continuous(labels = scales::percent) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, NA)) +
   scale_color_manual(
     values = unname(unlist(brand$color$palette[c(
       "blue",
