@@ -122,7 +122,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0ecfda8023c5dd63f7739cc7de1ff670.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-5cc881443760104352df216eb1560773.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -286,11 +286,14 @@ Posit
 <section id="logistics" class="slide level2 bkg-left">
 <h2>Logistics</h2>
 <ul>
-<li>We will be using Posit Cloud for exercises</li>
-<li>All materials are found at:
+<li>We will be using Posit Cloud for exercises
 <ul>
-<li><a href="https://tidy-survey-r.github.io/uros-2026-tutorial/" class="uri">https://tidy-survey-r.github.io/uros-2026-tutorial/</a> (Slides)</li>
-<li><a href="https://github.com/tidy-survey-r/uros-2026-tutorial" class="uri">https://github.com/tidy-survey-r/uros-2026-tutorial</a> (Source)</li>
+<li><a href="https://bit.ly/uRos26-survey-exercises">bit.ly/uRos26-survey-exercises</a></li>
+</ul></li>
+<li>All materials are located on GitHub:
+<ul>
+<li><a href="https://github.com/tidy-survey-r/uros-2026-tutorial">github.com/tidy-survey-r/uros-2026-tutorial</a></li>
+<li>Slides: <a href="https://bit.ly/uRos26-survey-slides">bit.ly/uRos26-survey-slides</a></li>
 </ul></li>
 </ul>
 </section>
@@ -342,46 +345,7 @@ Posit
 <li class="fragment">Ability to use tidy selection</li>
 <li class="fragment">Functions follow <code>snake_case</code> convention</li>
 </ul>
-</section>
-<section id="brief-note-on-pipes-with-survey" class="slide level2 bkg-mountains">
-<h2>Brief note on pipes with {survey}</h2>
-<div class="columns">
-<div class="column" style="width:42%;">
-<div class="fragment">
-<p>Magrittr pipe (<code>%&gt;%</code>)</p>
-</div>
-<div class="fragment">
-<ul>
-<li>dot notation</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>design_object <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a aria-label="2"></a>  <span class="fu">svyglm</span>(<span class="at">design =</span> ., y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column">
-<div class="fragment">
-<p>Base R pipe (<code>|&gt;</code>)</p>
-</div>
-<div class="fragment">
-<ul>
-<li>placeholder</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>design_object <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a aria-label="2"></a>  <span class="fu">svyglm</span>(<span class="at">design =</span> _, y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="fragment">
-<ul>
-<li>anonymous (lambda) functions</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a>design_object <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a aria-label="2"></a>  (\(.) </span>
-<span id="cb4-3"><a aria-label="3"></a>   <span class="fu">svyglm</span>(<span class="at">design =</span> ., y <span class="sc">~</span> x)</span>
-<span id="cb4-4"><a aria-label="4"></a>  )()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-
-<aside><div>
-<p>Check out <a href="https://ivelasq.rbind.io/blog/understanding-the-r-pipe/" target="_blank">Isabella’s article on the base pipe</a></p>
-</div></aside></section></section>
+</section></section>
 <section>
 <section id="comparison-of-dplyr-and-srvyr-functions" class="title-slide slide level1 bkg-buildings center" data-background-color="#0b3954">
 <h1>Comparison of {dplyr} and {srvyr} functions</h1>
@@ -405,10 +369,10 @@ Posit
 <div class="tab-content">
 <div id="tabset-1-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-code-line-numbers="|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb5-3"><a aria-label="3"></a>    <span class="at">area_mean =</span> <span class="fu">mean</span>(land_area_km2, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
-<span id="cb5-4"><a aria-label="4"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-code-line-numbers="|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb2-3"><a aria-label="3"></a>    <span class="at">area_mean =</span> <span class="fu">mean</span>(land_area_km2, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-4"><a aria-label="4"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   area_mean
@@ -419,10 +383,10 @@ Posit
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-code-line-numbers="|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a>api_des <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb7-3"><a aria-label="3"></a>    <span class="at">score_mean =</span> <span class="fu">survey_mean</span>(api99, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
-<span id="cb7-4"><a aria-label="4"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-code-line-numbers="|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a>api_des <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb4-3"><a aria-label="3"></a>    <span class="at">score_mean =</span> <span class="fu">survey_mean</span>(api99, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb4-4"><a aria-label="4"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   score_mean score_mean_se
@@ -441,9 +405,9 @@ Posit
 <div class="tab-content">
 <div id="tabset-2-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(csd_type) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">area_mean =</span> <span class="fu">mean</span>(land_area_km2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(csd_type) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">area_mean =</span> <span class="fu">mean</span>(land_area_km2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   csd_type     area_mean
@@ -458,9 +422,9 @@ Posit
 </div>
 <div id="tabset-2-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-label="1"></a>api_des <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(stype) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">score_mean =</span> <span class="fu">survey_mean</span>(api99, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a>api_des <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(stype) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">score_mean =</span> <span class="fu">survey_mean</span>(api99, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   stype score_mean score_mean_se
@@ -477,8 +441,8 @@ Posit
 <section id="using-srvyr-functions-on-non-survey-objects" class="slide level2 bkg-trees">
 <h2>Using {srvyr} functions on non-survey objects</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(<span class="at">area_mean =</span> <span class="fu">survey_mean</span>(land_area_km2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-label="1"></a>towny <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a aria-label="2"></a>  <span class="fu">summarize</span>(<span class="at">area_mean =</span> <span class="fu">survey_mean</span>(land_area_km2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-error">
@@ -517,13 +481,13 @@ Caused by error in `cur_svy()`:
 <ol start="2" type="1">
 <li>Open R environ file</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-label="1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <ol start="3" type="1">
 <li>Add your user ID to R environ</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>ESS_USERID<span class="ot">=</span><span class="st">"12345678-1234-1234-1234-12345678900"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-label="1"></a>ESS_USERID<span class="ot">=</span><span class="st">"12345678-1234-1234-1234-12345678900"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <ol start="4" type="1">
@@ -534,8 +498,8 @@ Caused by error in `cur_svy()`:
 <ol start="5" type="1">
 <li>Load the ESS data into R</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a>url <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"</span>)</span>
-<span id="cb17-2"><a aria-label="2"></a>ess_in <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-label="1"></a>url <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}"</span>)</span>
+<span id="cb14-2"><a aria-label="2"></a>ess_in <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="read-data-subset-for-this-course" class="slide level2 bkg-serpent">
@@ -546,7 +510,7 @@ Caused by error in `cur_svy()`:
 <li>See <a href="./DataCleaning.html" target="_blank">data cleaning code</a></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>ess_der <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"DerivedData"</span>, <span class="st">"ess11_der.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>ess_der <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"DerivedData"</span>, <span class="st">"ess11_der.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="why-weight-why-use-the-design" class="slide level2 bkg-trees">
@@ -646,15 +610,15 @@ Caused by error in `cur_svy()`:
 <section id="syntax-for-common-designs-no-stratificationclustering" class="slide level2 smaller bkg-trees">
 <h2>Syntax for common designs: no stratification/clustering</h2>
 <p>Simple Random Sample (SRS)</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a>apisrs <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">fpc =</span> fpc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-label="1"></a>apisrs <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">fpc =</span> fpc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>One-stage cluster sample with a FPC variable</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a>apiclus1 <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> dnum, <span class="at">weights =</span> pw, <span class="at">fpc =</span> fpc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-label="1"></a>apiclus1 <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> dnum, <span class="at">weights =</span> pw, <span class="at">fpc =</span> fpc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Two-stage cluster sample, weights computed from population size</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a>apiclus2 <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> <span class="fu">c</span>(dnum, snum), <span class="at">fpc =</span> <span class="fu">c</span>(fpc1, fpc2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-label="1"></a>apiclus2 <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> <span class="fu">c</span>(dnum, snum), <span class="at">fpc =</span> <span class="fu">c</span>(fpc1, fpc2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Stratified SRS</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a>apistrat <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">strata =</span> stype, <span class="at">weights =</span> pw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-label="1"></a>apistrat <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">strata =</span> stype, <span class="at">weights =</span> pw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Stratified, cluster design</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>apistrat <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> dnum, <span class="at">strata =</span> stype, <span class="at">weights =</span> pw, <span class="at">nest =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-label="1"></a>apistrat <span class="sc">%&gt;%</span> <span class="fu">as_survey_design</span>(<span class="at">ids =</span> dnum, <span class="at">strata =</span> stype, <span class="at">weights =</span> pw, <span class="at">nest =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="footer">
 <p>Examples from <code>srvyr</code> help documentation</p>
 </div>
@@ -662,13 +626,13 @@ Caused by error in `cur_svy()`:
 <section id="what-does-the-design-object-look-like" class="slide level2 smaller bkg-trees">
 <h2>What does the design object look like?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-label="1"></a><span class="fu">data</span>(api, <span class="at">package =</span> <span class="st">"survey"</span>)</span>
-<span id="cb24-2"><a aria-label="2"></a></span>
-<span id="cb24-3"><a aria-label="3"></a>apistrat_des <span class="ot">&lt;-</span> apistrat <span class="sc">|&gt;</span></span>
-<span id="cb24-4"><a aria-label="4"></a>  <span class="fu">select</span>(cds, stype, api00, pw, fpc) <span class="sc">|&gt;</span></span>
-<span id="cb24-5"><a aria-label="5"></a>  <span class="fu">as_survey_design</span>(<span class="at">strata =</span> stype, <span class="at">weights =</span> pw)</span>
-<span id="cb24-6"><a aria-label="6"></a></span>
-<span id="cb24-7"><a aria-label="7"></a>apistrat_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a><span class="fu">data</span>(api, <span class="at">package =</span> <span class="st">"survey"</span>)</span>
+<span id="cb21-2"><a aria-label="2"></a></span>
+<span id="cb21-3"><a aria-label="3"></a>apistrat_des <span class="ot">&lt;-</span> apistrat <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a aria-label="4"></a>  <span class="fu">select</span>(cds, stype, api00, pw, fpc) <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a aria-label="5"></a>  <span class="fu">as_survey_design</span>(<span class="at">strata =</span> stype, <span class="at">weights =</span> pw)</span>
+<span id="cb21-6"><a aria-label="6"></a></span>
+<span id="cb21-7"><a aria-label="7"></a>apistrat_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Stratified Independent Sampling design (with replacement)
 Called via srvyr
@@ -695,14 +659,14 @@ Data variables:
 <li><code>as_survey_rep()</code> creates a <code>tbl_svy</code> object that then correctly calculates weighted estimates and SEs</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a>scd_rep <span class="ot">&lt;-</span> scd <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a aria-label="2"></a>  <span class="fu">as_survey_rep</span>(</span>
-<span id="cb26-3"><a aria-label="3"></a>    <span class="at">type =</span> <span class="st">"BRR"</span>,</span>
-<span id="cb26-4"><a aria-label="4"></a>    <span class="at">repweights =</span> <span class="fu">starts_with</span>(<span class="st">"rep"</span>),</span>
-<span id="cb26-5"><a aria-label="5"></a>    <span class="at">combined_weights =</span> <span class="cn">FALSE</span></span>
-<span id="cb26-6"><a aria-label="6"></a>  )</span>
-<span id="cb26-7"><a aria-label="7"></a></span>
-<span id="cb26-8"><a aria-label="8"></a>scd_rep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>scd_rep <span class="ot">&lt;-</span> scd <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a aria-label="2"></a>  <span class="fu">as_survey_rep</span>(</span>
+<span id="cb23-3"><a aria-label="3"></a>    <span class="at">type =</span> <span class="st">"BRR"</span>,</span>
+<span id="cb23-4"><a aria-label="4"></a>    <span class="at">repweights =</span> <span class="fu">starts_with</span>(<span class="st">"rep"</span>),</span>
+<span id="cb23-5"><a aria-label="5"></a>    <span class="at">combined_weights =</span> <span class="cn">FALSE</span></span>
+<span id="cb23-6"><a aria-label="6"></a>  )</span>
+<span id="cb23-7"><a aria-label="7"></a></span>
+<span id="cb23-8"><a aria-label="8"></a>scd_rep</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call: Called via srvyr
 Balanced Repeated Replicates with 4 replicates.
@@ -773,22 +737,22 @@ Data variables:
 <section id="weighting-the-provided-code" class="slide level2 smaller bkg-mountains">
 <h2>Weighting: the provided code</h2>
 <p>Clicking into the “weighting guide,” we find example R code using <code>anweight</code>, the recommended weight:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a><span class="fu">library</span>(survey) <span class="co"># estimation</span></span>
-<span id="cb28-2"><a aria-label="2"></a></span>
-<span id="cb28-3"><a aria-label="3"></a><span class="co"># Define sample design</span></span>
-<span id="cb28-4"><a aria-label="4"></a>design <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span>psu, <span class="at">strata =</span> <span class="sc">~</span>stratum, <span class="at">weights =</span> <span class="sc">~</span>anweight,</span>
-<span id="cb28-5"><a aria-label="5"></a><span class="at">data =</span> data1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a><span class="fu">library</span>(survey) <span class="co"># estimation</span></span>
+<span id="cb25-2"><a aria-label="2"></a></span>
+<span id="cb25-3"><a aria-label="3"></a><span class="co"># Define sample design</span></span>
+<span id="cb25-4"><a aria-label="4"></a>design <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span>psu, <span class="at">strata =</span> <span class="sc">~</span>stratum, <span class="at">weights =</span> <span class="sc">~</span>anweight,</span>
+<span id="cb25-5"><a aria-label="5"></a><span class="at">data =</span> data1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="first-attempt" class="slide level2 bkg-mountains">
 <h2>First attempt</h2>
 <p>Using exactly the syntax from the weighting guide, we get an error:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a><span class="fu">svydesign</span>(</span>
-<span id="cb29-2"><a aria-label="2"></a>  <span class="at">ids =</span> <span class="sc">~</span> psu,</span>
-<span id="cb29-3"><a aria-label="3"></a>  <span class="at">strata =</span> <span class="sc">~</span> stratum,</span>
-<span id="cb29-4"><a aria-label="4"></a>  <span class="at">weights =</span> <span class="sc">~</span> anweight,</span>
-<span id="cb29-5"><a aria-label="5"></a>  <span class="at">data =</span> ess_der</span>
-<span id="cb29-6"><a aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a><span class="fu">svydesign</span>(</span>
+<span id="cb26-2"><a aria-label="2"></a>  <span class="at">ids =</span> <span class="sc">~</span> psu,</span>
+<span id="cb26-3"><a aria-label="3"></a>  <span class="at">strata =</span> <span class="sc">~</span> stratum,</span>
+<span id="cb26-4"><a aria-label="4"></a>  <span class="at">weights =</span> <span class="sc">~</span> anweight,</span>
+<span id="cb26-5"><a aria-label="5"></a>  <span class="at">data =</span> ess_der</span>
+<span id="cb26-6"><a aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `svydesign.default()`:
 ! Clusters not nested in strata at top level; you may want nest=TRUE.</code></pre>
@@ -799,10 +763,10 @@ Data variables:
 <h2>Why the error?</h2>
 <p>A handful of <code>psu</code> codes repeat across different <code>stratum</code> values in the raw file:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-label="1"></a>ess_der <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a aria-label="2"></a>  <span class="fu">distinct</span>(cntry, psu, stratum) <span class="sc">|&gt;</span></span>
-<span id="cb31-3"><a aria-label="3"></a>  <span class="fu">add_count</span>(psu) <span class="sc">|&gt;</span></span>
-<span id="cb31-4"><a aria-label="4"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a>ess_der <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a aria-label="2"></a>  <span class="fu">distinct</span>(cntry, psu, stratum) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a aria-label="3"></a>  <span class="fu">add_count</span>(psu) <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a aria-label="4"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   cntry   psu stratum     n
@@ -821,15 +785,15 @@ Data variables:
 <h2>Applying weights, fixed</h2>
 <p>Including <code>nest = TRUE</code>, we get the design object:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a>ess_des_true <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(</span>
-<span id="cb33-2"><a aria-label="2"></a>  <span class="at">ids =</span> <span class="sc">~</span> psu,</span>
-<span id="cb33-3"><a aria-label="3"></a>  <span class="at">strata =</span> <span class="sc">~</span> stratum,</span>
-<span id="cb33-4"><a aria-label="4"></a>  <span class="at">weights =</span> <span class="sc">~</span> anweight,</span>
-<span id="cb33-5"><a aria-label="5"></a>  <span class="at">data =</span> ess_der,</span>
-<span id="cb33-6"><a aria-label="6"></a>  <span class="at">nest =</span> <span class="cn">TRUE</span></span>
-<span id="cb33-7"><a aria-label="7"></a>)</span>
-<span id="cb33-8"><a aria-label="8"></a></span>
-<span id="cb33-9"><a aria-label="9"></a>ess_des_true</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a>ess_des_true <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(</span>
+<span id="cb30-2"><a aria-label="2"></a>  <span class="at">ids =</span> <span class="sc">~</span> psu,</span>
+<span id="cb30-3"><a aria-label="3"></a>  <span class="at">strata =</span> <span class="sc">~</span> stratum,</span>
+<span id="cb30-4"><a aria-label="4"></a>  <span class="at">weights =</span> <span class="sc">~</span> anweight,</span>
+<span id="cb30-5"><a aria-label="5"></a>  <span class="at">data =</span> ess_der,</span>
+<span id="cb30-6"><a aria-label="6"></a>  <span class="at">nest =</span> <span class="cn">TRUE</span></span>
+<span id="cb30-7"><a aria-label="7"></a>)</span>
+<span id="cb30-8"><a aria-label="8"></a></span>
+<span id="cb30-9"><a aria-label="9"></a>ess_des_true</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Stratified 1 - level Cluster Sampling design (with replacement)
 With (24791) clusters.
@@ -842,15 +806,15 @@ svydesign(ids = ~psu, strata = ~stratum, weights = ~anweight,
 <h2>From <code>{survey}</code> to <code>{srvyr}</code></h2>
 <p>The same design, specified with tidy syntax:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>ess_des <span class="ot">&lt;-</span> ess_der <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a aria-label="2"></a>  <span class="fu">as_survey_design</span>(</span>
-<span id="cb35-3"><a aria-label="3"></a>    <span class="at">ids =</span> psu,</span>
-<span id="cb35-4"><a aria-label="4"></a>    <span class="at">strata =</span> stratum,</span>
-<span id="cb35-5"><a aria-label="5"></a>    <span class="at">weights =</span> anweight,</span>
-<span id="cb35-6"><a aria-label="6"></a>    <span class="at">nest =</span> <span class="cn">TRUE</span></span>
-<span id="cb35-7"><a aria-label="7"></a>  )</span>
-<span id="cb35-8"><a aria-label="8"></a></span>
-<span id="cb35-9"><a aria-label="9"></a>ess_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a>ess_des <span class="ot">&lt;-</span> ess_der <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a aria-label="2"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb32-3"><a aria-label="3"></a>    <span class="at">ids =</span> psu,</span>
+<span id="cb32-4"><a aria-label="4"></a>    <span class="at">strata =</span> stratum,</span>
+<span id="cb32-5"><a aria-label="5"></a>    <span class="at">weights =</span> anweight,</span>
+<span id="cb32-6"><a aria-label="6"></a>    <span class="at">nest =</span> <span class="cn">TRUE</span></span>
+<span id="cb32-7"><a aria-label="7"></a>  )</span>
+<span id="cb32-8"><a aria-label="8"></a></span>
+<span id="cb32-9"><a aria-label="9"></a>ess_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 <p>Same result: a <code>tbl_svy</code> object ready for weighted summaries.</p>
@@ -902,55 +866,29 @@ Data variables:
 <section id="recoding-missing-data" class="slide level2 bkg-trees">
 <h2>Recoding missing data</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37" data-code-line-numbers="|4,5|6-11|11|12-22|22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>ess_der_update <span class="ot">&lt;-</span></span>
-<span id="cb37-2"><a aria-label="2"></a>  ess_raw <span class="sc">|&gt;</span></span>
-<span id="cb37-3"><a aria-label="3"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-4"><a aria-label="4"></a>    <span class="at">Happy =</span> <span class="fu">if_else</span>(happy <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>, <span class="dv">88</span>, <span class="dv">99</span>), <span class="cn">NA</span>, happy),</span>
-<span id="cb37-5"><a aria-label="5"></a>    <span class="at">News =</span> <span class="fu">if_else</span>(nwspol <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7777</span>, <span class="dv">8888</span>, <span class="dv">9999</span>), <span class="cn">NA</span>, nwspol),</span>
-<span id="cb37-6"><a aria-label="6"></a>    <span class="at">Volunteer_Factor =</span> <span class="fu">case_when</span>(</span>
-<span id="cb37-7"><a aria-label="7"></a>      volunfp <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Yes"</span>,</span>
-<span id="cb37-8"><a aria-label="8"></a>      volunfp <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"No"</span>,</span>
-<span id="cb37-9"><a aria-label="9"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA</span></span>
-<span id="cb37-10"><a aria-label="10"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb37-11"><a aria-label="11"></a>      <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>)),</span>
-<span id="cb37-12"><a aria-label="12"></a>    <span class="at">AgeGroup =</span> <span class="fu">recode_values</span>(</span>
-<span id="cb37-13"><a aria-label="13"></a>      agegroup,</span>
-<span id="cb37-14"><a aria-label="14"></a>      <span class="dv">1</span> <span class="sc">~</span> <span class="st">'15-24'</span>,</span>
-<span id="cb37-15"><a aria-label="15"></a>      <span class="dv">2</span> <span class="sc">~</span> <span class="st">'25-34'</span>,</span>
-<span id="cb37-16"><a aria-label="16"></a>      <span class="dv">3</span> <span class="sc">~</span> <span class="st">'35-44'</span>,</span>
-<span id="cb37-17"><a aria-label="17"></a>      <span class="dv">4</span> <span class="sc">~</span> <span class="st">'45-54'</span>,</span>
-<span id="cb37-18"><a aria-label="18"></a>      <span class="dv">5</span> <span class="sc">~</span> <span class="st">'55-64'</span>,</span>
-<span id="cb37-19"><a aria-label="19"></a>      <span class="dv">6</span> <span class="sc">~</span> <span class="st">'65-74'</span>,</span>
-<span id="cb37-20"><a aria-label="20"></a>      <span class="dv">7</span> <span class="sc">~</span> <span class="st">'75+'</span></span>
-<span id="cb37-21"><a aria-label="21"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb37-22"><a aria-label="22"></a>      <span class="fu">fct_reorder</span>(agegroup)</span>
-<span id="cb37-23"><a aria-label="23"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="viewing-recodes-on-raw-data" class="slide level2 smaller bkg-serpent">
-<h2>Viewing recodes on raw data</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a>ess_der_update <span class="sc">|&gt;</span> </span>
-<span id="cb38-2"><a aria-label="2"></a>  <span class="fu">count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 14 × 3
-   happy Happy     n
-   &lt;int&gt; &lt;int&gt; &lt;int&gt;
- 1     0     0   313
- 2     1     1   221
- 3     2     2   570
- 4     3     3  1139
- 5     4     4  1534
- 6     5     5  4920
- 7     6     6  4631
- 8     7     7  9459
- 9     8     8 13870
-10     9     9  7899
-11    10    10  5341
-12    77    NA    80
-13    88    NA   127
-14    99    NA    12</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34" data-code-line-numbers="|4,5|6-11|11|12-22|22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a>ess_des_edit <span class="ot">&lt;-</span></span>
+<span id="cb34-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a aria-label="3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb34-4"><a aria-label="4"></a>    <span class="at">Happy =</span> <span class="fu">if_else</span>(happy <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>, <span class="dv">88</span>, <span class="dv">99</span>), <span class="cn">NA</span>, happy),</span>
+<span id="cb34-5"><a aria-label="5"></a>    <span class="at">News =</span> <span class="fu">if_else</span>(nwspol <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7777</span>, <span class="dv">8888</span>, <span class="dv">9999</span>), <span class="cn">NA</span>, nwspol),</span>
+<span id="cb34-6"><a aria-label="6"></a>    <span class="at">Volunteer_Factor =</span> <span class="fu">case_when</span>(</span>
+<span id="cb34-7"><a aria-label="7"></a>      volunfp <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Yes"</span>,</span>
+<span id="cb34-8"><a aria-label="8"></a>      volunfp <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"No"</span>,</span>
+<span id="cb34-9"><a aria-label="9"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA</span></span>
+<span id="cb34-10"><a aria-label="10"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb34-11"><a aria-label="11"></a>      <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>)),</span>
+<span id="cb34-12"><a aria-label="12"></a>    <span class="at">AgeGroup =</span> <span class="fu">recode_values</span>(</span>
+<span id="cb34-13"><a aria-label="13"></a>      agegroup,</span>
+<span id="cb34-14"><a aria-label="14"></a>      <span class="dv">1</span> <span class="sc">~</span> <span class="st">'15-24'</span>,</span>
+<span id="cb34-15"><a aria-label="15"></a>      <span class="dv">2</span> <span class="sc">~</span> <span class="st">'25-34'</span>,</span>
+<span id="cb34-16"><a aria-label="16"></a>      <span class="dv">3</span> <span class="sc">~</span> <span class="st">'35-44'</span>,</span>
+<span id="cb34-17"><a aria-label="17"></a>      <span class="dv">4</span> <span class="sc">~</span> <span class="st">'45-54'</span>,</span>
+<span id="cb34-18"><a aria-label="18"></a>      <span class="dv">5</span> <span class="sc">~</span> <span class="st">'55-64'</span>,</span>
+<span id="cb34-19"><a aria-label="19"></a>      <span class="dv">6</span> <span class="sc">~</span> <span class="st">'65-74'</span>,</span>
+<span id="cb34-20"><a aria-label="20"></a>      <span class="dv">7</span> <span class="sc">~</span> <span class="st">'75+'</span></span>
+<span id="cb34-21"><a aria-label="21"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb34-22"><a aria-label="22"></a>      <span class="fu">fct_reorder</span>(agegroup)</span>
+<span id="cb34-23"><a aria-label="23"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="viewing-recodes-on-design-object" class="slide level2 smaller bkg-serpent">
@@ -960,8 +898,8 @@ Data variables:
 <div class="tab-content">
 <div id="tabset-3-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span> </span>
-<span id="cb40-2"><a aria-label="2"></a>  <span class="fu">survey_count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-label="1"></a>ess_des_edit <span class="sc">|&gt;</span> </span>
+<span id="cb35-2"><a aria-label="2"></a>  <span class="fu">survey_count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 14 × 4
    happy Happy        n   n_se
@@ -985,8 +923,8 @@ Data variables:
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a>ess_des<span class="sc">$</span>variables <span class="sc">|&gt;</span> </span>
-<span id="cb42-2"><a aria-label="2"></a>  <span class="fu">count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-label="1"></a>ess_des_edit<span class="sc">$</span>variables <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a aria-label="2"></a>  <span class="fu">count</span>(happy,Happy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 14 × 3
    happy Happy     n
@@ -1075,12 +1013,12 @@ Data variables:
 <div class="tab-content">
 <div id="tabset-4-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb44-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb44-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb44-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News),</span>
-<span id="cb44-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb44-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb39-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News),</span>
+<span id="cb39-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
      H1 H1_se    H2 H2_se
@@ -1091,12 +1029,12 @@ Data variables:
 </div>
 <div id="tabset-4-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb46-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb46-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">"se"</span>, <span class="st">"ci"</span>, <span class="st">"var"</span>, <span class="st">"cv"</span>)),</span>
-<span id="cb46-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>)</span>
-<span id="cb46-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb41-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="fu">c</span>(<span class="st">"se"</span>, <span class="st">"ci"</span>, <span class="st">"var"</span>, <span class="st">"cv"</span>)),</span>
+<span id="cb41-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="cn">NULL</span>)</span>
+<span id="cb41-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 7
      H1 H1_se H1_low H1_upp H1_var  H1_cv    H2
@@ -1107,13 +1045,13 @@ Data variables:
 </div>
 <div id="tabset-4-3">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb48-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb48-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb48-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.95</span>),</span>
-<span id="cb48-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.8</span>),</span>
-<span id="cb48-6"><a aria-label="6"></a>    <span class="at">H3 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">10</span>)</span>
-<span id="cb48-7"><a aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb43-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb43-4"><a aria-label="4"></a>    <span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.95</span>),</span>
+<span id="cb43-5"><a aria-label="5"></a>    <span class="at">H2 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.8</span>),</span>
+<span id="cb43-6"><a aria-label="6"></a>    <span class="at">H3 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">10</span>)</span>
+<span id="cb43-7"><a aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 9
      H1 H1_low H1_upp    H2 H2_low H2_upp    H3 H3_low H3_upp
@@ -1124,9 +1062,9 @@ Data variables:
 </div>
 <div id="tabset-4-4">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb50-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">deff =</span> <span class="st">"replace"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"IS"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">H1 =</span> <span class="fu">survey_mean</span>(News, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">deff =</span> <span class="st">"replace"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
      H1 H1_se H1_deff
@@ -1171,13 +1109,13 @@ Data variables:
 <h2>Proportion example: variable coding</h2>
 <p>Derived variable coding options (unweighted raw data):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-label="1"></a>ess_der <span class="sc">|&gt;</span></span>
-<span id="cb52-2"><a aria-label="2"></a>  <span class="fu">count</span>(</span>
-<span id="cb52-3"><a aria-label="3"></a>    volunfp,</span>
-<span id="cb52-4"><a aria-label="4"></a>    Volunteer_12,</span>
-<span id="cb52-5"><a aria-label="5"></a>    Volunteer_01,</span>
-<span id="cb52-6"><a aria-label="6"></a>    Volunteer_Factor</span>
-<span id="cb52-7"><a aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-label="1"></a>ess_der <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a aria-label="2"></a>  <span class="fu">count</span>(</span>
+<span id="cb47-3"><a aria-label="3"></a>    volunfp,</span>
+<span id="cb47-4"><a aria-label="4"></a>    Volunteer_12,</span>
+<span id="cb47-5"><a aria-label="5"></a>    Volunteer_01,</span>
+<span id="cb47-6"><a aria-label="6"></a>    Volunteer_Factor</span>
+<span id="cb47-7"><a aria-label="7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 5
   volunfp Volunteer_12 Volunteer_01 Volunteer_Factor     n
@@ -1216,14 +1154,14 @@ Data variables:
 <div class="tab-content">
 <div id="tabset-5-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb54-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb54-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb54-4"><a aria-label="4"></a>    <span class="fu">across</span>(</span>
-<span id="cb54-5"><a aria-label="5"></a>      <span class="fu">c</span>(Volunteer_12, Volunteer_01),</span>
-<span id="cb54-6"><a aria-label="6"></a>      <span class="sc">~</span> <span class="fu">survey_mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-7"><a aria-label="7"></a>    )</span>
-<span id="cb54-8"><a aria-label="8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb49-4"><a aria-label="4"></a>    <span class="fu">across</span>(</span>
+<span id="cb49-5"><a aria-label="5"></a>      <span class="fu">c</span>(Volunteer_12, Volunteer_01),</span>
+<span id="cb49-6"><a aria-label="6"></a>      <span class="sc">~</span> <span class="fu">survey_mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb49-7"><a aria-label="7"></a>    )</span>
+<span id="cb49-8"><a aria-label="8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
   Volunteer_12 Volunteer_12_se Volunteer_01 Volunteer_01_se
@@ -1234,10 +1172,10 @@ Data variables:
 </div>
 <div id="tabset-5-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb56-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>, <span class="sc">!</span><span class="fu">is.na</span>(Volunteer_Factor)) <span class="sc">|&gt;</span></span>
-<span id="cb56-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(Volunteer_Factor) <span class="sc">|&gt;</span></span>
-<span id="cb56-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_prop</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>, <span class="sc">!</span><span class="fu">is.na</span>(Volunteer_Factor)) <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(Volunteer_Factor) <span class="sc">|&gt;</span></span>
+<span id="cb51-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(<span class="at">p =</span> <span class="fu">survey_prop</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
   Volunteer_Factor     p   p_se
@@ -1270,17 +1208,17 @@ Data variables:
 <h2>Proportion example: arguments</h2>
 <p><code>proportion</code> argument in <code>survey_mean()</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb58-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb58-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb58-4"><a aria-label="4"></a>    <span class="at">p1 =</span> <span class="fu">survey_mean</span>(Volunteer_01, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>),</span>
-<span id="cb58-5"><a aria-label="5"></a>    <span class="at">p2 =</span> <span class="fu">survey_mean</span>(</span>
-<span id="cb58-6"><a aria-label="6"></a>      Volunteer_01,</span>
-<span id="cb58-7"><a aria-label="7"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb58-8"><a aria-label="8"></a>      <span class="at">vartype =</span> <span class="st">"ci"</span>,</span>
-<span id="cb58-9"><a aria-label="9"></a>      <span class="at">proportion =</span> <span class="cn">TRUE</span></span>
-<span id="cb58-10"><a aria-label="10"></a>    )</span>
-<span id="cb58-11"><a aria-label="11"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb53-4"><a aria-label="4"></a>    <span class="at">p1 =</span> <span class="fu">survey_mean</span>(Volunteer_01, <span class="at">na.rm =</span> <span class="cn">TRUE</span>, <span class="at">vartype =</span> <span class="st">"ci"</span>),</span>
+<span id="cb53-5"><a aria-label="5"></a>    <span class="at">p2 =</span> <span class="fu">survey_mean</span>(</span>
+<span id="cb53-6"><a aria-label="6"></a>      Volunteer_01,</span>
+<span id="cb53-7"><a aria-label="7"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb53-8"><a aria-label="8"></a>      <span class="at">vartype =</span> <span class="st">"ci"</span>,</span>
+<span id="cb53-9"><a aria-label="9"></a>      <span class="at">proportion =</span> <span class="cn">TRUE</span></span>
+<span id="cb53-10"><a aria-label="10"></a>    )</span>
+<span id="cb53-11"><a aria-label="11"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 <aside class="notes">
@@ -1310,15 +1248,15 @@ Data variables:
 <h2>Proportion example: arguments</h2>
 <p><code>prop_method</code> argument in <code>survey_mean()/survey_prop()</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb60-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>, <span class="sc">!</span><span class="fu">is.na</span>(Volunteer_Factor)) <span class="sc">|&gt;</span></span>
-<span id="cb60-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(Volunteer_Factor) <span class="sc">|&gt;</span></span>
-<span id="cb60-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb60-5"><a aria-label="5"></a>    <span class="at">p1 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"logit"</span>),</span>
-<span id="cb60-6"><a aria-label="6"></a>    <span class="at">p2 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"mean"</span>),</span>
-<span id="cb60-7"><a aria-label="7"></a>    <span class="at">p3 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"xlogit"</span>)</span>
-<span id="cb60-8"><a aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb60-9"><a aria-label="9"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"SE"</span>, <span class="sc">!</span><span class="fu">is.na</span>(Volunteer_Factor)) <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(Volunteer_Factor) <span class="sc">|&gt;</span></span>
+<span id="cb55-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb55-5"><a aria-label="5"></a>    <span class="at">p1 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"logit"</span>),</span>
+<span id="cb55-6"><a aria-label="6"></a>    <span class="at">p2 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"mean"</span>),</span>
+<span id="cb55-7"><a aria-label="7"></a>    <span class="at">p3 =</span> <span class="fu">survey_prop</span>(<span class="at">vartype =</span> <span class="st">"ci"</span>, <span class="at">prop_method =</span> <span class="st">"xlogit"</span>)</span>
+<span id="cb55-8"><a aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb55-9"><a aria-label="9"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
@@ -1350,39 +1288,39 @@ Data variables:
 <li><code>NetUsage</code> is 0 if a person uses internet never, only occasionally, or a few times a week; otherwise the reported minutes using internet on a typical day</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb62-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span></span>
-<span id="cb62-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb62-4"><a aria-label="4"></a>    <span class="at">Pop =</span> <span class="fu">survey_total</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
-<span id="cb62-5"><a aria-label="5"></a>    <span class="at">NetUse_mean =</span> <span class="fu">survey_mean</span>(NetUsage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb62-6"><a aria-label="6"></a>    <span class="at">NetUse_median =</span> <span class="fu">survey_median</span>(NetUsage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb62-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb62-8"><a aria-label="8"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb62-9"><a aria-label="9"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">"NetUse"</span>), <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb62-10"><a aria-label="10"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> Pop, <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb62-11"><a aria-label="11"></a>  <span class="fu">opt_interactive</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a aria-label="2"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span></span>
+<span id="cb57-3"><a aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb57-4"><a aria-label="4"></a>    <span class="at">Pop =</span> <span class="fu">survey_total</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb57-5"><a aria-label="5"></a>    <span class="at">NetUse_mean =</span> <span class="fu">survey_mean</span>(NetUsage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb57-6"><a aria-label="6"></a>    <span class="at">NetUse_median =</span> <span class="fu">survey_median</span>(NetUsage, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb57-8"><a aria-label="8"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-9"><a aria-label="9"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">"NetUse"</span>), <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-10"><a aria-label="10"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> Pop, <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-11"><a aria-label="11"></a>  <span class="fu">opt_interactive</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
 <section id="subgroup-analysis-mean-median-output" class="slide level2 output-location-slide"><h2>Subgroup analysis: mean &amp; median</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<div id="boickseova" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#boickseova table {
+<div id="ocayjwwjkb" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ocayjwwjkb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#boickseova thead, #boickseova tbody, #boickseova tfoot, #boickseova tr, #boickseova td, #boickseova th {
+#ocayjwwjkb thead, #ocayjwwjkb tbody, #ocayjwwjkb tfoot, #ocayjwwjkb tr, #ocayjwwjkb td, #ocayjwwjkb th {
   border-style: none;
 }
 
-#boickseova p {
+#ocayjwwjkb p {
   margin: 0;
   padding: 0;
 }
 
-#boickseova .gt_table {
+#ocayjwwjkb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1408,12 +1346,12 @@ Data variables:
   border-left-color: #D3D3D3;
 }
 
-#boickseova .gt_caption {
+#ocayjwwjkb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#boickseova .gt_title {
+#ocayjwwjkb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1425,7 +1363,7 @@ Data variables:
   border-bottom-width: 0;
 }
 
-#boickseova .gt_subtitle {
+#ocayjwwjkb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1437,7 +1375,7 @@ Data variables:
   border-top-width: 0;
 }
 
-#boickseova .gt_heading {
+#ocayjwwjkb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1449,13 +1387,13 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#boickseova .gt_bottom_border {
+#ocayjwwjkb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#boickseova .gt_col_headings {
+#ocayjwwjkb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1470,7 +1408,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#boickseova .gt_col_heading {
+#ocayjwwjkb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1490,7 +1428,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#boickseova .gt_column_spanner_outer {
+#ocayjwwjkb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1502,15 +1440,15 @@ Data variables:
   padding-right: 4px;
 }
 
-#boickseova .gt_column_spanner_outer:first-child {
+#ocayjwwjkb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#boickseova .gt_column_spanner_outer:last-child {
+#ocayjwwjkb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#boickseova .gt_column_spanner {
+#ocayjwwjkb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1522,11 +1460,11 @@ Data variables:
   width: 100%;
 }
 
-#boickseova .gt_spanner_row {
+#ocayjwwjkb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#boickseova .gt_group_heading {
+#ocayjwwjkb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1552,7 +1490,7 @@ Data variables:
   text-align: left;
 }
 
-#boickseova .gt_empty_group_heading {
+#ocayjwwjkb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1567,15 +1505,15 @@ Data variables:
   vertical-align: middle;
 }
 
-#boickseova .gt_from_md > :first-child {
+#ocayjwwjkb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#boickseova .gt_from_md > :last-child {
+#ocayjwwjkb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#boickseova .gt_row {
+#ocayjwwjkb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1594,7 +1532,7 @@ Data variables:
   overflow-x: hidden;
 }
 
-#boickseova .gt_stub {
+#ocayjwwjkb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1607,7 +1545,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#boickseova .gt_stub_row_group {
+#ocayjwwjkb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1621,15 +1559,15 @@ Data variables:
   vertical-align: top;
 }
 
-#boickseova .gt_row_group_first td {
+#ocayjwwjkb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#boickseova .gt_row_group_first th {
+#ocayjwwjkb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#boickseova .gt_summary_row {
+#ocayjwwjkb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1639,16 +1577,16 @@ Data variables:
   padding-right: 5px;
 }
 
-#boickseova .gt_first_summary_row {
+#ocayjwwjkb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#boickseova .gt_first_summary_row.thick {
+#ocayjwwjkb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#boickseova .gt_last_summary_row {
+#ocayjwwjkb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1658,7 +1596,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#boickseova .gt_grand_summary_row {
+#ocayjwwjkb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1668,7 +1606,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#boickseova .gt_first_grand_summary_row {
+#ocayjwwjkb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1678,7 +1616,7 @@ Data variables:
   border-top-color: #D3D3D3;
 }
 
-#boickseova .gt_last_grand_summary_row_top {
+#ocayjwwjkb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1688,11 +1626,11 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#boickseova .gt_striped {
+#ocayjwwjkb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#boickseova .gt_table_body {
+#ocayjwwjkb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1701,7 +1639,7 @@ Data variables:
   border-bottom-color: #D3D3D3;
 }
 
-#boickseova .gt_footnotes {
+#ocayjwwjkb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1715,7 +1653,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#boickseova .gt_footnote {
+#ocayjwwjkb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1724,7 +1662,7 @@ Data variables:
   padding-right: 5px;
 }
 
-#boickseova .gt_sourcenotes {
+#ocayjwwjkb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1738,7 +1676,7 @@ Data variables:
   border-right-color: #D3D3D3;
 }
 
-#boickseova .gt_sourcenote {
+#ocayjwwjkb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1746,77 +1684,77 @@ Data variables:
   padding-right: 5px;
 }
 
-#boickseova .gt_left {
+#ocayjwwjkb .gt_left {
   text-align: left;
 }
 
-#boickseova .gt_center {
+#ocayjwwjkb .gt_center {
   text-align: center;
 }
 
-#boickseova .gt_right {
+#ocayjwwjkb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#boickseova .gt_font_normal {
+#ocayjwwjkb .gt_font_normal {
   font-weight: normal;
 }
 
-#boickseova .gt_font_bold {
+#ocayjwwjkb .gt_font_bold {
   font-weight: bold;
 }
 
-#boickseova .gt_font_italic {
+#ocayjwwjkb .gt_font_italic {
   font-style: italic;
 }
 
-#boickseova .gt_super {
+#ocayjwwjkb .gt_super {
   font-size: 65%;
 }
 
-#boickseova .gt_footnote_marks {
+#ocayjwwjkb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#boickseova .gt_asterisk {
+#ocayjwwjkb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#boickseova .gt_indent_1 {
+#ocayjwwjkb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#boickseova .gt_indent_2 {
+#ocayjwwjkb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#boickseova .gt_indent_3 {
+#ocayjwwjkb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#boickseova .gt_indent_4 {
+#ocayjwwjkb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#boickseova .gt_indent_5 {
+#ocayjwwjkb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#boickseova .katex-display {
+#ocayjwwjkb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#boickseova div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ocayjwwjkb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="boickseova" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="boickseova">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589825,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.6424058876742,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"boickseova","dataKey":"8a9b60825ee9cb8c3007eb363b7c89ee"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
+<div id="ocayjwwjkb" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="ocayjwwjkb">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Country":["Austria","Belgium","Bulgaria","Croatia","Cyprus","Estonia","Finland","France","Germany","Greece","Hungary","Iceland","Ireland","Israel","Italy","Latvia","Lithuania","Montenegro","Netherlands","Norway","Poland","Portugal","Serbia","Slovakia","Slovenia","Spain","Sweden","Switzerland","Ukraine","United Kingdom"],"Pop":[778.972794350815,980.427601032927,553.429099943446,330.209602515868,77.2474001697619,114.196497759526,472.36419935023,5639.53148629073,7242.98670821192,902.262301710149,820.6689002915,31.7250998350062,425.19540007825,675.029992833314,5165.3102710515,158.253100608079,243.015199922899,50.6465000661605,1508.39137365242,457.291701549966,3108.53970555138,911.635504679653,568.281104261158,455.533998951254,179.944100569782,4154.81451120186,869.246302239327,748.862406233991,3487.78128970159,5598.06861670577],"NetUse_mean":[162.200107312116,223.190622978668,166.212126786738,142.258162878667,199.070953012858,250.209753087837,221.539934243399,180.498119004695,197.79412588151,171.321546340379,146.469727180885,328.433173283393,222.600685283578,264.442304184952,127.569748121261,208.298397843376,199.17236706963,152.76205577088,262.24704615445,284.018094666046,157.11582456145,187.617692182114,176.499661654921,148.98251543718,155.508423654153,231.900101691779,287.462366476938,214.0528815964,187.147726300394,277.077162014529],"NetUse_mean_se":[4.65007688090894,5.72504180721568,4.4943479693632,5.01761464059343,10.9838326101355,5.93347724589824,5.18534285925687,5.01486179989779,6.92195975880527,4.30313207105612,3.82535629932371,9.07106391585456,6.23770840891179,6.98013600645979,4.0287933134732,7.70579365732209,6.74387011629541,5.37961480839038,4.48533993880812,5.9369670428489,4.97646130934116,6.50133207328535,5.74304660988522,5.52556841644585,5.89865692610503,5.69349113651564,6.83429298329622,5.57027215645325,7.44599569311013,7.04792959810977],"NetUse_median":[120,180,120,90,120,180,180,120,120,120,120,300,180,240,120,180,150,120,210,240,120,120,120,120,120,180,240,150,120,240],"NetUse_median_se":[7.64051295192545,15.2740727366651,7.64585025692079,7.64143194516405,15.2789581487864,15.2918506617998,15.292119950481,7.62273308914408,7.6337013270572,7.64764846657619,7.6424058876742,15.2797479245369,15.2742968597299,7.64262771718745,7.62711001272376,15.2354275463271,15.2858650154166,7.62869751732587,7.6475570957417,15.2920535669466,7.63901676020702,15.2817355158758,12.730274605693,7.62914302484946,15.2418569258931,15.2612198937756,15.291181018062,7.64645529529921,15.2099236294981,15.2573950346517]},"columns":[{"id":"Country","name":"Country","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"Pop","name":"Pop","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["779","980","553","330","77","114","472","5,640","7,243","902","821","32","425","675","5,165","158","243","51","1,508","457","3,109","912","568","456","180","4,155","869","749","3,488","5,598"],"html":true,"align":"right"},{"id":"NetUse_mean","name":"NetUse_mean","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["162.20","223.19","166.21","142.26","199.07","250.21","221.54","180.50","197.79","171.32","146.47","328.43","222.60","264.44","127.57","208.30","199.17","152.76","262.25","284.02","157.12","187.62","176.50","148.98","155.51","231.90","287.46","214.05","187.15","277.08"],"html":true,"align":"right"},{"id":"NetUse_mean_se","name":"NetUse_mean_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["4.65","5.73","4.49","5.02","10.98","5.93","5.19","5.01","6.92","4.30","3.83","9.07","6.24","6.98","4.03","7.71","6.74","5.38","4.49","5.94","4.98","6.50","5.74","5.53","5.90","5.69","6.83","5.57","7.45","7.05"],"html":true,"align":"right"},{"id":"NetUse_median","name":"NetUse_median","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["120.00","180.00","120.00","90.00","120.00","180.00","180.00","120.00","120.00","120.00","120.00","300.00","180.00","240.00","120.00","180.00","150.00","120.00","210.00","240.00","120.00","120.00","120.00","120.00","120.00","180.00","240.00","150.00","120.00","240.00"],"html":true,"align":"right"},{"id":"NetUse_median_se","name":"NetUse_median_se","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["7.64","15.27","7.65","7.64","15.28","15.29","15.29","7.62","7.63","7.65","7.64","15.28","15.27","7.64","7.63","15.24","15.29","7.63","7.65","15.29","7.64","15.28","12.73","7.63","15.24","15.26","15.29","7.65","15.21","15.26"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"ocayjwwjkb","dataKey":"138f6209a9a3fdf418e3babc133b2c77"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div></section><section id="subgroup-analysis-prop.-marginal" class="slide level2 smaller">
@@ -1826,14 +1764,14 @@ Data variables:
 <li><code>AgeGroup</code> is a categorical age variable</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb63-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"FR"</span>, <span class="sc">!</span><span class="fu">is.na</span>(NetFreq), <span class="sc">!</span><span class="fu">is.na</span>(AgeGroup)) <span class="sc">|&gt;</span></span>
-<span id="cb63-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(AgeGroup, NetFreq) <span class="sc">|&gt;</span></span>
-<span id="cb63-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb63-5"><a aria-label="5"></a>    <span class="at">N =</span> <span class="fu">survey_total</span>() <span class="sc">*</span> <span class="dv">10000</span>,</span>
-<span id="cb63-6"><a aria-label="6"></a>    <span class="at">p =</span> <span class="fu">survey_prop</span>() <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb63-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb63-8"><a aria-label="8"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb58-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"FR"</span>, <span class="sc">!</span><span class="fu">is.na</span>(NetFreq), <span class="sc">!</span><span class="fu">is.na</span>(AgeGroup)) <span class="sc">|&gt;</span></span>
+<span id="cb58-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(AgeGroup, NetFreq) <span class="sc">|&gt;</span></span>
+<span id="cb58-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb58-5"><a aria-label="5"></a>    <span class="at">N =</span> <span class="fu">survey_total</span>() <span class="sc">*</span> <span class="dv">10000</span>,</span>
+<span id="cb58-6"><a aria-label="6"></a>    <span class="at">p =</span> <span class="fu">survey_prop</span>() <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb58-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb58-8"><a aria-label="8"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
@@ -1879,14 +1817,14 @@ Data variables:
 </div></section><section id="subgroup-analysis-prop.-joint" class="slide level2 smaller">
 <h2>Subgroup analysis: prop., joint</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
-<span id="cb65-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"FR"</span>, <span class="sc">!</span><span class="fu">is.na</span>(NetFreq), <span class="sc">!</span><span class="fu">is.na</span>(AgeGroup)) <span class="sc">|&gt;</span></span>
-<span id="cb65-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(<span class="fu">interact</span>(AgeGroup, NetFreq)) <span class="sc">|&gt;</span></span>
-<span id="cb65-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb65-5"><a aria-label="5"></a>    <span class="at">N =</span> <span class="fu">survey_total</span>() <span class="sc">*</span> <span class="dv">10000</span>,</span>
-<span id="cb65-6"><a aria-label="6"></a>    <span class="at">p =</span> <span class="fu">survey_prop</span>() <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb65-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb65-8"><a aria-label="8"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-label="1"></a>ess_des <span class="sc">|&gt;</span></span>
+<span id="cb60-2"><a aria-label="2"></a>  <span class="fu">filter</span>(cntry <span class="sc">==</span> <span class="st">"FR"</span>, <span class="sc">!</span><span class="fu">is.na</span>(NetFreq), <span class="sc">!</span><span class="fu">is.na</span>(AgeGroup)) <span class="sc">|&gt;</span></span>
+<span id="cb60-3"><a aria-label="3"></a>  <span class="fu">group_by</span>(<span class="fu">interact</span>(AgeGroup, NetFreq)) <span class="sc">|&gt;</span></span>
+<span id="cb60-4"><a aria-label="4"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb60-5"><a aria-label="5"></a>    <span class="at">N =</span> <span class="fu">survey_total</span>() <span class="sc">*</span> <span class="dv">10000</span>,</span>
+<span id="cb60-6"><a aria-label="6"></a>    <span class="at">p =</span> <span class="fu">survey_prop</span>() <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb60-7"><a aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb60-8"><a aria-label="8"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section><section id="subgroup-analysis-prop.-joint-output" class="slide level2 smaller output-location-slide"><h2>Subgroup analysis: prop., joint</h2><div class="cell output-location-slide">
@@ -1955,29 +1893,29 @@ Data variables:
 <p>Remember that some <code>psu</code> codes repeat across different <code>stratum</code> values.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode numberSource scroll-output number-lines code-with-copy"><code class="sourceCode"><span id="cb67-1"><a aria-label="1"></a>Stratified 1 - level Cluster Sampling design (with replacement)</span>
-<span id="cb67-2"><a aria-label="2"></a>With (24791) clusters.</span>
-<span id="cb67-3"><a aria-label="3"></a>Called via srvyr</span>
-<span id="cb67-4"><a aria-label="4"></a>Sampling variables:</span>
-<span id="cb67-5"><a aria-label="5"></a>  - ids: psu </span>
-<span id="cb67-6"><a aria-label="6"></a>  - strata: stratum </span>
-<span id="cb67-7"><a aria-label="7"></a>  - weights: anweight </span>
-<span id="cb67-8"><a aria-label="8"></a>Data variables: </span>
-<span id="cb67-9"><a aria-label="9"></a>  - cntry (chr), anweight (dbl), nwspol (int), netusoft (int),</span>
-<span id="cb67-10"><a aria-label="10"></a>    netustm (int), volunfp (int), happy (int), wrhpp (int),</span>
-<span id="cb67-11"><a aria-label="11"></a>    agegroup (int), pdwrk (int), edctn (int), uempla (int),</span>
-<span id="cb67-12"><a aria-label="12"></a>    uempli (int), dsbld (int), rtrd (int), cmsrv (int), hswrk</span>
-<span id="cb67-13"><a aria-label="13"></a>    (int), dngoth (int), dngref (int), dngdk (int), dngna (int),</span>
-<span id="cb67-14"><a aria-label="14"></a>    stratum (int), psu (int), pdwrk_rec (int), edctn_rec (int),</span>
-<span id="cb67-15"><a aria-label="15"></a>    uempla_rec (int), uempli_rec (int), dsbld_rec (int),</span>
-<span id="cb67-16"><a aria-label="16"></a>    rtrd_rec (int), cmsrv_rec (int), hswrk_rec (int), dngoth_rec</span>
-<span id="cb67-17"><a aria-label="17"></a>    (int), Retired (lgl), wt1 (dbl), Happy_Freq (int), Happy</span>
-<span id="cb67-18"><a aria-label="18"></a>    (int), News (int), Country (chr), Volunteer_12 (int),</span>
-<span id="cb67-19"><a aria-label="19"></a>    Volunteer_01 (dbl), Volunteer_Factor (fct), NetUsage (dbl),</span>
-<span id="cb67-20"><a aria-label="20"></a>    NetFreq (fct), AgeGroup (fct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode numberSource scroll-output number-lines code-with-copy"><code class="sourceCode"><span id="cb62-1"><a aria-label="1"></a>Stratified 1 - level Cluster Sampling design (with replacement)</span>
+<span id="cb62-2"><a aria-label="2"></a>With (24791) clusters.</span>
+<span id="cb62-3"><a aria-label="3"></a>Called via srvyr</span>
+<span id="cb62-4"><a aria-label="4"></a>Sampling variables:</span>
+<span id="cb62-5"><a aria-label="5"></a>  - ids: psu </span>
+<span id="cb62-6"><a aria-label="6"></a>  - strata: stratum </span>
+<span id="cb62-7"><a aria-label="7"></a>  - weights: anweight </span>
+<span id="cb62-8"><a aria-label="8"></a>Data variables: </span>
+<span id="cb62-9"><a aria-label="9"></a>  - cntry (chr), anweight (dbl), nwspol (int), netusoft (int),</span>
+<span id="cb62-10"><a aria-label="10"></a>    netustm (int), volunfp (int), happy (int), wrhpp (int),</span>
+<span id="cb62-11"><a aria-label="11"></a>    agegroup (int), pdwrk (int), edctn (int), uempla (int),</span>
+<span id="cb62-12"><a aria-label="12"></a>    uempli (int), dsbld (int), rtrd (int), cmsrv (int), hswrk</span>
+<span id="cb62-13"><a aria-label="13"></a>    (int), dngoth (int), dngref (int), dngdk (int), dngna (int),</span>
+<span id="cb62-14"><a aria-label="14"></a>    stratum (int), psu (int), pdwrk_rec (int), edctn_rec (int),</span>
+<span id="cb62-15"><a aria-label="15"></a>    uempla_rec (int), uempli_rec (int), dsbld_rec (int),</span>
+<span id="cb62-16"><a aria-label="16"></a>    rtrd_rec (int), cmsrv_rec (int), hswrk_rec (int), dngoth_rec</span>
+<span id="cb62-17"><a aria-label="17"></a>    (int), Retired (lgl), wt1 (dbl), Happy_Freq (int), Happy</span>
+<span id="cb62-18"><a aria-label="18"></a>    (int), News (int), Country (chr), Volunteer_12 (int),</span>
+<span id="cb62-19"><a aria-label="19"></a>    Volunteer_01 (dbl), Volunteer_Factor (fct), NetUsage (dbl),</span>
+<span id="cb62-20"><a aria-label="20"></a>    NetFreq (fct), AgeGroup (fct)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 <div class="footer">
 <p><a href="http://europeansocialsurvey.org/methodology/sampling">europeansocialsurvey.org/methodology/sampling</a></p>
@@ -1986,15 +1924,15 @@ Data variables:
 <section id="exercise-1-make-the-design-object-1" class="slide level2">
 <h2>Exercise 1: make the design object</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a aria-label="1"></a>ess_des <span class="ot">&lt;-</span> ess_der <span class="sc">|&gt;</span></span>
-<span id="cb68-2"><a aria-label="2"></a>  <span class="fu">as_survey_design</span>(</span>
-<span id="cb68-3"><a aria-label="3"></a>    <span class="at">ids =</span> psu,</span>
-<span id="cb68-4"><a aria-label="4"></a>    <span class="at">strata =</span> stratum,</span>
-<span id="cb68-5"><a aria-label="5"></a>    <span class="at">weights =</span> anweight,</span>
-<span id="cb68-6"><a aria-label="6"></a>    <span class="at">nest =</span> <span class="cn">TRUE</span></span>
-<span id="cb68-7"><a aria-label="7"></a>  )</span>
-<span id="cb68-8"><a aria-label="8"></a></span>
-<span id="cb68-9"><a aria-label="9"></a>ess_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a aria-label="1"></a>ess_des <span class="ot">&lt;-</span> ess_der <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a aria-label="2"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb63-3"><a aria-label="3"></a>    <span class="at">ids =</span> psu,</span>
+<span id="cb63-4"><a aria-label="4"></a>    <span class="at">strata =</span> stratum,</span>
+<span id="cb63-5"><a aria-label="5"></a>    <span class="at">weights =</span> anweight,</span>
+<span id="cb63-6"><a aria-label="6"></a>    <span class="at">nest =</span> <span class="cn">TRUE</span></span>
+<span id="cb63-7"><a aria-label="7"></a>  )</span>
+<span id="cb63-8"><a aria-label="8"></a></span>
+<span id="cb63-9"><a aria-label="9"></a>ess_des</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <aside class="notes">
 <ul>
@@ -2037,19 +1975,19 @@ Data variables:
 # ℹ 20 more rows</code></pre>
 </div>
 </div>
-<countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-2-estimate-weighted-mean-happiness-by-country-1" class="slide level2">
 <h2>Exercise 2: estimate weighted mean happiness by country</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a>happy_by_country <span class="ot">&lt;-</span></span>
-<span id="cb70-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
-<span id="cb70-3"><a aria-label="3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy)) <span class="sc">|&gt;</span></span>
-<span id="cb70-4"><a aria-label="4"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span></span>
-<span id="cb70-5"><a aria-label="5"></a>  <span class="fu">summarize</span>(<span class="at">Happy_mean =</span> <span class="fu">survey_mean</span>(Happy, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb70-6"><a aria-label="6"></a></span>
-<span id="cb70-7"><a aria-label="7"></a>happy_by_country</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a aria-label="1"></a>happy_by_country <span class="ot">&lt;-</span></span>
+<span id="cb65-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
+<span id="cb65-3"><a aria-label="3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy)) <span class="sc">|&gt;</span></span>
+<span id="cb65-4"><a aria-label="4"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span></span>
+<span id="cb65-5"><a aria-label="5"></a>  <span class="fu">summarize</span>(<span class="at">Happy_mean =</span> <span class="fu">survey_mean</span>(Happy, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb65-6"><a aria-label="6"></a></span>
+<span id="cb65-7"><a aria-label="7"></a>happy_by_country</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="likert-chart-weighted-response-distribution-by-country" class="slide level2">
@@ -2394,33 +2332,33 @@ Data variables:
 327 UA    Ukraine        10 - Extremely happy   472.     0.139   </code></pre>
 </div>
 </div>
-<countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-3-calculate-distribution-of-happiness-level-by-country-1" class="slide level2">
 <h2>Exercise 3: calculate distribution of happiness level by country</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a aria-label="1"></a>happy_dist_country <span class="ot">&lt;-</span></span>
-<span id="cb72-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
-<span id="cb72-3"><a aria-label="3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy)) <span class="sc">|&gt;</span></span>
-<span id="cb72-4"><a aria-label="4"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb72-5"><a aria-label="5"></a>    <span class="at">Happy_factor =</span> <span class="fu">factor</span>(</span>
-<span id="cb72-6"><a aria-label="6"></a>      Happy,</span>
-<span id="cb72-7"><a aria-label="7"></a>      <span class="at">levels =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb72-8"><a aria-label="8"></a>      <span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb72-9"><a aria-label="9"></a>        <span class="st">"0 - Extremely unhappy"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="st">"10 - Extremely happy"</span></span>
-<span id="cb72-10"><a aria-label="10"></a>      )</span>
-<span id="cb72-11"><a aria-label="11"></a>    )</span>
-<span id="cb72-12"><a aria-label="12"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb72-13"><a aria-label="13"></a>  <span class="fu">group_by</span>(<span class="fu">interact</span>(cntry, Country), Happy_factor) <span class="sc">|&gt;</span></span>
-<span id="cb72-14"><a aria-label="14"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb72-15"><a aria-label="15"></a>    <span class="at">n =</span> <span class="fu">survey_total</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
-<span id="cb72-16"><a aria-label="16"></a>    <span class="at">p =</span> <span class="fu">survey_mean</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>)</span>
-<span id="cb72-17"><a aria-label="17"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb72-18"><a aria-label="18"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb72-19"><a aria-label="19"></a></span>
-<span id="cb72-20"><a aria-label="20"></a>happy_dist_country <span class="sc">|&gt;</span></span>
-<span id="cb72-21"><a aria-label="21"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a aria-label="1"></a>happy_dist_country <span class="ot">&lt;-</span></span>
+<span id="cb67-2"><a aria-label="2"></a>  ess_des <span class="sc">|&gt;</span></span>
+<span id="cb67-3"><a aria-label="3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy)) <span class="sc">|&gt;</span></span>
+<span id="cb67-4"><a aria-label="4"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb67-5"><a aria-label="5"></a>    <span class="at">Happy_factor =</span> <span class="fu">factor</span>(</span>
+<span id="cb67-6"><a aria-label="6"></a>      Happy,</span>
+<span id="cb67-7"><a aria-label="7"></a>      <span class="at">levels =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb67-8"><a aria-label="8"></a>      <span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb67-9"><a aria-label="9"></a>        <span class="st">"0 - Extremely unhappy"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="st">"10 - Extremely happy"</span></span>
+<span id="cb67-10"><a aria-label="10"></a>      )</span>
+<span id="cb67-11"><a aria-label="11"></a>    )</span>
+<span id="cb67-12"><a aria-label="12"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb67-13"><a aria-label="13"></a>  <span class="fu">group_by</span>(<span class="fu">interact</span>(cntry, Country), Happy_factor) <span class="sc">|&gt;</span></span>
+<span id="cb67-14"><a aria-label="14"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb67-15"><a aria-label="15"></a>    <span class="at">n =</span> <span class="fu">survey_total</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>),</span>
+<span id="cb67-16"><a aria-label="16"></a>    <span class="at">p =</span> <span class="fu">survey_mean</span>(<span class="at">vartype =</span> <span class="cn">NULL</span>)</span>
+<span id="cb67-17"><a aria-label="17"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb67-18"><a aria-label="18"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb67-19"><a aria-label="19"></a></span>
+<span id="cb67-20"><a aria-label="20"></a>happy_dist_country <span class="sc">|&gt;</span></span>
+<span id="cb67-21"><a aria-label="21"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exercise-4-identify-the-happiest-and-least-happy-countries" class="slide level2">
@@ -2432,27 +2370,27 @@ Data variables:
 [5] "Bulgaria"    "Ukraine"     "Montenegro"  "Slovakia"   </code></pre>
 </div>
 </div>
-<countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-4-identify-the-happiest-and-least-happy-countries-1" class="slide level2">
 <h2>Exercise 4: identify the happiest and least happy countries</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a aria-label="1"></a>n_countries <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb74-2"><a aria-label="2"></a></span>
-<span id="cb74-3"><a aria-label="3"></a>top_bottom_countries <span class="ot">&lt;-</span></span>
-<span id="cb74-4"><a aria-label="4"></a>  happy_by_country <span class="sc">|&gt;</span></span>
-<span id="cb74-5"><a aria-label="5"></a>  <span class="fu">slice_max</span>(Happy_mean, <span class="at">n =</span> n_countries) <span class="sc">|&gt;</span></span>
-<span id="cb74-6"><a aria-label="6"></a>  <span class="fu">bind_rows</span>(</span>
-<span id="cb74-7"><a aria-label="7"></a>    happy_by_country <span class="sc">|&gt;</span> <span class="fu">slice_min</span>(Happy_mean, <span class="at">n =</span> n_countries)</span>
-<span id="cb74-8"><a aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb74-9"><a aria-label="9"></a>  <span class="fu">pull</span>(Country)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a aria-label="1"></a>n_countries <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb69-2"><a aria-label="2"></a></span>
+<span id="cb69-3"><a aria-label="3"></a>top_bottom_countries <span class="ot">&lt;-</span></span>
+<span id="cb69-4"><a aria-label="4"></a>  happy_by_country <span class="sc">|&gt;</span></span>
+<span id="cb69-5"><a aria-label="5"></a>  <span class="fu">slice_max</span>(Happy_mean, <span class="at">n =</span> n_countries) <span class="sc">|&gt;</span></span>
+<span id="cb69-6"><a aria-label="6"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb69-7"><a aria-label="7"></a>    happy_by_country <span class="sc">|&gt;</span> <span class="fu">slice_min</span>(Happy_mean, <span class="at">n =</span> n_countries)</span>
+<span id="cb69-8"><a aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb69-9"><a aria-label="9"></a>  <span class="fu">pull</span>(Country)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exercise-5-make-bar-chart-with-country-subset-ordered-by-mean" class="slide level2">
 <h2>Exercise 5: make bar chart with country subset ordered by mean</h2>
 
-<img data-src="index_files/figure-revealjs/06-happy-likert-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<img data-src="index_files/figure-revealjs/06-happy-likert-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 <aside class="notes">
 <ul>
@@ -2475,32 +2413,32 @@ Data variables:
       }</style></aside>
 <div class="hint-box fragment">
 <p>Hint: use this fill scale for the diverging 11-point Likert palette</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a aria-label="1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a aria-label="1"></a><span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exercise-5-make-bar-chart-with-country-subset-ordered-by-mean-1" class="slide level2">
 <h2>Exercise 5: make bar chart with country subset ordered by mean</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a aria-label="1"></a>happy_likert <span class="ot">&lt;-</span></span>
-<span id="cb76-2"><a aria-label="2"></a>  happy_dist_country <span class="sc">|&gt;</span></span>
-<span id="cb76-3"><a aria-label="3"></a>  <span class="fu">left_join</span>(happy_by_country, <span class="at">by =</span> <span class="st">"Country"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb76-4"><a aria-label="4"></a>  <span class="fu">filter</span>(Country <span class="sc">%in%</span> top_bottom_countries) <span class="sc">|&gt;</span></span>
-<span id="cb76-5"><a aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">Label =</span> <span class="fu">fct_reorder</span>(<span class="fu">paste</span>(cntry, <span class="st">"-"</span>, Country), Happy_mean))</span>
-<span id="cb76-6"><a aria-label="6"></a></span>
-<span id="cb76-7"><a aria-label="7"></a><span class="fu">ggplot</span>(happy_likert, <span class="fu">aes</span>(<span class="at">y =</span> Label, <span class="at">x =</span> p, <span class="at">fill =</span> Happy_factor)) <span class="sc">+</span></span>
-<span id="cb76-8"><a aria-label="8"></a>  <span class="co"># reverse = TRUE keeps "0 - Extremely unhappy" on the left and</span></span>
-<span id="cb76-9"><a aria-label="9"></a>  <span class="co"># "10 - Extremely happy" on the right, matching the legend order</span></span>
-<span id="cb76-10"><a aria-label="10"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_fill</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
-<span id="cb76-11"><a aria-label="11"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb76-12"><a aria-label="12"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
-<span id="cb76-13"><a aria-label="13"></a>  <span class="fu">labs</span>(</span>
-<span id="cb76-14"><a aria-label="14"></a>    <span class="at">title =</span> <span class="st">"How happy are you?"</span>,</span>
-<span id="cb76-15"><a aria-label="15"></a>    <span class="at">subtitle =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"Top and bottom {n_countries} countries by weighted mean"</span>),</span>
-<span id="cb76-16"><a aria-label="16"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb76-17"><a aria-label="17"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
-<span id="cb76-18"><a aria-label="18"></a>  ) <span class="sc">+</span></span>
-<span id="cb76-19"><a aria-label="19"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb76-20"><a aria-label="20"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a aria-label="1"></a>happy_likert <span class="ot">&lt;-</span></span>
+<span id="cb71-2"><a aria-label="2"></a>  happy_dist_country <span class="sc">|&gt;</span></span>
+<span id="cb71-3"><a aria-label="3"></a>  <span class="fu">left_join</span>(happy_by_country, <span class="at">by =</span> <span class="st">"Country"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb71-4"><a aria-label="4"></a>  <span class="fu">filter</span>(Country <span class="sc">%in%</span> top_bottom_countries) <span class="sc">|&gt;</span></span>
+<span id="cb71-5"><a aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">Label =</span> <span class="fu">fct_reorder</span>(<span class="fu">paste</span>(cntry, <span class="st">"-"</span>, Country), Happy_mean))</span>
+<span id="cb71-6"><a aria-label="6"></a></span>
+<span id="cb71-7"><a aria-label="7"></a><span class="fu">ggplot</span>(happy_likert, <span class="fu">aes</span>(<span class="at">y =</span> Label, <span class="at">x =</span> p, <span class="at">fill =</span> Happy_factor)) <span class="sc">+</span></span>
+<span id="cb71-8"><a aria-label="8"></a>  <span class="co"># reverse = TRUE keeps "0 - Extremely unhappy" on the left and</span></span>
+<span id="cb71-9"><a aria-label="9"></a>  <span class="co"># "10 - Extremely happy" on the right, matching the legend order</span></span>
+<span id="cb71-10"><a aria-label="10"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_fill</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb71-11"><a aria-label="11"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"RdBu"</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb71-12"><a aria-label="12"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb71-13"><a aria-label="13"></a>  <span class="fu">labs</span>(</span>
+<span id="cb71-14"><a aria-label="14"></a>    <span class="at">title =</span> <span class="st">"How happy are you?"</span>,</span>
+<span id="cb71-15"><a aria-label="15"></a>    <span class="at">subtitle =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"Top and bottom {n_countries} countries by weighted mean"</span>),</span>
+<span id="cb71-16"><a aria-label="16"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb71-17"><a aria-label="17"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb71-18"><a aria-label="18"></a>  ) <span class="sc">+</span></span>
+<span id="cb71-19"><a aria-label="19"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb71-20"><a aria-label="20"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="map-survey-estimates" class="slide level2 smaller">
@@ -2515,31 +2453,31 @@ Data variables:
 <section id="exercise-6-join-country-shapes-to-mean-estimates" class="slide level2">
 <h2>Exercise 6: join country shapes to mean estimates</h2>
 <p>Get a base map from {tmap} using the object <code>World</code> and join the mean estimates on. Crop the map to the extent of ESS using this code:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a aria-label="1"></a>dat_sf <span class="sc">|&gt;</span></span>
-<span id="cb77-2"><a aria-label="2"></a>  <span class="fu">st_crop</span>(</span>
-<span id="cb77-3"><a aria-label="3"></a>    <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ymin =</span> <span class="dv">32</span>, <span class="at">xmax =</span> <span class="dv">36</span>, <span class="at">ymax =</span> <span class="dv">70</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
-<span id="cb77-4"><a aria-label="4"></a>      <span class="fu">st_transform</span>(<span class="dv">3035</span>)</span>
-<span id="cb77-5"><a aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a aria-label="1"></a>dat_sf <span class="sc">|&gt;</span></span>
+<span id="cb72-2"><a aria-label="2"></a>  <span class="fu">st_crop</span>(</span>
+<span id="cb72-3"><a aria-label="3"></a>    <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ymin =</span> <span class="dv">32</span>, <span class="at">xmax =</span> <span class="dv">36</span>, <span class="at">ymax =</span> <span class="dv">70</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
+<span id="cb72-4"><a aria-label="4"></a>      <span class="fu">st_transform</span>(<span class="dv">3035</span>)</span>
+<span id="cb72-5"><a aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="exercise-6-join-country-shapes-to-mean-estimates-1" class="slide level2">
 <h2>Exercise 6: join country shapes to mean estimates</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a aria-label="1"></a>happy_shape <span class="ot">&lt;-</span></span>
-<span id="cb78-2"><a aria-label="2"></a>  World <span class="sc">|&gt;</span></span>
-<span id="cb78-3"><a aria-label="3"></a>  <span class="fu">full_join</span>(happy_by_country, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"Country"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb78-4"><a aria-label="4"></a>  <span class="fu">st_transform</span>(<span class="dv">3035</span>) <span class="sc">|&gt;</span></span>
-<span id="cb78-5"><a aria-label="5"></a>  <span class="fu">st_crop</span>(</span>
-<span id="cb78-6"><a aria-label="6"></a>    <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ymin =</span> <span class="dv">32</span>, <span class="at">xmax =</span> <span class="dv">36</span>, <span class="at">ymax =</span> <span class="dv">70</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
-<span id="cb78-7"><a aria-label="7"></a>      <span class="fu">st_transform</span>(<span class="dv">3035</span>)</span>
-<span id="cb78-8"><a aria-label="8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a aria-label="1"></a>happy_shape <span class="ot">&lt;-</span></span>
+<span id="cb73-2"><a aria-label="2"></a>  World <span class="sc">|&gt;</span></span>
+<span id="cb73-3"><a aria-label="3"></a>  <span class="fu">full_join</span>(happy_by_country, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"Country"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb73-4"><a aria-label="4"></a>  <span class="fu">st_transform</span>(<span class="dv">3035</span>) <span class="sc">|&gt;</span></span>
+<span id="cb73-5"><a aria-label="5"></a>  <span class="fu">st_crop</span>(</span>
+<span id="cb73-6"><a aria-label="6"></a>    <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ymin =</span> <span class="dv">32</span>, <span class="at">xmax =</span> <span class="dv">36</span>, <span class="at">ymax =</span> <span class="dv">70</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
+<span id="cb73-7"><a aria-label="7"></a>      <span class="fu">st_transform</span>(<span class="dv">3035</span>)</span>
+<span id="cb73-8"><a aria-label="8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exercise-7-map-colored-by-happy" class="slide level2">
 <h2>Exercise 7: map colored by <code>Happy</code></h2>
 
-<img data-src="index_files/figure-revealjs/06-happy-map-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_19cd87a28745ceb4084af7261b1ccdd2e253cff9" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<img data-src="index_files/figure-revealjs/06-happy-map-plot-exercise-1.png" width="960" class="r-stretch"><countdown-timer id="timer_19131fcca87f309ae2b6d80d6c516588857b30ba" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 <aside class="notes">
 <ul>
@@ -2564,22 +2502,22 @@ Data variables:
 <section id="exercise-7-map-colored-by-happy-1" class="slide level2">
 <h2>Exercise 7: map colored by <code>Happy</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a aria-label="1"></a>happy_shape <span class="sc">|&gt;</span></span>
-<span id="cb79-2"><a aria-label="2"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb79-3"><a aria-label="3"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Happy_mean), <span class="at">color =</span> <span class="st">"darkgrey"</span>) <span class="sc">+</span></span>
-<span id="cb79-4"><a aria-label="4"></a>  <span class="fu">geom_sf_text</span>(</span>
-<span id="cb79-5"><a aria-label="5"></a>    <span class="at">data =</span> happy_shape <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy_mean)),</span>
-<span id="cb79-6"><a aria-label="6"></a>    <span class="fu">aes</span>(<span class="at">label =</span> iso_a3),</span>
-<span id="cb79-7"><a aria-label="7"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb79-8"><a aria-label="8"></a>  ) <span class="sc">+</span></span>
-<span id="cb79-9"><a aria-label="9"></a>  <span class="fu">scale_fill_distiller</span>(</span>
-<span id="cb79-10"><a aria-label="10"></a>    <span class="at">palette =</span> <span class="st">"Blues"</span>,</span>
-<span id="cb79-11"><a aria-label="11"></a>    <span class="at">direction =</span> <span class="dv">1</span>,</span>
-<span id="cb79-12"><a aria-label="12"></a>    <span class="at">na.value =</span> <span class="st">"lightgrey"</span>,</span>
-<span id="cb79-13"><a aria-label="13"></a>    <span class="at">name =</span> <span class="st">"Mean happiness</span><span class="sc">\n</span><span class="st">(0-10 scale)"</span></span>
-<span id="cb79-14"><a aria-label="14"></a>  ) <span class="sc">+</span></span>
-<span id="cb79-15"><a aria-label="15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb79-16"><a aria-label="16"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a aria-label="1"></a>happy_shape <span class="sc">|&gt;</span></span>
+<span id="cb74-2"><a aria-label="2"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb74-3"><a aria-label="3"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Happy_mean), <span class="at">color =</span> <span class="st">"darkgrey"</span>) <span class="sc">+</span></span>
+<span id="cb74-4"><a aria-label="4"></a>  <span class="fu">geom_sf_text</span>(</span>
+<span id="cb74-5"><a aria-label="5"></a>    <span class="at">data =</span> happy_shape <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Happy_mean)),</span>
+<span id="cb74-6"><a aria-label="6"></a>    <span class="fu">aes</span>(<span class="at">label =</span> iso_a3),</span>
+<span id="cb74-7"><a aria-label="7"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb74-8"><a aria-label="8"></a>  ) <span class="sc">+</span></span>
+<span id="cb74-9"><a aria-label="9"></a>  <span class="fu">scale_fill_distiller</span>(</span>
+<span id="cb74-10"><a aria-label="10"></a>    <span class="at">palette =</span> <span class="st">"Blues"</span>,</span>
+<span id="cb74-11"><a aria-label="11"></a>    <span class="at">direction =</span> <span class="dv">1</span>,</span>
+<span id="cb74-12"><a aria-label="12"></a>    <span class="at">na.value =</span> <span class="st">"lightgrey"</span>,</span>
+<span id="cb74-13"><a aria-label="13"></a>    <span class="at">name =</span> <span class="st">"Mean happiness</span><span class="sc">\n</span><span class="st">(0-10 scale)"</span></span>
+<span id="cb74-14"><a aria-label="14"></a>  ) <span class="sc">+</span></span>
+<span id="cb74-15"><a aria-label="15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb74-16"><a aria-label="16"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <aside class="notes">
 <ul>
@@ -2634,11 +2572,51 @@ Zimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. <em>Exploring 
 <h1>Supplementary material</h1>
 
 </section>
-<section id="an-extra-slide" class="slide level2" data-visibility="uncounted">
-<h2>An extra slide</h2>
+<section id="working-with-pipes-in-survey" class="slide level2 bkg-mountains" data-visibility="uncounted">
+<h2>Working with pipes in {survey}</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<p>Magrittr pipe (<code>%&gt;%</code>)</p>
 <ul>
-<li>Some content here</li>
+<li>dot notation</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a aria-label="1"></a>design_object <span class="sc">%&gt;%</span> </span>
+<span id="cb75-2"><a aria-label="2"></a>  <span class="fu">svyglm</span>(<span class="at">design =</span> ., y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<p>Base R pipe (<code>|&gt;</code>)</p>
+<ul>
+<li>placeholder</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a aria-label="1"></a>design_object <span class="sc">|&gt;</span> </span>
+<span id="cb76-2"><a aria-label="2"></a>  <span class="fu">svyglm</span>(<span class="at">design =</span> _, y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>anonymous (lambda) functions</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a aria-label="1"></a>design_object <span class="sc">|&gt;</span> </span>
+<span id="cb77-2"><a aria-label="2"></a>  (\(.) </span>
+<span id="cb77-3"><a aria-label="3"></a>   <span class="fu">svyglm</span>(<span class="at">design =</span> ., y <span class="sc">~</span> x)</span>
+<span id="cb77-4"><a aria-label="4"></a>  )()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+
+<aside><div>
+<p>Check out <a href="https://ivelasq.rbind.io/blog/understanding-the-r-pipe/" target="_blank">Isabella’s article on the base pipe</a></p>
+</div></aside></section>
+<section id="accessing-ess-data" class="slide level2">
+<h2>Accessing ESS data</h2>
+<ol type="1">
+<li><p>Create a ESS account and get your <a href="https://ess.sikt.no/en/api" target="_blank">user ID</a></p></li>
+<li><p>Open R environ file</p></li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a aria-label="1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Add your user ID to R environ</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a aria-label="1"></a>ESS_USERID<span class="ot">=</span><span class="st">"12345678-1234-1234-1234-12345678900"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li><p>Restart your R session</p></li>
+<li><p>Load the ESS data into R</p></li>
+</ol>
+<p>```r url &lt;- glue::glue(“https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv(‘ESS_USERID’)}”)</p>
 </section>
 <section id="replicate-weights-overview" class="slide level2 smaller bkg-ship" data-visibility="uncounted">
 <h2>Replicate weights overview</h2>

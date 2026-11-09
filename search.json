@@ -18,7 +18,7 @@
     "href": "index.html#logistics",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Logistics",
-    "text": "Logistics\n\nWe will be using Posit Cloud for exercises\nAll materials are found at:\n\nhttps://tidy-survey-r.github.io/uros-2026-tutorial/ (Slides)\nhttps://github.com/tidy-survey-r/uros-2026-tutorial (Source)"
+    "text": "Logistics\n\nWe will be using Posit Cloud for exercises\n\nbit.ly/uRos26-survey-exercises\n\nAll materials are located on GitHub:\n\ngithub.com/tidy-survey-r/uros-2026-tutorial\nSlides: bit.ly/uRos26-survey-slides"
   },
   {
     "objectID": "index.html#libraries-needed-for-today",
@@ -40,13 +40,6 @@
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Why use {srvyr} over {survey}?",
     "text": "Why use {srvyr} over {survey}?\n\nUse the pipe function %&gt;% or |&gt;\nAbility to use tidy selection\nFunctions follow snake_case convention"
-  },
-  {
-    "objectID": "index.html#brief-note-on-pipes-with-survey",
-    "href": "index.html#brief-note-on-pipes-with-survey",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Brief note on pipes with {survey}",
-    "text": "Brief note on pipes with {survey}\n\n\n\nMagrittr pipe (%&gt;%)\n\n\n\ndot notation\n\ndesign_object %&gt;% \n  svyglm(design = ., y ~ x)\n\n\n\nBase R pipe (|&gt;)\n\n\n\nplaceholder\n\ndesign_object |&gt; \n  svyglm(design = _, y ~ x)\n\n\n\nanonymous (lambda) functions\n\ndesign_object |&gt; \n  (\\(.) \n   svyglm(design = ., y ~ x)\n  )()\n\n\n\n\nCheck out Isabella’s article on the base pipe"
   },
   {
     "objectID": "index.html#apply-dplyr-functions-to-survey-objects",
@@ -263,21 +256,14 @@
     "href": "index.html#recoding-missing-data",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Recoding missing data",
-    "text": "Recoding missing data\n\ness_der_update &lt;-\n  ess_raw |&gt;\n  mutate(\n    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),\n    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),\n    Volunteer_Factor = case_when(\n      volunfp == 1 ~ \"Yes\",\n      volunfp == 2 ~ \"No\",\n      TRUE ~ NA\n    ) |&gt;\n      factor(levels = c(\"Yes\", \"No\")),\n    AgeGroup = recode_values(\n      agegroup,\n      1 ~ '15-24',\n      2 ~ '25-34',\n      3 ~ '35-44',\n      4 ~ '45-54',\n      5 ~ '55-64',\n      6 ~ '65-74',\n      7 ~ '75+'\n    ) |&gt;\n      fct_reorder(agegroup)\n  )"
-  },
-  {
-    "objectID": "index.html#viewing-recodes-on-raw-data",
-    "href": "index.html#viewing-recodes-on-raw-data",
-    "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "Viewing recodes on raw data",
-    "text": "Viewing recodes on raw data\n\ness_der_update |&gt; \n  count(happy,Happy)\n\n# A tibble: 14 × 3\n   happy Happy     n\n   &lt;int&gt; &lt;int&gt; &lt;int&gt;\n 1     0     0   313\n 2     1     1   221\n 3     2     2   570\n 4     3     3  1139\n 5     4     4  1534\n 6     5     5  4920\n 7     6     6  4631\n 8     7     7  9459\n 9     8     8 13870\n10     9     9  7899\n11    10    10  5341\n12    77    NA    80\n13    88    NA   127\n14    99    NA    12"
+    "text": "Recoding missing data\n\ness_des_edit &lt;-\n  ess_des |&gt;\n  mutate(\n    Happy = if_else(happy %in% c(77, 88, 99), NA, happy),\n    News = if_else(nwspol %in% c(7777, 8888, 9999), NA, nwspol),\n    Volunteer_Factor = case_when(\n      volunfp == 1 ~ \"Yes\",\n      volunfp == 2 ~ \"No\",\n      TRUE ~ NA\n    ) |&gt;\n      factor(levels = c(\"Yes\", \"No\")),\n    AgeGroup = recode_values(\n      agegroup,\n      1 ~ '15-24',\n      2 ~ '25-34',\n      3 ~ '35-44',\n      4 ~ '45-54',\n      5 ~ '55-64',\n      6 ~ '65-74',\n      7 ~ '75+'\n    ) |&gt;\n      fct_reorder(agegroup)\n  )"
   },
   {
     "objectID": "index.html#viewing-recodes-on-design-object",
     "href": "index.html#viewing-recodes-on-design-object",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Viewing recodes on design object",
-    "text": "Viewing recodes on design object\n\nsurvey_count$variables\n\n\n\ness_des |&gt; \n  survey_count(happy,Happy)\n\n# A tibble: 14 × 4\n   happy Happy        n   n_se\n   &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;\n 1     0     0   296.    25.1 \n 2     1     1   200.    24.4 \n 3     2     2   495.    42.0 \n 4     3     3   964.    55.6 \n 5     4     4  1225.    59.9 \n 6     5     5  4094.   123.  \n 7     6     6  4390.   123.  \n 8     7     7  8953.   193.  \n 9     8     8 13208.   287.  \n10     9     9  7296.   188.  \n11    10    10  5364.   143.  \n12    77    NA    78.8   17.7 \n13    88    NA   141.    19.6 \n14    99    NA     5.68   4.10\n\n\n\n\n\ness_des$variables |&gt; \n  count(happy,Happy)\n\n# A tibble: 14 × 3\n   happy Happy     n\n   &lt;int&gt; &lt;int&gt; &lt;int&gt;\n 1     0     0   313\n 2     1     1   221\n 3     2     2   570\n 4     3     3  1139\n 5     4     4  1534\n 6     5     5  4920\n 7     6     6  4631\n 8     7     7  9459\n 9     8     8 13870\n10     9     9  7899\n11    10    10  5341\n12    77    NA    80\n13    88    NA   127\n14    99    NA    12"
+    "text": "Viewing recodes on design object\n\nsurvey_count$variables\n\n\n\ness_des_edit |&gt; \n  survey_count(happy,Happy)\n\n# A tibble: 14 × 4\n   happy Happy        n   n_se\n   &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;\n 1     0     0   296.    25.1 \n 2     1     1   200.    24.4 \n 3     2     2   495.    42.0 \n 4     3     3   964.    55.6 \n 5     4     4  1225.    59.9 \n 6     5     5  4094.   123.  \n 7     6     6  4390.   123.  \n 8     7     7  8953.   193.  \n 9     8     8 13208.   287.  \n10     9     9  7296.   188.  \n11    10    10  5364.   143.  \n12    77    NA    78.8   17.7 \n13    88    NA   141.    19.6 \n14    99    NA     5.68   4.10\n\n\n\n\n\ness_des_edit$variables |&gt; \n  count(happy,Happy)\n\n# A tibble: 14 × 3\n   happy Happy     n\n   &lt;int&gt; &lt;int&gt; &lt;int&gt;\n 1     0     0   313\n 2     1     1   221\n 3     2     2   570\n 4     3     3  1139\n 5     4     4  1534\n 6     5     5  4920\n 7     6     6  4631\n 8     7     7  9459\n 9     8     8 13870\n10     9     9  7899\n11    10    10  5341\n12    77    NA    80\n13    88    NA   127\n14    99    NA    12"
   },
   {
     "objectID": "index.html#common-workflow",
@@ -539,11 +525,18 @@
     "text": "References\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024a. ESS11 Integrated File, Edition 4.2 [Data Set]. https://doi.org/10.21338/ess11e04_2.\n\n\nEuropean Social Survey European Research Infrastructure (ESS ERIC). 2024b. European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS Round 11 - 2023. Social Inequalities in Health, Gender in Contemporary Europe. https://doi.org/10.21338/ESS11-2023.\n\n\nFreedman Ellis, Greg, and Ben Schneider. 2026. srvyr: ’dplyr’-Like Syntax for Summary Statistics of Survey Data. https://doi.org/10.32614/CRAN.package.srvyr.\n\n\nLumley, Thomas. 2026. survey: Analysis of Complex Survey Samples. https://doi.org/10.32614/CRAN.package.survey.\n\n\nZimmer, Stephanie, Rebecca Powell, and Isabella Velásquez. 2024. Exploring Complex Survey Data Analysis Using R: A Tidy Introduction with {srvyr} and {survey}. CRC Press."
   },
   {
-    "objectID": "index.html#an-extra-slide",
-    "href": "index.html#an-extra-slide",
+    "objectID": "index.html#working-with-pipes-in-survey",
+    "href": "index.html#working-with-pipes-in-survey",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
-    "section": "An extra slide",
-    "text": "An extra slide\n\nSome content here"
+    "section": "Working with pipes in {survey}",
+    "text": "Working with pipes in {survey}\n\n\nMagrittr pipe (%&gt;%)\n\ndot notation\n\ndesign_object %&gt;% \n  svyglm(design = ., y ~ x)\n\nBase R pipe (|&gt;)\n\nplaceholder\n\ndesign_object |&gt; \n  svyglm(design = _, y ~ x)\n\nanonymous (lambda) functions\n\ndesign_object |&gt; \n  (\\(.) \n   svyglm(design = ., y ~ x)\n  )()\n\n\n\nCheck out Isabella’s article on the base pipe"
+  },
+  {
+    "objectID": "index.html#accessing-ess-data",
+    "href": "index.html#accessing-ess-data",
+    "title": "Working with Weights and Sampling Designs for Official Statistics",
+    "section": "Accessing ESS data",
+    "text": "Accessing ESS data\n\nCreate a ESS account and get your user ID\nOpen R environ file\n\nusethis::edit_r_environ()\n\nAdd your user ID to R environ\n\nESS_USERID=\"12345678-1234-1234-1234-12345678900\"\n\nRestart your R session\nLoad the ESS data into R\n\n```r url &lt;- glue::glue(“https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv(‘ESS_USERID’)}”)"
   },
   {
     "objectID": "index.html#replicate-weights-overview",
