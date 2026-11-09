@@ -1,8 +1,68 @@
 # Supplementary material {background-color='{{< brand color blue >}}' .bkg-ship visibility="uncounted"}
 
-## An extra slide {visibility="uncounted"}
+## Working with pipes in {survey} {.bkg-mountains visibility="uncounted"}
 
-- Some content here
+:::::{.columns}
+::::{.column width=42%}
+
+Magrittr pipe (`%>%`)
+
+- dot notation
+
+```r
+design_object %>% 
+  svyglm(design = ., y ~ x)
+```
+
+::::
+
+::::{.column}
+Base R pipe (`|>`)
+
+- placeholder
+    
+```r
+design_object |> 
+  svyglm(design = _, y ~ x)
+```
+- anonymous (lambda) functions
+
+```r
+design_object |> 
+  (\(.) 
+   svyglm(design = ., y ~ x)
+  )()
+```
+
+::::
+:::::
+
+::: aside
+Check out [Isabella's article on the base pipe](https://ivelasq.rbind.io/blog/understanding-the-r-pipe/){target="_blank"}
+:::
+
+## Accessing ESS data
+
+1. Create a ESS account and get your [user ID](https://ess.sikt.no/en/api){target="_blank"}
+
+2. Open R environ file
+
+```r
+usethis::edit_r_environ()
+```
+
+3. Add your user ID to R environ
+
+```r
+ESS_USERID="12345678-1234-1234-1234-12345678900"
+```
+
+4. Restart your R session
+
+5. Load the ESS data into R
+
+```r
+url <- glue::glue("https://api.ess.sikt.no/v1/data/dataFile/10.21338/ess11e04_2?userId={Sys.getenv('ESS_USERID')}")
 
 ## Replicate weights overview {.smaller .bkg-ship visibility="uncounted"}
 
