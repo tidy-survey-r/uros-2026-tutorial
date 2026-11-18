@@ -21,8 +21,8 @@
 ## Set up Posit Cloud
 
 * Sign in to Posit Cloud and head here: [bit.ly/uRos26-survey-exercises](https://bit.ly/uRos26-survey-exercises)
-* Click New Project > New Project from Template
-* Choose uros-2026-weights-survey-rstudio or uros-2026-weights-survey-poistron (depending on your IDE preferences) > OK
+* Click **New Project** > **New Project from Template**
+* Choose `uros-2026-weights-survey-rstudio` or `uros-2026-weights-survey-positron` (depending on your IDE preferences) > **OK**
 
 ## Exercise 1: make the design object {.smaller}
 
