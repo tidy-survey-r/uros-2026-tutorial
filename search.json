@@ -382,7 +382,7 @@
     "href": "index.html#set-up-posit-cloud",
     "title": "Working with Weights and Sampling Designs for Official Statistics",
     "section": "Set up Posit Cloud",
-    "text": "Set up Posit Cloud\n\nSign in to Posit Cloud and head here: bit.ly/uRos26-survey-exercises\nClick New Project &gt; New Project from Template\nChoose uros-2026-weights-survey-rstudio or uros-2026-weights-survey-poistron (depending on your IDE preferences) &gt; OK"
+    "text": "Set up Posit Cloud\n\nSign in to Posit Cloud and head here: bit.ly/uRos26-survey-exercises\nClick New Project &gt; New Project from Template\nChoose uros-2026-weights-survey-rstudio or uros-2026-weights-survey-positron (depending on your IDE preferences) &gt; OK"
   },
   {
     "objectID": "index.html#exercise-1-make-the-design-object",
